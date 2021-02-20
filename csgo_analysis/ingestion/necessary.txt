@@ -1,7 +1,4 @@
-bomb_begindefuse
-bomb_beginplant
 bomb_defused
-bomb_exploded
 bomb_planted
 item_equip
 item_pickup
