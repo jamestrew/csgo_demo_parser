@@ -1,40 +1,50 @@
 # take csgo demo share links and extract share code
 # create steam and csgo client
 # request_full_match_info
-
+import os
+import logging
 from steam.client import SteamClient
 from csgo.client import CSGOClient
 from csgo import sharecode
 
+format = '[%(asctime)s] %(levelname)s %(name)s: %(message)s'
+logging.basicConfig(format=format, level=logging.DEBUG)
+
 
 class Parser:
 
-    OK = 1
-
-    def __init__(self):
-        self.client = SteamClient()
-        self.cs = CSGOClient()
-
-        resp = self.client.cli_login()
-        self.client.run_forever()
-
-        if resp == self.OK:
-            resp = self.cs.launch()
-
-            if resp == self.OK:
-                pass
-
     def get_match_data(self, share_url):
-        # CSGO + the next 30 chars
         scode = share_url[-30:]
         try:
-            scode = sharecode.decode(scode)
+            match_params = sharecode.decode(scode)
         except ValueError:
             return False
 
-        self.cs
+        client = SteamClient()
+        cs = CSGOClient(client)
+
+        @client.on('logged_on')
+        def start_csgo():
+            cs.launch()
+
+        @cs.on('ready')
+        def return_clients():
+            cs.request_full_match_info(**match_params)
+            raw_match_data = cs.wait_event('full_match_info', 30)
+            cs.exit()
+            client.disconnect()
+            return self.match_info_cleaner(raw_match_data)
+
+        username = os.environ.get('RUKA_USER')
+        password = os.environ.get('RUKA_PW')
+        client.cli_login(username=username, password=password)
+        client.run_forever()
+
+    def match_info_cleaner(self, dirty_data):
+        print(str(dirty_data))
 
 
-p = Parser()
-p.get_match_data('steam://rungame/730/76561202255233023/+csgo_download_match%20CSGO-WHujK-oFZSm-azzvG-Sac3A-uT2JE')
-p.get_match_data('bad link')
+if __name__ == '__main__':
+    p = Parser()
+    p.get_match_data('steam::url//fakeurl/CSGO-xQKYC-4Nbc4-h43V2-Jc66v-EWtrD')
+
