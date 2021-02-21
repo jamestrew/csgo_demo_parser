@@ -1,6 +1,4 @@
-# take csgo demo share links and extract share code
-# create steam and csgo client
-# request_full_match_info
+import re
 import os
 import logging
 from steam.client import SteamClient
@@ -12,6 +10,9 @@ logging.basicConfig(format=format, level=logging.DEBUG)
 
 
 class Parser:
+
+    def __init__(self):
+        self.game_data = {}
 
     def get_match_data(self, share_url):
         scode = share_url[-30:]
@@ -33,7 +34,7 @@ class Parser:
             raw_match_data = cs.wait_event('full_match_info', 30)
             cs.exit()
             client.disconnect()
-            return self.match_info_cleaner(raw_match_data)
+            self.match_info_cleaner(raw_match_data)
 
         username = os.environ.get('RUKA_USER')
         password = os.environ.get('RUKA_PW')
@@ -41,10 +42,25 @@ class Parser:
         client.run_forever()
 
     def match_info_cleaner(self, dirty_data):
-        print(str(dirty_data))
+        matchtime_p = r'matchtime: (\d+)'
+        match_info_p = r'match_result: \d\n.+(\d{1,2})\n.+(\d{1,2})\n.+: (\d+)'
+        match_scores = re.search(match_info_p, dirty_data)
+
+        self.game_data['match_time'] = re.search(matchtime_p, dirty_data).group(1)
+        self.game_data['final_score_two'] = match_scores.group(1)
+        self.game_data['final_score_three'] = match_scores.group(2)
+        self.game_data['match_duration'] = match_scores.group(3)
+
+        dl_link_p = r'map: "(.+\.bz2)"'
+        self.game_dl_link = re.search(dl_link_p, dirty_data).group(1)
+        print(self.game_data)
+        print(self.game_dl_link)
 
 
 if __name__ == '__main__':
     p = Parser()
-    p.get_match_data('steam::url//fakeurl/CSGO-xQKYC-4Nbc4-h43V2-Jc66v-EWtrD')
 
+    with open('csgo_analysis/ingestion/data/raw_match_data.txt') as file:
+        data = file.read()
+
+    p.match_info_cleaner(data)
