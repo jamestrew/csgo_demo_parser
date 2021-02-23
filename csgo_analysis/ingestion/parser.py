@@ -1,9 +1,18 @@
-import re
-import os
-import logging
-from steam.client import SteamClient
-from csgo.client import CSGOClient
-from csgo import sharecode
+import gevent.monkey  # noqa
+gevent.monkey.patch_all()  # noqa
+
+import time  # noqa
+import bz2  # noqa
+from urllib.parse import urlparse  # noqa
+import definition  # noqa
+from csgo import sharecode  # noqa
+from csgo.client import CSGOClient  # noqa
+from steam.client import SteamClient  # noqa
+import logging  # noqa
+import os  # noqa
+import re  # noqa
+import requests  # noqa
+
 
 format = '[%(asctime)s] %(levelname)s %(name)s: %(message)s'
 logging.basicConfig(format=format, level=logging.DEBUG)
@@ -53,14 +62,23 @@ class Parser:
 
         dl_link_p = r'map: "(.+\.bz2)"'
         self.game_dl_link = re.search(dl_link_p, dirty_data).group(1)
-        print(self.game_data)
-        print(self.game_dl_link)
+        self.download_demo()
 
+    def download_demo(self):
+        print('Downloading demo')
+        file_name = urlparse(self.game_dl_link).path.replace('/730/', '')
 
-if __name__ == '__main__':
-    p = Parser()
+        req = requests.get(self.game_dl_link, stream=True)
 
-    with open('csgo_analysis/ingestion/data/raw_match_data.txt') as file:
-        data = file.read()
+        temp_dl_path = os.path.join(definition.APP_DIR, 'ingestion', 'data', file_name)
+        with open(temp_dl_path, 'wb') as bzip:
+            bzip.write(req.content)
 
-    p.match_info_cleaner(data)
+        zipfile = bz2.BZ2File(temp_dl_path)
+        data = zipfile.read()
+        dem_file = temp_dl_path.replace('.bz2', '')
+        with open(dem_file, 'wb') as dem:
+            dem.write(data)
+
+        zipfile.close()
+        os.remove(temp_dl_path)
