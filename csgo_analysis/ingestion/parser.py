@@ -1,6 +1,7 @@
 import gevent.monkey  # noqa
 gevent.monkey.patch_all()  # noqa
 
+import subprocess  # noqa
 import time  # noqa
 import bz2  # noqa
 from urllib.parse import urlparse  # noqa
@@ -19,6 +20,8 @@ logging.basicConfig(format=format, level=logging.DEBUG)
 
 
 class Parser:
+
+    min_flags = '-gameevents -nofootsteps -nowarmup -stringtables'
 
     def __init__(self):
         self.game_data = {}
@@ -76,9 +79,21 @@ class Parser:
 
         zipfile = bz2.BZ2File(temp_dl_path)
         data = zipfile.read()
-        dem_file = temp_dl_path.replace('.bz2', '')
-        with open(dem_file, 'wb') as dem:
+        self.dem_file = temp_dl_path.replace('.bz2', '')
+        with open(self.dem_file, 'wb') as dem:
             dem.write(data)
 
         zipfile.close()
         os.remove(temp_dl_path)
+        self.demo_parse()
+
+    def demo_parse(self):
+        exe_path = os.path.join(definition.APP_DIR, 'ingestion')
+        output = os.path.join('data', self.dem_file.replace('.dem', '.txt'))
+        self.dem_file = os.path.join('data', self.dem_file)
+        cmd = f'demoinfogo {self.dem_file} > {output} {self.min_flags}'
+        print(exe_path)
+        sp_output = subprocess.run(cmd.split(), cwd=exe_path, shell=True)
+        print(sp_output.returncode)
+
+        print('Done')
