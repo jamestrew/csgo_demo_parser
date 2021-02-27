@@ -49,3 +49,5 @@ class Game(DB):
             val=list(self.fields.values()),
             col=list(self.fields.keys())
         )
+
+        # TODO return game_id

@@ -29,4 +29,3 @@ class DB:
         self.cur.close()
         self.conn.close()
         # TODO add UniqueViolation error handling
-

@@ -13,6 +13,7 @@ from steam.client import SteamClient
 
 import definition
 from csgo_analysis.ingestion.models import Game
+from csgo_analysis.ingestion.converter import JsonConverter
 
 format = '[%(asctime)s] %(levelname)s %(name)s: %(message)s'
 logging.basicConfig(format=format, level=logging.DEBUG)
@@ -26,6 +27,7 @@ class Parser:
         self.game_data = {}
 
     def get_match_data(self, share_url):
+        ''' Call Steam API to gather basic match info '''
         self.scode = share_url[-30:]
         try:
             match_params = sharecode.decode(self.scode)
@@ -53,6 +55,7 @@ class Parser:
         client.run_forever()
 
     def download_demo(self):
+        ''' Download demo file and extract'''
         dl_link_p = r'map: "(.+\.bz2)"'
         game_dl_link = re.search(dl_link_p, self.raw_match_data).group(1)
         print('Downloading demo')
@@ -75,22 +78,28 @@ class Parser:
         self.demo_parse()
 
     def demo_parse(self):
+        ''' Call demoinfogo to parse demo'''
         exe_path = definition.ING_DIR
-        output = os.path.join('data', self.dem_file.replace('.dem', '.txt'))
         self.dem_file = os.path.join('data', self.dem_file)
-        cmd = f'demoinfogo {self.dem_file} > {output} {self.min_flags}'
+        self.output_path = self.dem_file.replace('.dem', '.txt')
+        cmd = f'demoinfogo {self.dem_file} > {self.output_path} {self.min_flags}'
         print(exe_path)
         sp_output = subprocess.run(cmd.split(), cwd=exe_path, shell=True)
         print(sp_output.returncode)
 
         print('Done')
-        self.data_txt = open(output)
+        self.data_file = open(self.output_path, encoding='ascii', errors='ignore')
+        self.data_txt = self.data_file.read()
 
     def load_game_data(self):
+        ''' Ingest game table data from match data and demo into DB'''
         game = Game()
         map_name = re.search(r'\d, maps\/(de_[a-z2]+)\.bsp', self.data_txt).group(1)
         game.ingest_data(self.raw_match_data, self.scode, map_name)
-        game.close()
+
+    def load_all_data(self):
+        ''' Convert demo data into json and ingest into DB'''
+        self.data = JsonConverter().convert(self.data_txt, self.output_path, True)
 
     def test(self):
         print('good to go')
