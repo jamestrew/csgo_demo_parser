@@ -4,7 +4,6 @@ import logging
 import os
 import re
 import subprocess
-import time
 from urllib.parse import urlparse
 
 import requests
@@ -61,7 +60,7 @@ class Parser:
 
         req = requests.get(game_dl_link, stream=True)
 
-        temp_dl_path = os.path.join(definition.APP_DIR, 'ingestion', 'data', file_name)
+        temp_dl_path = os.path.join(definition.ING_DIR, 'data', file_name)
         with open(temp_dl_path, 'wb') as bzip:
             bzip.write(req.content)
 
@@ -76,7 +75,7 @@ class Parser:
         self.demo_parse()
 
     def demo_parse(self):
-        exe_path = os.path.join(definition.APP_DIR, 'ingestion')
+        exe_path = definition.ING_DIR
         output = os.path.join('data', self.dem_file.replace('.dem', '.txt'))
         self.dem_file = os.path.join('data', self.dem_file)
         cmd = f'demoinfogo {self.dem_file} > {output} {self.min_flags}'
