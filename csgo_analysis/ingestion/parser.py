@@ -1,19 +1,19 @@
-import gevent.monkey  # noqa
-gevent.monkey.patch_all()  # noqa
 
-import subprocess  # noqa
-import time  # noqa
-import bz2  # noqa
-from urllib.parse import urlparse  # noqa
-import definition  # noqa
-from csgo import sharecode  # noqa
-from csgo.client import CSGOClient  # noqa
-from steam.client import SteamClient  # noqa
-import logging  # noqa
-import os  # noqa
-import re  # noqa
-import requests  # noqa
+import bz2
+import logging
+import os
+import re
+import subprocess
+import time
+from urllib.parse import urlparse
 
+import requests
+from csgo import sharecode
+from csgo.client import CSGOClient
+from steam.client import SteamClient
+
+import definition
+from csgo_analysis.ingestion.models import Game
 
 format = '[%(asctime)s] %(levelname)s %(name)s: %(message)s'
 logging.basicConfig(format=format, level=logging.DEBUG)
@@ -27,9 +27,9 @@ class Parser:
         self.game_data = {}
 
     def get_match_data(self, share_url):
-        scode = share_url[-30:]
+        self.scode = share_url[-30:]
         try:
-            match_params = sharecode.decode(scode)
+            match_params = sharecode.decode(self.scode)
         except ValueError:
             return False
 
@@ -43,35 +43,23 @@ class Parser:
         @cs.on('ready')
         def return_clients():
             cs.request_full_match_info(**match_params)
-            raw_match_data = cs.wait_event('full_match_info', 30)
+            self.raw_match_data = str(cs.wait_event('full_match_info', 30))
             cs.exit()
             client.disconnect()
-            self.match_info_cleaner(raw_match_data)
+            self.download_demo()
 
         username = os.environ.get('RUKA_USER')
         password = os.environ.get('RUKA_PW')
         client.cli_login(username=username, password=password)
         client.run_forever()
 
-    def match_info_cleaner(self, dirty_data):
-        matchtime_p = r'matchtime: (\d+)'
-        match_info_p = r'match_result: \d\n.+(\d{1,2})\n.+(\d{1,2})\n.+: (\d+)'
-        match_scores = re.search(match_info_p, dirty_data)
-
-        self.game_data['match_time'] = re.search(matchtime_p, dirty_data).group(1)
-        self.game_data['final_score_two'] = match_scores.group(1)
-        self.game_data['final_score_three'] = match_scores.group(2)
-        self.game_data['match_duration'] = match_scores.group(3)
-
-        dl_link_p = r'map: "(.+\.bz2)"'
-        self.game_dl_link = re.search(dl_link_p, dirty_data).group(1)
-        self.download_demo()
-
     def download_demo(self):
+        dl_link_p = r'map: "(.+\.bz2)"'
+        game_dl_link = re.search(dl_link_p, self.raw_match_data).group(1)
         print('Downloading demo')
-        file_name = urlparse(self.game_dl_link).path.replace('/730/', '')
+        file_name = urlparse(game_dl_link).path.replace('/730/', '')
 
-        req = requests.get(self.game_dl_link, stream=True)
+        req = requests.get(game_dl_link, stream=True)
 
         temp_dl_path = os.path.join(definition.APP_DIR, 'ingestion', 'data', file_name)
         with open(temp_dl_path, 'wb') as bzip:
@@ -97,3 +85,13 @@ class Parser:
         print(sp_output.returncode)
 
         print('Done')
+        self.data_txt = open(output)
+
+    def load_game_data(self):
+        game = Game()
+        map_name = re.search(r'\d, maps\/(de_[a-z2]+)\.bsp', self.data_txt).group(1)
+        game.ingest_data(self.raw_match_data, self.scode, map_name)
+        game.close()
+
+    def test(self):
+        print('good to go')
