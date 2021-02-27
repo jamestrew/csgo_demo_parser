@@ -16,4 +16,4 @@ class MapL:
     }
 
     def get_map_l_id(self, map_name):
-        return self.MAP_L.get(map_name)
+        return self.MAP_L.get(map_name).value

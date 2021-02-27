@@ -24,41 +24,28 @@ class Game(DB):
 
     def __init__(self):
         super().__init__()
-        self.match_time = ''
-        self.final_score_two = ''  # CT start ?
-        self.final_score_three = ''  # T start ?
-        self.match_duration = ''
-        self.share_code = ''
         self.map_l = MapL()
-        self.map_l_id = ''
+        self.fields = {}
+        # team 2 CT start, team 3 T start?
+
+    def convert_epoch_time(self, epoch_time):
+        return time.strftime(self.timestamp_fmt, time.localtime(epoch_time))
 
     def ingest_data(self, dirty_data, scode, map_name):
         match_scores = re.search(self.match_info_p, dirty_data)
-
         epoch_time = int(re.search(self.matchtime_p, dirty_data).group(1))
-        self.match_time = time.strftime(self.timestamp_fmt, time.localtime(epoch_time))
-        self.final_score_two = match_scores.group(1)
-        self.final_score_three = match_scores.group(2)
-        self.match_duration = match_scores.group(3)
-        self.share_code = scode
-        self.map_l_id = self.map_l.get_map_l_id(map_name).value
+
+        self.fields = {
+            self._MATCH_TIME: self.convert_epoch_time(epoch_time),
+            self._SHARE_CODE: scode,
+            self._MATCH_DURATION: int(match_scores.group(3)),
+            self._FINAL_SCORE_TWO: int(match_scores.group(1)),
+            self._FINAL_SCORE_THREE: int(match_scores.group(2)),
+            self._MAP_L_ID: self.map_l.get_map_l_id(map_name)
+        }
 
         self.insert(
-            self._TABLE_NAME,
-            [
-                self.share_code,
-                self.match_time,
-                self.match_duration,
-                self.map_l_id,
-                self.final_score_two,
-                self.final_score_three
-            ],
-            [
-                self._SHARE_CODE,
-                self._MATCH_TIME,
-                self._MATCH_DURATION,
-                self._MAP_L_ID,
-                self._FINAL_SCORE_TWO,
-                self._FINAL_SCORE_THREE
-            ]
+            tablename=self._TABLE_NAME,
+            val=list(self.fields.values()),
+            col=list(self.fields.keys())
         )
