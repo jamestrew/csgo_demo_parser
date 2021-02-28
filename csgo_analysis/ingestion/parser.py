@@ -95,7 +95,7 @@ class Parser:
         ''' Ingest game table data from match data and demo into DB'''
         game = Game()
         map_name = re.search(r'\d, maps\/(de_[a-z2]+)\.bsp', self.data_txt).group(1)
-        game.ingest_data(self.raw_match_data, self.scode, map_name)
+        self.game_id = game.ingest_data(self.raw_match_data, self.scode, map_name)
 
     def load_all_data(self):
         ''' Convert demo data into json and ingest into DB'''

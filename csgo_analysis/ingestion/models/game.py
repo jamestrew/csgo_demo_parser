@@ -44,10 +44,9 @@ class Game(DB):
             self._MAP_L_ID: self.map_l.get_map_l_id(map_name)
         }
 
-        self.insert(
+        return self.insert(
             tablename=self._TABLE_NAME,
             val=list(self.fields.values()),
-            col=list(self.fields.keys())
-        )
-
-        # TODO return game_id
+            col=list(self.fields.keys()),
+            returning=True
+        )[0]
