@@ -13,3 +13,4 @@ if __name__ == '__main__':
         p.raw_match_data = f.read()
 
     p.load_game_data()
+    print(p.game_id)
