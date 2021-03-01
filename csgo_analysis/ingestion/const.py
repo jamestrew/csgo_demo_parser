@@ -14,7 +14,7 @@ class Map(Enum):
 
 
 class Events:
-    PLAYER_BLIND = 'player_bind'
+    PLAYER_BLIND = 'player_blind'
     PLAYER_DEATH = 'player_death'
     PLAYER_HURT = 'player_hurt'
     PLAYER_FALLDAMAGE = 'player_falldamage'
@@ -31,6 +31,9 @@ class Events:
     ROUND_START = 'round_start'
     ROUND_END = 'round_end'
     ROUND_MVP = 'round_mvp'
+
+    _PLAYER_INFO = 'player_info'
+    _PLAYER_SPAWN = 'player_spawn'
 
     PLAYER_EVENTS = [
         PLAYER_DEATH,
@@ -53,4 +56,63 @@ class Events:
         ITEM_REMOVE,
         ITEM_EQUIP,
         ITEM_PICKUP
+    ]
+
+    ALL_EVENTS = [
+        PLAYER_DEATH,
+        PLAYER_BLIND,
+        PLAYER_HURT,
+        PLAYER_FALLDAMAGE,
+        WEAPON_FIRE,
+        ITEM_EQUIP,
+        ITEM_REMOVE,
+        ITEM_PICKUP,
+        BOMB_PLANTED,
+        BOMB_DEFUSED,
+        ROUND_MVP,
+        ROUND_START,
+        ROUND_END
+    ]
+
+    ALL_NECESSARY_DATA = [
+        PLAYER_DEATH,
+        PLAYER_BLIND,
+        PLAYER_HURT,
+        PLAYER_FALLDAMAGE,
+        WEAPON_FIRE,
+        ITEM_EQUIP,
+        ITEM_REMOVE,
+        ITEM_PICKUP,
+        BOMB_PLANTED,
+        BOMB_DEFUSED,
+        ROUND_MVP,
+        ROUND_START,
+        ROUND_END,
+        _PLAYER_INFO,
+        _PLAYER_SPAWN
+    ]
+
+    UNNECESSARY_DATA = [
+        'bomb_begindefuse',
+        'bomb_beginplant',
+        'bomb_dropped',
+        'bomb_exploded',
+        'bomb_pickup',
+        'cs_win_panel_round',
+        'decoy_detonate',
+        'decoy_started',
+        'flashbang_detonate',
+        'hegrenade_detonate',
+        'hltv_chase',
+        'hltv_message',
+        'hltv_status',
+        'inferno_expire',
+        'inferno_startburn',
+        'player_connect_full',
+        'player_jump',
+        'player_team',
+        'smokegrenade_detonate',
+        'smokegrenade_expired',
+        'weapon_reload',
+        'weapon_zoom',
     ]
