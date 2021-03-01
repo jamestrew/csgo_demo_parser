@@ -13,7 +13,7 @@ def ingestion():
     with open('csgo_analysis/ingestion/data/raw_match_data.txt') as f:
         p.raw_match_data = f.read()
 
-    p.load_all_data()
+    p.load_game_data()
 
 
 def conversion():

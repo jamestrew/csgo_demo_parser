@@ -29,11 +29,10 @@ class DB:
 
     def insert(self, tablename, col, val, many=False, returning=False):
         if many:
-            col_holder = '(' + ', '.join(col[0]) + ')'
             val_holder = '%s'
         else:
-            col_holder = '(' + ', '.join(col) + ')'
             val_holder = '(' + ', '.join(['%s'] * len(val)) + ')'
+        col_holder = '(' + ', '.join(col) + ')'
         insert_str = f'INSERT INTO {tablename} {col_holder} VALUES {val_holder}'
 
         if returning:
@@ -60,6 +59,8 @@ class DB:
         val = kwargs.get(self._VAL)
         many = kwargs.get(self._MANY)
         returning = kwargs.get(self._RETURNING)
+        print(insert_str, val)
+        print()
 
         if many:
             execute_values(self.cur, insert_str, val)

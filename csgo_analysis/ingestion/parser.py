@@ -12,7 +12,7 @@ from csgo.client import CSGOClient
 from steam.client import SteamClient
 
 import definition
-from csgo_analysis.ingestion.models import Game
+from csgo_analysis.ingestion.models import Game, Player
 from csgo_analysis.ingestion.converter import JsonConverter
 
 format = '[%(asctime)s] %(levelname)s %(name)s: %(message)s'
@@ -96,10 +96,13 @@ class Parser:
         game = Game()
         map_name = re.search(r'\d, maps\/(de_[a-z2]+)\.bsp', self.data_txt).group(1)
         self.game_id = game.ingest_data(self.raw_match_data, self.scode, map_name)
+        self.load_all_data()
 
     def load_all_data(self):
         ''' Convert demo data into json and ingest into DB'''
         self.data = JsonConverter().convert(self.data_txt, self.output_path, True)
+        player = Player(self.game_id, self.data)
+        player.create_players()
 
     def test(self):
         print('good to go')

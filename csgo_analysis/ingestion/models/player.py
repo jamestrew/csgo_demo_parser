@@ -4,8 +4,8 @@ from enum import Enum
 
 
 class Team(Enum):
-    TEAM_TWO = 2  # CT first
-    TEAM_THREE = 3  # T first
+    TEAM_TWO = 1  # CT first
+    TEAM_THREE = 2  # T first
 
 
 class Player(DB):
@@ -41,6 +41,15 @@ class Player(DB):
         self.data = data
 
     def create_players(self):
+        """Ingest player data into db, replace all userid values in json data with
+            player xuid.
+
+        Returns
+        -------
+        list
+            game data object
+        """
+
         for event in self.data:
             event_name = list(event.keys())[0]
             if self._INFO == event_name and event[self._INFO]['guid'] != 'BOT':
@@ -57,7 +66,8 @@ class Player(DB):
 
             if self._SPAWN == event_name:
                 spawn_info = event[self._SPAWN]
-                if int(spawn_info[self._TEAM_NUM]) == 0:
+                if int(spawn_info[self._TEAM_NUM]) == 0 or \
+                        spawn_info[self._FULL_ID] not in self.players:
                     continue
 
                 team_id = self.TEAM_L.get(int(spawn_info[self._TEAM_NUM])).value
@@ -67,17 +77,21 @@ class Player(DB):
                 player = event[event_name][self._FULL_ID].strip()
                 attacker = event[event_name].get(self._ATTACKER)
                 assister = event[event_name].get(self._ASSISTER)
-                event[event_name][self._FULL_ID] = self.players[player][self._XUID]
+
+                if (player_xuid := self.get_player_xuid(player)):
+                    self.players[player][self._XUID] = player_xuid
 
                 if attacker is not None:
                     attacker = attacker.strip()
-                    event[event_name][self._ATTACKER] = self.players[attacker][self._XUID]
+                    if (attacker_xuid := self.get_player_xuid(attacker)):
+                        self.players[attacker][self._XUID] = attacker_xuid
                 if assister is not None:
                     assister = assister.strip()
-                    try:
-                        event[event_name][self._ASSISTER] = self.players[assister][self._XUID]
-                    except KeyError:
-                        continue
+                    if (assister_xuid := self.get_player_xuid(assister)):
+                        self.players[assister][self._XUID] = assister_xuid
+
+        self.insert_prep()
+        return self.data
 
     def get_full_id(self, player):
         ''' Return userid in the original format
@@ -85,4 +99,17 @@ class Player(DB):
         '''
         return f'{player.get(self._NAME)} (id:{player.get(self._USER_ID)})'
 
-    # TODO able to take [Player name (id : id)] and return
+    def insert_prep(self):
+        for player in self.players.values():
+            player.pop(self._USER_ID)
+
+        players_list = list(self.players.values())
+        col = list(players_list.pop().keys())
+        val = [list(player.values()) for player in players_list]
+        self.insert(self._TABLE_NAME, col, val, True)
+
+    def get_player_xuid(self, player):
+        try:
+            return self.players[player][self._XUID]
+        except KeyError:
+            return None

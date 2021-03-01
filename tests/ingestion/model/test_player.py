@@ -1,3 +1,4 @@
+from unittest.mock import patch
 from csgo_analysis.ingestion.models import Player
 import pytest
 
@@ -31,7 +32,8 @@ def test_get_userid(player_info):
     assert player_id == 'paper girlfriend (id:11)'
 
 
-def test_create_players(players_data, new_players_data):
+@patch.object(Player, 'insert_prep')
+def test_create_players(insert_patch, players_data, new_players_data):
     p = Player(game_id=1, data=players_data)
     p.create_players()
 
@@ -68,3 +70,4 @@ def test_create_players(players_data, new_players_data):
 
     assert p.players == created_players
     assert p.data == new_players_data
+    insert_patch.assert_called_once()
