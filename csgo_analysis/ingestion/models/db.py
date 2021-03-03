@@ -18,6 +18,8 @@ class DB:
         cred_path = os.path.join(definition.ING_DIR, 'models', 'db.json')
         self.connection_params = json.loads(open(cred_path).read())
         self.return_id = None
+        self.conn = None
+        self.cur = None
 
     def connect(self):
         self.conn = psycopg2.connect(**self.connection_params)
