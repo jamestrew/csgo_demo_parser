@@ -1,4 +1,5 @@
 from csgo_analysis.ingestion.models.db import DB
+from csgo_analysis.ingestion.models.dbconn import DBConn
 from csgo_analysis.ingestion.const import EventTypes
 from enum import Enum
 
@@ -8,14 +9,14 @@ class Team(Enum):
     TEAM_THREE = 2  # T first
 
 
-class Player(DB):
+class Player(DBConn):
 
     # columns
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _TEAM_L_ID = 'team_l_id'
-    _XUID = 'xuid'  # steam64 id
-    _NAME = 'name'
+    _ID = {DB._NAME: 'id', DB._TYPE: int}
+    _GAME_ID = {DB._NAME: 'game_id', DB._TYPE: int}
+    _TEAM_L_ID = {DB._NAME: 'team_l_id', DB._TYPE: int}
+    _XUID = {DB._NAME: 'xuid', DB._TYPE: int}  # steam64 id
+    _NAME = {DB._NAME: 'name', DB._TYPE: str}
 
     # table
     _TABLE_NAME = 'player'
@@ -54,11 +55,11 @@ class Player(DB):
             if self._INFO == event_name and event[self._INFO]['guid'] != 'BOT':
                 player_info = event[self._INFO]
                 player = {
-                    self._GAME_ID: self.game_id,
-                    self._XUID: int(player_info[self._XUID]),
-                    self._NAME: player_info[self._NAME],
+                    self._GAME_ID[DB._NAME]: self.game_id,
+                    self._XUID[DB._NAME]: int(player_info[self._XUID[DB._NAME]]),
+                    self._NAME[DB._NAME]: player_info[self._NAME[DB._NAME]],
                     self._USER_ID: int(player_info[self._USER_ID]),
-                    self._TEAM_L_ID: None
+                    self._TEAM_L_ID[DB._NAME]: None
                 }
 
                 self.players[self.get_full_id(player)] = player
@@ -70,10 +71,9 @@ class Player(DB):
                     continue
 
                 team_id = self.TEAM_L.get(int(spawn_info[self._TEAM_NUM])).value
-                self.players[spawn_info[self._FULL_ID]][self._TEAM_L_ID] = team_id
+                self.players[spawn_info[self._FULL_ID]][self._TEAM_L_ID[DB._NAME]] = team_id
 
             if event_name in EventTypes.PLAYER_EVENTS:
-                print(event_name)
                 player = event[event_name][self._FULL_ID].strip()
                 attacker = event[event_name].get(self._ATTACKER)
                 assister = event[event_name].get(self._ASSISTER)
@@ -97,19 +97,24 @@ class Player(DB):
         ''' Return userid in the original format
             eg. "userid": "Chris P. Bacon (id:3)"
         '''
-        return f'{player.get(self._NAME)} (id:{player.get(self._USER_ID)})'
+        return f'{player.get(self._NAME[DB._NAME])} (id:{player.get(self._USER_ID)})'
 
     def insert_prep(self):
+        ''' Create list of unqiue player data and call insert to insert player data
+            into db.
+        '''
+        fields = []
+        xuids = []
         for player in self.players.values():
             player.pop(self._USER_ID)
+            if player[self._XUID[DB._NAME]] not in xuids:
+                xuids.append(player[self._XUID[DB._NAME]])
+                fields.append(player)
 
-        players_list = list(self.players.values())
-        col = list(players_list.pop().keys())
-        val = [list(player.values()) for player in players_list]
-        self.insert(self._TABLE_NAME, col, val, True)
+        self.insert(self._TABLE_NAME, fields, True)
 
     def get_player_xuid(self, player):
         try:
-            return self.players[player][self._XUID]
+            return self.players[player][self._XUID[DB._NAME]]
         except KeyError:
             return None

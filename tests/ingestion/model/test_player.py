@@ -66,13 +66,12 @@ def test_insert_prep(insert_patch, created_players):
     p.players = created_players
 
     p.insert_prep()
-    col = ['game_id', 'xuid', 'name', 'team_l_id']
-    val = [
-        [1, 76561197960512598, "Chris P. Bacon", 1],
-        [1, 76561197964398021, "Mike", 1],
-        [1, 76561198133822308, "digga", 2],
+    fields = [
+        {'game_id': 1, 'xuid': 76561197960512598, 'name': "Chris P. Bacon", 'team_l_id': 1},
+        {'game_id': 1, 'xuid': 76561197964398021, 'name': "Mike", 'team_l_id': 1},
+        {'game_id': 1, 'xuid': 76561198133822308, 'name': "digga", 'team_l_id': 2},
     ]
-    insert_patch.assert_called_with(p._TABLE_NAME, col, val, True)
+    insert_patch.assert_called_with(p._TABLE_NAME, fields, True)
 
 
 @pytest.mark.parametrize(
