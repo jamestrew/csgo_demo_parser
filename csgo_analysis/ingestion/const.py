@@ -13,7 +13,7 @@ class Map(Enum):
     VERTIGO = 9
 
 
-class Events:
+class EventTypes:
     PLAYER_BLIND = 'player_blind'
     PLAYER_DEATH = 'player_death'
     PLAYER_HURT = 'player_hurt'

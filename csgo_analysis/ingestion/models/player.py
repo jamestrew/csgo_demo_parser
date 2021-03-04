@@ -1,5 +1,5 @@
 from csgo_analysis.ingestion.models.db import DB
-from csgo_analysis.ingestion.const import Events
+from csgo_analysis.ingestion.const import EventTypes
 from enum import Enum
 
 
@@ -72,7 +72,7 @@ class Player(DB):
                 team_id = self.TEAM_L.get(int(spawn_info[self._TEAM_NUM])).value
                 self.players[spawn_info[self._FULL_ID]][self._TEAM_L_ID] = team_id
 
-            if event_name in Events.PLAYER_EVENTS:
+            if event_name in EventTypes.PLAYER_EVENTS:
                 print(event_name)
                 player = event[event_name][self._FULL_ID].strip()
                 attacker = event[event_name].get(self._ATTACKER)
