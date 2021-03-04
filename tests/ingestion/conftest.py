@@ -28,16 +28,29 @@ def db_cur(db_conn):
     db_conn.rollback()
 
 
+@pytest.fixture()
+def fixture_path():
+    return 'tests/ingestion/fixtures'
+
+
+@pytest.fixture()
+def data_txt_path(fixture_path):
+    return os.path.join(fixture_path, 'd2.txt')
+
+
+@pytest.fixture()
+def data_json_path(fixture_path):
+    return os.path.join(fixture_path, 'd2.json')
+
+
 @pytest.fixture(scope='session')
-def data_txt():
-    path = 'tests/ingestion/data/d2.txt'
-    with open(path) as txt:
+def data_txt(data_txt_path):
+    with open(data_txt_path) as txt:
         data = txt.read()
     return data
 
 
 @pytest.fixture(scope='session')
-def data_json():
-    path = 'tests/ingestion/data/d2.json'
-    data = json.loads(open(path).read())
+def data_json(data_json_path):
+    data = json.loads(open(data_json_path).read())
     return data

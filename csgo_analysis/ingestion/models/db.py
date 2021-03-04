@@ -32,9 +32,10 @@ class DB:
     def insert(self, tablename, col, val, many=False, returning=False):
         if many:
             val_holder = '%s'
+            col_holder = '(' + ', '.join(col[0]) + ')'
         else:
             val_holder = '(' + ', '.join(['%s'] * len(val)) + ')'
-        col_holder = '(' + ', '.join(col) + ')'
+            col_holder = '(' + ', '.join(col) + ')'
         insert_str = f'INSERT INTO {tablename} {col_holder} VALUES {val_holder}'
 
         if returning:
