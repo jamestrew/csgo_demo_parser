@@ -109,3 +109,5 @@ csgo_analysis/ingestion/data*
 
 # db parameters
 db.json
+
+items.xlsx
