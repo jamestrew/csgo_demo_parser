@@ -43,14 +43,26 @@ def data_json_path(fixture_path):
     return os.path.join(fixture_path, 'd2.json')
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def data_txt(data_txt_path):
     with open(data_txt_path) as txt:
         data = txt.read()
     return data
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def data_json(data_json_path):
     data = json.loads(open(data_json_path).read())
+    return data
+
+
+@pytest.fixture()
+def raw_match_path(fixture_path):
+    return os.path.join(fixture_path, 'raw_match_data.txt')
+
+
+@pytest.fixture()
+def raw_match_txt(raw_match_path):
+    with open(raw_match_path) as txt:
+        data = txt.read()
     return data
