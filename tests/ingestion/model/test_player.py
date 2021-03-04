@@ -33,41 +33,56 @@ def test_get_userid(player_info):
 
 
 @patch.object(Player, 'insert_prep')
-def test_create_players(insert_patch, players_data, new_players_data):
+def test_create_players(
+    insert_patch,
+    players_data,
+    new_players_data,
+    created_players
+):
     p = Player(game_id=1, data=players_data)
     p.create_players()
-
-    created_players = {
-        "Chris P. Bacon (id:3)": {
-            "game_id": 1,
-            "xuid": 76561197960512598,
-            "name": "Chris P. Bacon",
-            "userID": 3,
-            "team_l_id": 2
-        },
-        "Mike (id:4)": {
-            "game_id": 1,
-            "xuid": 76561197964398021,
-            "name": "Mike",
-            "userID": 4,
-            "team_l_id": 2
-        },
-        "digga (id:5)": {
-            "game_id": 1,
-            "xuid": 76561198133822308,
-            "name": "digga",
-            "userID": 5,
-            "team_l_id": 3
-        },
-        "digga (id:12)": {
-            "game_id": 1,
-            "xuid": 76561198133822308,
-            "name": "digga",
-            "userID": 12,
-            "team_l_id": 3
-        }
-    }
 
     assert p.players == created_players
     assert p.data == new_players_data
     insert_patch.assert_called_once()
+
+
+def test_get_full_id():
+    p = Player(1, None)
+    player = {
+        "game_id": 1,
+        "xuid": 76561197960512598,
+        "name": "Chris P. Bacon",
+        "userID": 3,
+        "team_l_id": 1
+    }
+    full_id = p.get_full_id(player)
+    assert full_id == "Chris P. Bacon (id:3)"
+
+
+@patch.object(Player, 'insert')
+def test_insert_prep(insert_patch, created_players):
+    p = Player(1, None)
+    p.players = created_players
+
+    p.insert_prep()
+    col = ['game_id', 'xuid', 'name', 'team_l_id']
+    val = [
+        [1, 76561197960512598, "Chris P. Bacon", 1],
+        [1, 76561197964398021, "Mike", 1],
+        [1, 76561198133822308, "digga", 2],
+    ]
+    insert_patch.assert_called_with(p._TABLE_NAME, col, val, True)
+
+
+@pytest.mark.parametrize(
+    'player_fullid, output', [
+        ("Chris P. Bacon (id:3)", 76561197960512598),
+        ("Invalid Player", None)
+    ]
+)
+def test_get_player_xuid(player_fullid, output, created_players):
+    p = Player(1, None)
+    p.players = created_players
+    player = p.get_player_xuid(player_fullid)
+    assert player == output

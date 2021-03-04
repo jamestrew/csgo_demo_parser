@@ -47,7 +47,6 @@ def players_data():
             }
         },
         {"player_spawn": {"userid": "Chris P. Bacon (id:3)", "teamnum": "0 "}},
-        {"player_spawn": {"userid": "Brazilian dude (id:10)", "teamnum": "0 "}},
         {"player_spawn": {"userid": "Chris P. Bacon (id:3)", "teamnum": "2 "}},
         {"player_spawn": {"userid": "Chris P. Bacon (id:3)", "teamnum": "2 "}},
         {"player_spawn": {"userid": "Mike (id:4)", "teamnum": "0 "}},
@@ -131,6 +130,40 @@ def players_data():
 
 
 @pytest.fixture
+def created_players():
+    return {
+        "Chris P. Bacon (id:3)": {
+            "game_id": 1,
+            "xuid": 76561197960512598,
+            "name": "Chris P. Bacon",
+            "userID": 3,
+            "team_l_id": 1
+        },
+        "Mike (id:4)": {
+            "game_id": 1,
+            "xuid": 76561197964398021,
+            "name": "Mike",
+            "userID": 4,
+            "team_l_id": 1
+        },
+        "digga (id:5)": {
+            "game_id": 1,
+            "xuid": 76561198133822308,
+            "name": "digga",
+            "userID": 5,
+            "team_l_id": 2
+        },
+        "digga (id:12)": {
+            "game_id": 1,
+            "xuid": 76561198133822308,
+            "name": "digga",
+            "userID": 12,
+            "team_l_id": 2
+        }
+    }
+
+
+@pytest.fixture
 def new_players_data():
     data = [
         {
@@ -176,7 +209,6 @@ def new_players_data():
             }
         },
         {"player_spawn": {"userid": "Chris P. Bacon (id:3)", "teamnum": "0 "}},
-        {"player_spawn": {"userid": "Brazilian dude (id:10)", "teamnum": "0 "}},
         {"player_spawn": {"userid": "Chris P. Bacon (id:3)", "teamnum": "2 "}},
         {"player_spawn": {"userid": "Chris P. Bacon (id:3)", "teamnum": "2 "}},
         {"player_spawn": {"userid": "Mike (id:4)", "teamnum": "0 "}},

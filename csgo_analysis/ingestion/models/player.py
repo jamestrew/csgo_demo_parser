@@ -41,8 +41,7 @@ class Player(DB):
         self.data = data
 
     def create_players(self):
-        """Ingest player data into db, replace all userid values in json data with
-            player xuid.
+        """Ingest player data into db, replace all userid values in json data with player xuid.
 
         Returns
         -------
@@ -74,21 +73,22 @@ class Player(DB):
                 self.players[spawn_info[self._FULL_ID]][self._TEAM_L_ID] = team_id
 
             if event_name in Events.PLAYER_EVENTS:
+                print(event_name)
                 player = event[event_name][self._FULL_ID].strip()
                 attacker = event[event_name].get(self._ATTACKER)
                 assister = event[event_name].get(self._ASSISTER)
 
                 if (player_xuid := self.get_player_xuid(player)):
-                    self.players[player][self._XUID] = player_xuid
+                    event[event_name][self._FULL_ID] = player_xuid
 
                 if attacker is not None:
                     attacker = attacker.strip()
                     if (attacker_xuid := self.get_player_xuid(attacker)):
-                        self.players[attacker][self._XUID] = attacker_xuid
+                        event[event_name][self._ATTACKER] = attacker_xuid
                 if assister is not None:
                     assister = assister.strip()
                     if (assister_xuid := self.get_player_xuid(assister)):
-                        self.players[assister][self._XUID] = assister_xuid
+                        event[event_name][self._ASSISTER] = assister_xuid
 
         self.insert_prep()
         return self.data
