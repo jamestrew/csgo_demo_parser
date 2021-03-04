@@ -291,6 +291,7 @@ def new_players_data():
     return data
 
 
+@pytest.fixture
 def event_dirty():
     return [
         {
@@ -435,6 +436,7 @@ def event_dirty():
     ]
 
 
+@pytest.fixture
 def event_clean():
     return [
         {
