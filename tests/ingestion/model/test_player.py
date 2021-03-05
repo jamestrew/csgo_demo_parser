@@ -1,6 +1,10 @@
+import json
+import os
 from unittest.mock import patch
-from csgo_analysis.ingestion.models import Player
+
 import pytest
+
+from csgo_analysis.ingestion.models import Player
 
 
 @pytest.fixture
@@ -85,3 +89,15 @@ def test_get_player_xuid(player_fullid, output, created_players):
     p.players = created_players
     player = p.get_player_xuid(player_fullid)
     assert player == output
+
+
+@patch.object(Player, 'insert_prep')
+@pytest.mark.data_collection  # noqa
+def test_pre_event_data_collection(insert_patch, data_json):
+    p = Player(1, data_json)
+    output = p.create_players()
+    insert_patch.assert_called_once()
+
+    save_path = os.path.join('tests', 'ingestion', 'fixtures', 'pre_event.json')
+    with open(save_path, 'w') as json_file:
+        json.dump(output, json_file)
