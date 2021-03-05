@@ -16,3 +16,7 @@ class DB:
             data_type = self._TYPES[col]
             recordset[col] = data_type(val)
         return recordset
+
+    @staticmethod
+    def custom_bool(value):
+        return bool(int(value))
