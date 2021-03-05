@@ -34,10 +34,11 @@ class EventsController:
         self.round_start = RoundStart()
         self.round_end = RoundEnd()
         self.round_mvp = RoundMVP()
+        self.clean_data = []
 
     def ingest_data(self):
-        round_count = 0
-        event_count = 0
+        round_cnt = 0
+        event_cnt = 0
         for event in self.data:
             event_name = list(event.keys())[0]
             event_data = event[event_name]
@@ -45,11 +46,11 @@ class EventsController:
                     isinstance(event_data['userid'], str):
                 continue
             if event_name in EventTypes.ALL_EVENTS:
-                event_count += 1
+                event_cnt += 1
             if event_name == EventTypes.ROUND_START:
-                round_count += 1
+                round_cnt += 1
 
-            # event_class = getattr(self, event_name)
-            # event_class.build_event(self.game_id, event[event_name], event_count, round_count)
-
-            self.item_equip.build_event(self.game_id, event_data, event_count, round_count)
+            data = event[event_name]
+            event_class = getattr(self, event_name)
+            data = event_class.build_event(self.game_id, data, event_cnt, round_cnt)
+            self.clean_data.append(data)
