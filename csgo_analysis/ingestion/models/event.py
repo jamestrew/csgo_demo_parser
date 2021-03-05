@@ -1,4 +1,5 @@
 from csgo_analysis.ingestion.const import EventTypes
+from csgo_analysis.ingestion.models.db import DB
 
 
 class EventsController:
@@ -6,31 +7,47 @@ class EventsController:
     def __init__(self, game_id, data):
         self.game_id = game_id
         self.data = data
-        self.player_blind = PlayerBlind(game_id)
-        self.player_death = PlayerDeath(game_id)
-        self.player_hurt = PlayerHurt(game_id)
-        self.player_falldamage = PlayerFallDamage(game_id)
-        self.weapon_fire = WeaponFire(game_id)
-        self.item_pickup = ItemPickup(game_id)
-        self.item_equip = ItemEquip(game_id)
-        self.item_remove = ItemRemove(game_id)
-        self.bomb_planted = BombPlanted(game_id)
-        self.bomb_defused = BombDefused(game_id)
-        self.round_start = RoundStart(game_id)
-        self.round_end = RoundEnd(game_id)
-        self.round_mvp = RoundMVP(game_id)
+        self.player_blind = PlayerBlind()
+        self.player_death = PlayerDeath()
+        self.player_hurt = PlayerHurt()
+        self.player_falldamage = PlayerFallDamage()
+        self.weapon_fire = WeaponFire()
+        self.item_pickup = ItemPickup()
+        self.item_equip = ItemEquip()
+        self.item_remove = ItemRemove()
+        self.bomb_planted = BombPlanted()
+        self.bomb_defused = BombDefused()
+        self.round_start = RoundStart()
+        self.round_end = RoundEnd()
+        self.round_mvp = RoundMVP()
+
+    def ingest_data(self):
+        round_count = 0
+        event_count = 0
+        for event in self.data:
+            event_name = list(event.keys())[0]
+            event_data = event[event_name]
+            if 'userid' in event_data.keys() and \
+                    isinstance(event_data['userid'], str):
+                continue
+            if event_name in EventTypes.ALL_EVENTS:
+                event_count += 1
+            if event_name == EventTypes.ROUND_START:
+                round_count += 1
+
+            # event_class = getattr(self, event_name)
+            # event_class.build_event(self.game_id, event[event_name], event_count, round_count)
+
+            self.item_equip.build_event(self.game_id, event_data, event_count, round_count)
 
 
 class Event:
 
-    def __init__(self, game_id):
-        self.game_id = game_id
-
-    def get_event_number(self):
+    def build_event(self, game_id, event_data, event_numer, round_count):
         pass
 
 
-class PlayerBlind(Event):
+class PlayerBlind(Event, DB):
 
     # columns
     _ID = 'id'
@@ -41,13 +58,20 @@ class PlayerBlind(Event):
     _EVENT_NUMBER = 'event_number'
     _ROUND = 'round'
 
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _PLAYER_ID: int,
+        _ATTACKER_ID: int,
+        _BLIND_DURATION: float,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
+
     _TABLE_NAME = EventTypes.PLAYER_BLIND
 
-    def __init__(self, game_id):
-        super().__init__(game_id)
 
-
-class PlayerDeath(Event):
+class PlayerDeath(Event, DB):
 
     # columns
     _ID = 'id'
@@ -68,62 +92,251 @@ class PlayerDeath(Event):
     _EVENT_NUMBER = 'event_number'
     _ROUND = 'round'
 
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _PLAYER_ID: int,
+        _ATTACKER_ID: int,
+        _ASSISTER_ID: int,
+        _ITEM_ID: int,
+        _ASSISTEDFLASH: DB.custom_bool,
+        _HEADSHOT: DB.custom_bool,
+        _DOMINATED: DB.custom_bool,
+        _REVENGE: DB.custom_bool,
+        _WIPE: DB.custom_bool,
+        _PENETRATED: DB.custom_bool,
+        _NOSCOPE: DB.custom_bool,
+        _ATTACKERBLIND: DB.custom_bool,
+        _DISTANCE: float,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
+
     _TABLE_NAME = EventTypes.PLAYER_DEATH
 
-    def __init__(self):
-        super().__init__()
+
+class PlayerHurt(Event, DB):
+
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _PLAYER_ID = 'player_id'
+    _ATTACKER_ID = 'attacker_id'
+    _ASSISTER_ID = 'assister_id'
+    _ITEM_ID = 'item_id'
+    _HEALTH = 'health'
+    _ARMOR = 'armor'
+    _DMG_HEALTH = 'dmg_health'
+    _DMG_ARMOR = 'dmg_armor'
+    _HIT_GROUP = 'hit_group'
+    _EVENT_NUMBER = 'event_number'
+    _ROUND = 'round'
+
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _PLAYER_ID: int,
+        _ATTACKER_ID: int,
+        _ASSISTER_ID: int,
+        _ITEM_ID: int,
+        _HEALTH: int,
+        _ARMOR: int,
+        _DMG_HEALTH: int,
+        _DMG_ARMOR: int,
+        _HIT_GROUP: int,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
 
 
-class PlayerHurt(Event):
-    def __init__(self):
-        super().__init__()
+class PlayerFallDamage(Event, DB):
+
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _PLAYER_ID = 'player_id'
+    _DAMAGE = 'damage'
+    _EVENT_NUMBER = 'event_number'
+    _ROUND = 'round'
+
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _PLAYER_ID: int,
+        _DAMAGE: float,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
 
 
-class PlayerFallDamage(Event):
-    def __init__(self):
-        super().__init__()
+class WeaponFire(Event, DB):
 
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _PLAYER_ID = 'player_id'
+    _ITEM_ID = 'item_id'
+    _SILENCED = 'silenced'
+    _EVENT_NUMBER = 'event_number'
+    _ROUND = 'round'
 
-class WeaponFire(Event):
-    def __init__(self):
-        super().__init__()
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _PLAYER_ID: int,
+        _ITEM_ID: int,
+        _SILENCED: DB.custom_bool,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
 
 
 class ItemPickup(Event):
-    def __init__(self):
-        super().__init__()
+
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _PLAYER_ID = 'player_id'
+    _ITEM_ID = 'item_id'
+    _SILENT = 'silent'
+    _EVENT_NUMBER = 'event_number'
+    _ROUND = 'round'
+
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _PLAYER_ID: int,
+        _ITEM_ID: int,
+        _SILENT: DB.custom_bool,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
 
 
 class ItemEquip(Event):
-    def __init__(self):
-        super().__init__()
+
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _PLAYER_ID = 'player_id'
+    _ITEM_ID = 'item_id'
+    _EVENT_NUMBER = 'event_number'
+    _ROUND = 'round'
+
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _PLAYER_ID: int,
+        _ITEM_ID: int,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
 
 
 class ItemRemove(Event):
-    def __init__(self):
-        super().__init__()
+
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _PLAYER_ID = 'player_id'
+    _ITEM_ID = 'item_id'
+    _EVENT_NUMBER = 'event_number'
+    _ROUND = 'round'
+
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _PLAYER_ID: int,
+        _ITEM_ID: int,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
 
 
 class BombPlanted(Event):
-    def __init__(self):
-        super().__init__()
+
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _PLAYER_ID = 'player_id'
+    _SITE = 'site'
+    _EVENT_NUMBER = 'event_number'
+    _ROUND = 'round'
+
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _PLAYER_ID: int,
+        _SITE: int,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
 
 
 class BombDefused(Event):
-    def __init__(self):
-        super().__init__()
+
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _PLAYER_ID = 'player_id'
+    _SITE = 'site'
+    _EVENT_NUMBER = 'event_number'
+    _ROUND = 'round'
+
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _PLAYER_ID: int,
+        _SITE: int,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
 
 
 class RoundStart(Event):
-    def __init__(self):
-        super().__init__()
+
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _TIMELIMIT = 'timelimit'
+    _EVENT_NUMBER = 'event_number'
+    _ROUND = 'round'
+
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _TIMELIMIT: int,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
 
 
 class RoundEnd(Event):
-    def __init__(self):
-        super().__init__()
+
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _TEAM_L_ID = 'team_l_id'
+    _REASON = 'reason'
+    _MESSAGE = 'message'
+    _EVENT_NUMBER = 'event_number'
+    _ROUND = 'round'
+
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _TEAM_L_ID: int,
+        _REASON: int,
+        _MESSAGE: str,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
 
 
 class RoundMVP(Event):
-    def __init__(self):
-        super().__init__()
+
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _PLAYER_ID = 'player_id'
+    _REASON = 'reason'
+    _EVENT_NUMBER = 'event_number'
+    _ROUND = 'round'
+
+    _TYPES = {
+        _ID: int,
+        _GAME_ID: int,
+        _PLAYER_ID: int,
+        _REASON: int,
+        _EVENT_NUMBER: int,
+        _ROUND: int
+    }
