@@ -1,9 +1,10 @@
-import time
 import re
+
+from psycopg2._psycopg import TimestampFromTicks
+
+from csgo_analysis.ingestion.models.db import DB
 from csgo_analysis.ingestion.models.dbconn import DBConn
 from csgo_analysis.ingestion.models.map import MapL
-from csgo_analysis.ingestion.models.db import DB
-from psycopg2._psycopg import TimestampFromTicks
 
 
 class Game(DBConn, DB):
@@ -38,18 +39,22 @@ class Game(DBConn, DB):
     def __init__(self):
         super().__init__()
         self.map_l = MapL()
-        self.fields = {}
+        self.recordset = {}
         # team 2 CT start, team 3 T start?
 
     def ingest_data(self, dirty_data, scode, map_name):
         match_scores = re.search(self.match_info_p, dirty_data)
         epoch_time = int(re.search(self.matchtime_p, dirty_data).group(1))
 
-        self.input_column_data(self._SHARE_CODE, scode)
-        self.input_column_data(self._MATCH_TIME, epoch_time)
-        self.input_column_data(self._MATCH_DURATION, match_scores.group(3))
-        self.input_column_data(self._MAP_L_ID, self.map_l.get_map_l_id(map_name))
-        self.input_column_data(self._FINAL_SCORE_TWO, match_scores.group(1))
-        self.input_column_data(self._FINAL_SCORE_THREE, match_scores.group(2))
+        rs = {
+            self._SHARE_CODE: scode,
+            self._MATCH_TIME: epoch_time,
+            self._MATCH_DURATION: match_scores.group(3),
+            self._MAP_L_ID: self.map_l.get_map_l_id(map_name),
+            self._FINAL_SCORE_TWO: match_scores.group(1),
+            self._FINAL_SCORE_THREE: match_scores.group(2)
+        }
 
-        return self.insert(self._TABLE_NAME, self.fields, returning=True)[0]
+        self.recordset = self.cast_data(rs)
+
+        return self.insert(self._TABLE_NAME, self.recordset, returning=True)[0]
