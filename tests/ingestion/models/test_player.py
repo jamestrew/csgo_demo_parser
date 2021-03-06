@@ -14,14 +14,14 @@ def player_info():
             'game_id': 1,
             'team_l_id': 1,
             'xuid': 76561197960512598,
-            'name': 'Chris P. Bacon',
+            'player_name': 'Chris P. Bacon',
             'userID': 13
         },
         11: {
             'game_id': 1,
             'team_l_id': 1,
             'xuid': 76561198026942816,
-            'name': 'paper girlfriend',
+            'player_name': 'paper girlfriend',
             'userID': 11
         }
     }
@@ -56,7 +56,7 @@ def test_get_full_id():
     player = {
         "game_id": 1,
         "xuid": 76561197960512598,
-        "name": "Chris P. Bacon",
+        "player_name": "Chris P. Bacon",
         "userID": 3,
         "team_l_id": 1
     }
@@ -71,9 +71,9 @@ def test_insert_prep(insert_patch, created_players):
 
     p.insert_prep()
     fields = [
-        {'game_id': 1, 'xuid': 76561197960512598, 'name': "Chris P. Bacon", 'team_l_id': 1},
-        {'game_id': 1, 'xuid': 76561197964398021, 'name': "Mike", 'team_l_id': 1},
-        {'game_id': 1, 'xuid': 76561198133822308, 'name': "digga", 'team_l_id': 2},
+        {'game_id': 1, 'xuid': 76561197960512598, 'player_name': "Chris P. Bacon", 'team_l_id': 1},
+        {'game_id': 1, 'xuid': 76561197964398021, 'player_name': "Mike", 'team_l_id': 1},
+        {'game_id': 1, 'xuid': 76561198133822308, 'player_name': "digga", 'team_l_id': 2},
     ]
     insert_patch.assert_called_with(p._TABLE_NAME, fields, True)
 

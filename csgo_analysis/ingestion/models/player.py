@@ -15,20 +15,21 @@ class Player(DBConn, DB):
     _GAME_ID = 'game_id'
     _TEAM_L_ID = 'team_l_id'
     _XUID = 'xuid'
-    _NAME = 'name'
+    _PLAYER_NAME = 'player_name'
 
     _TYPES = {
         _ID: int,
         _GAME_ID: int,
         _TEAM_L_ID: int,
         _XUID: int,
-        _NAME: str
+        _PLAYER_NAME: str
     }
 
     # table
     _TABLE_NAME = 'player'
 
     # supp data
+    _NAME = 'name'
     _USER_ID = 'userID'
     _TEAM_NUM = 'teamnum'
     _FULL_ID = 'userid'
@@ -64,7 +65,7 @@ class Player(DBConn, DB):
                 player = {
                     self._GAME_ID: self.game_id,
                     self._XUID: int(player_info[self._XUID]),
-                    self._NAME: player_info[self._NAME],
+                    self._PLAYER_NAME: player_info[self._NAME],
                     self._USER_ID: int(player_info[self._USER_ID]),
                     self._TEAM_L_ID: None
                 }
@@ -104,7 +105,7 @@ class Player(DBConn, DB):
         ''' Return userid in the original format
             eg. "userid": "Chris P. Bacon (id:3)"
         '''
-        return f'{player.get(self._NAME)} (id:{player.get(self._USER_ID)})'
+        return f'{player.get(self._PLAYER_NAME)} (id:{player.get(self._USER_ID)})'
 
     def insert_prep(self):
         ''' Create list of unqiue player data and call insert to insert player data

@@ -135,28 +135,28 @@ def created_players():
         "Chris P. Bacon (id:3)": {
             "game_id": 1,
             "xuid": 76561197960512598,
-            "name": "Chris P. Bacon",
+            "player_name": "Chris P. Bacon",
             "userID": 3,
             "team_l_id": 1
         },
         "Mike (id:4)": {
             "game_id": 1,
             "xuid": 76561197964398021,
-            "name": "Mike",
+            "player_name": "Mike",
             "userID": 4,
             "team_l_id": 1
         },
         "digga (id:5)": {
             "game_id": 1,
             "xuid": 76561198133822308,
-            "name": "digga",
+            "player_name": "digga",
             "userID": 5,
             "team_l_id": 2
         },
         "digga (id:12)": {
             "game_id": 1,
             "xuid": 76561198133822308,
-            "name": "digga",
+            "player_name": "digga",
             "userID": 12,
             "team_l_id": 2
         }
