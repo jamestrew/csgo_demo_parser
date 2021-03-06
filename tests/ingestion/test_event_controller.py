@@ -9,6 +9,14 @@ from unittest.mock import patch
 #     assert output == event_clean
 
 
+def test_player_equip_init():
+    player_xuids = [1, 2, 3, 4, 5]
+    ec = EventsController(1, None, player_xuids)
+    assert ec.player_equip_state == {
+        1: None, 2: None, 3: None, 4: None, 5: None
+    }
+
+
 @patch.object(ItemEquip, 'build_event')
 def test_event_class_calling(build_patch):
     data = [
@@ -42,7 +50,7 @@ def test_event_class_calling(build_patch):
 
     event_data = data[0]['item_equip']
 
-    ec = EventsController(1, data)
+    ec = EventsController(1, data, [1, 2, 3])
     ec.ingest_data()
 
     build_patch.assert_called_once_with(1, event_data, 1, 0)

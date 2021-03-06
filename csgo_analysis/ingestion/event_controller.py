@@ -18,7 +18,7 @@ from csgo_analysis.ingestion.models import (
 
 class EventsController:
 
-    def __init__(self, game_id, data):
+    def __init__(self, game_id, data, player_xuids):
         self.game_id = game_id
         self.data = data
         self.player_blind = PlayerBlind()
@@ -35,6 +35,10 @@ class EventsController:
         self.round_end = RoundEnd()
         self.round_mvp = RoundMVP()
         self.clean_data = []
+        self.player_equip_state = {}
+
+        for xuid in player_xuids:
+            self.player_equip_state[xuid] = None
 
     def ingest_data(self):
         round_cnt = 0
