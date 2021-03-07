@@ -1,0 +1,108 @@
+ 441, sprites/gpurpleglow1.vmt, 1, 
+ 442, sprites/gpurplelaser1.vmt, 1, 
+ 443, models/mgibs/hgibs.mdl, 1, 
+ 444, models/mweapons/v_pist_deagle.mdl, 1, 
+ 445, models/mweapons/w_pist_deagle.mdl, 1, 
+ 446, models/mweapons/w_pist_deagle_dropped.mdl, 1, 
+ 447, models/mweapons/w_pist_deagle_mag.mdl, 1, 
+ 657, models/mweapons/v_pist_p250.mdl, 1, 
+ 658, models/mweapons/w_pist_p250.mdl, 1, 
+ 659, models/mweapons/w_pist_p250_dropped.mdl, 1, 
+ 660, models/mweapons/w_pist_p250_mag.mdl, 1, 
+ 661, models/mweapons/stickers/v_modes/pist_p250_decal_a.mdl, 1, 
+ 662, models/mweapons/stickers/v_modes/pist_p250_decal_b.mdl, 1, 
+ 663, models/mweapons/stickers/v_modes/pist_p250_decal_c.mdl, 1, 
+ 664, models/mweapons/stickers/v_modes/pist_p250_decal_d.mdl, 1,
+Field: 402, m_iItemDefinitionIndex = 1
+Field: 405, m_iItemIDLow = -2069151079
+Field: 406, m_iAccountID = 173556580
+Field: 407, m_iEntityQuality = 9
+Field: 410, m_hOuter = 786560
+Field: 419, m_flNextPrimaryAttack = 55.835938
+Field: 420, m_flNextSecondaryAttack = 55.835938
+Field: 421, m_nNextThinkTick = 7160
+Field: 423, m_vecMins = -6.331904, -6.266777, -24.111179
+Field: 424, m_vecMaxs = 24.219343, 20.649136, 1.000000
+Field: 429, m_nModelIndex = 444
+Field: 461, m_flLastMadeNoiseTime = 55.835938
+Field: 492, m_iViewModelIndex = 444
+Field: 493, m_iWorldModelIndex = 445
+Field: 494, m_iWorldDroppedModelIndex = 446
+Field: 497, m_iClip1 = 8
+Field: 499, m_iPrimaryReserveAmmoCount = 35
+Field: 501, m_hWeaponWorldModel = 1188025
+Field: 402, m_iItemDefinitionIndex = 36
+Field: 405, m_iItemIDLow = -2069151028
+Field: 406, m_iAccountID = 173556580
+Field: 407, m_iEntityQuality = 4
+Field: 410, m_hOuter = 788608
+Field: 413, m_iPrimaryAmmoType = 20
+Field: 419, m_flNextPrimaryAttack = 57.578125
+Field: 420, m_flNextSecondaryAttack = 57.578125
+Field: 421, m_nNextThinkTick = 7383
+Field: 423, m_vecMins = -6.331904, -5.267739, -24.111179
+Field: 424, m_vecMaxs = 21.709597, 20.649136, 1.000000
+Field: 429, m_nModelIndex = 657
+Field: 461, m_flLastMadeNoiseTime = 57.578125
+Field: 492, m_iViewModelIndex = 657
+Field: 493, m_iWorldModelIndex = 658
+item_equip
+{
+ userid: digga (id:52)
+  position: 32.377651, 289.590240, 0.031250
+  facing: pitch:9.420776, yaw:12.172852
+  team: T
+ item: deagle
+ defindex: 1
+ canzoom: 0
+ hassilencer: 0
+ issilenced: 0
+ hastracers: 1
+ weptype: 1
+ ispainted: 1
+}
+item_equip
+{
+ userid: digga (id:52)
+  position: 49.276283, 292.974457, 0.031250
+  facing: pitch:19.819336, yaw:351.947021
+  team: T
+ item: deagle
+ defindex: 64
+ canzoom: 0
+ hassilencer: 0
+ issilenced: 0
+ hastracers: 1
+ weptype: 1
+ ispainted: 0
+}
+item_equip
+{
+ userid: digga (id:52)
+  position: 19.061506, 242.596680, 0.031250
+  facing: pitch:6.806030, yaw:87.945557
+  team: T
+ item: p250
+ defindex: 36
+ canzoom: 0
+ hassilencer: 0
+ issilenced: 0
+ hastracers: 1
+ weptype: 1
+ ispainted: 1
+}
+item_equip
+{
+ userid: digga (id:52)
+  position: 18.577520, 326.076935, 0.031250
+  facing: pitch:12.266235, yaw:80.430908
+  team: T
+ item: p250
+ defindex: 63
+ canzoom: 0
+ hassilencer: 0
+ issilenced: 0
+ hastracers: 1
+ weptype: 1
+ ispainted: 0
+}

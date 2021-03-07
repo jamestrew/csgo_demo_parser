@@ -66,3 +66,11 @@ def raw_match_txt(raw_match_path):
     with open(raw_match_path) as txt:
         data = txt.read()
     return data
+
+
+@pytest.fixture
+def item_data(fixture_path):
+    path = os.path.join(fixture_path, 'item_data.txt')
+    with open(path) as txt:
+        data = txt.read()
+    return data
