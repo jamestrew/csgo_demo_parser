@@ -232,29 +232,36 @@ class Items:
     _MOLOTOV_ID = 40
     _DECOY_ID = 41
     _KNIFE_ID = 42
-    _KNIFE_T_ID = 43
-    _KNIFEGG_ID = 44
-    _KNIFE_CSS_ID = 45
-    _BAYONET_ID = 46
-    _KNIFE_FLIP_ID = 47
-    _KNIFE_GUT_ID = 48
-    _KNIFE_KARAMBIT_ID = 49
-    _KNIFE_M9_BAYONET_ID = 50
-    _KNIFE_TACTICAL_ID = 51
-    _KNIFE_BUTTERFLY_ID = 52
-    _KNIFE_FALCHION_ID = 53
-    _KNIFE_PUSH_ID = 54
-    _KNIFE_SURVIVAL_ID = 55
-    _KNIFE_URSUS_ID = 56
-    _KNIFE_GYPSY_JACKKNIFE_ID = 57
-    _KNIFE_STILETTO_ID = 58
-    _KNIFE_WIDOWMAKER_ID = 59
-    _KNIFE_GHOST_ID = 60
-    _KNIFE_CANIS_ID = 61
-    _KNIFE_CORD_ID = 62
-    _KNIFE_SKELETON_ID = 63
-    _KNIFE_OUTDOOR_ID = 64
+    _KNIFE_T_ID = 42
+    _KNIFEGG_ID = 42
+    _KNIFE_CSS_ID = 42
+    _BAYONET_ID = 42
+    _KNIFE_FLIP_ID = 42
+    _KNIFE_GUT_ID = 42
+    _KNIFE_KARAMBIT_ID = 42
+    _KNIFE_M9_BAYONET_ID = 42
+    _KNIFE_TACTICAL_ID = 42
+    _KNIFE_BUTTERFLY_ID = 42
+    _KNIFE_FALCHION_ID = 42
+    _KNIFE_PUSH_ID = 42
+    _KNIFE_SURVIVAL_ID = 42
+    _KNIFE_URSUS_ID = 42
+    _KNIFE_GYPSY_JACKKNIFE_ID = 42
+    _KNIFE_STILETTO_ID = 42
+    _KNIFE_WIDOWMAKER_ID = 42
+    _KNIFE_GHOST_ID = 42
+    _KNIFE_CANIS_ID = 42
+    _KNIFE_CORD_ID = 42
+    _KNIFE_SKELETON_ID = 42
+    _KNIFE_OUTDOOR_ID = 42
     _KEVLAR_ID = 65
     _ASSAULTSUIT_ID = 66
     _DEFUSER_ID = 67
     _C4_ID = 68
+
+    _SUPPRESSED = ['m4a1', 'mp7', 'hpk2000']
+    _ALT = ['p250']  # maybe revolver?
+
+    @staticmethod
+    def short_wep(item):
+        return item.__name__
