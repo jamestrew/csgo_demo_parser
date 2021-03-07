@@ -134,28 +134,28 @@ def created_players():
     return {
         "Chris P. Bacon (id:3)": {
             "game_id": 1,
-            "xuid": 76561197960512598,
+            "xuid": 1,
             "player_name": "Chris P. Bacon",
             "userID": 3,
             "team_l_id": 1
         },
         "Mike (id:4)": {
             "game_id": 1,
-            "xuid": 76561197964398021,
+            "xuid": 2,
             "player_name": "Mike",
             "userID": 4,
             "team_l_id": 1
         },
         "digga (id:5)": {
             "game_id": 1,
-            "xuid": 76561198133822308,
+            "xuid": 3,
             "player_name": "digga",
             "userID": 5,
             "team_l_id": 2
         },
         "digga (id:12)": {
             "game_id": 1,
-            "xuid": 76561198133822308,
+            "xuid": 3,
             "player_name": "digga",
             "userID": 12,
             "team_l_id": 2
@@ -233,15 +233,15 @@ def new_players_data():
         {"player_spawn": {"userid": "digga (id:12)", "teamnum": "3 "}},
         {
             "weapon_fire": {
-                "userid": 76561197960512598,
+                "userid": 1,
                 "weapon": "weapon_ak47 ",
                 "silenced": "0 "
             }
         },
         {
             "player_hurt": {
-                "userid": 76561197960512598,
-                "attacker": 76561198133822308,
+                "userid": 1,
+                "attacker": 3,
                 "health": "0 ",
                 "armor": "36 ",
                 "weapon": "hkp2000 ",
@@ -252,8 +252,8 @@ def new_players_data():
         },
         {
             "player_death": {
-                "userid": 76561197960512598,
-                "attacker": 76561198133822308,
+                "userid": 1,
+                "attacker": 3,
                 "assister": "0 ",
                 "assistedflash": "0 ",
                 "weapon": "usp_silencer ",
@@ -270,9 +270,9 @@ def new_players_data():
         },
         {
             "player_death": {
-                "userid": 76561197960512598,
-                "attacker": 76561198133822308,
-                "assister": 76561197964398021,
+                "userid": 1,
+                "attacker": 3,
+                "assister": 2,
                 "assistedflash": "0 ",
                 "weapon": "usp_silencer ",
                 "weapon_itemid": "4348835034 ",
@@ -303,7 +303,7 @@ def event_dirty():
         },
         {
             "item_pickup": {
-                "userid": 1234567890,
+                "userid": 12,
                 "item": "glock ",
                 "silent": "0 ",
                 "defindex": "4 "
@@ -311,23 +311,23 @@ def event_dirty():
         },
         {
             "item_remove": {
-                "userid": 1234567890,
+                "userid": 12,
                 "item": "knife ",
                 "defindex": "42 "
             }
         },
         {
             "item_remove": {
-                "userid": 1234567890,
+                "userid": 12,
                 "item": "hkp2000 ",
                 "defindex": "32 "
             }
         },
         {
             "player_death": {
-                "userid": 1234567890,
-                "attacker": 1234567890,
-                "assister": 1234567890,
+                "userid": 12,
+                "attacker": 12,
+                "assister": 12,
                 "assistedflash": "0 ",
                 "weapon": "ak47 ",
                 "weapon_itemid": "19904080205 ",
@@ -347,16 +347,16 @@ def event_dirty():
         },
         {
             "player_blind": {
-                "userid": 1234567890,
-                "attacker": 1234567890,
+                "userid": 12,
+                "attacker": 12,
                 "entityid": "363 ",
                 "blind_duration": "3.031657 "
             }
         },
         {
             "player_hurt": {
-                "userid": 1234567890,
-                "attacker": 1234567890,
+                "userid": 12,
+                "attacker": 12,
                 "health": "0 ",
                 "armor": "95 ",
                 "weapon": "glock ",
@@ -366,13 +366,13 @@ def event_dirty():
             }
         }, {
             "player_falldamage": {
-                "userid": 1234567890,
+                "userid": 12,
                 "damage": "0.297619 "
             }
         },
         {
             "round_mvp": {
-                "userid": 1234567890,
+                "userid": 12,
                 "reason": "1 ",
                 "value": "0 ",
                 "musickitmvps": "0 ",
@@ -391,14 +391,14 @@ def event_dirty():
         },
         {
             "weapon_fire": {
-                "userid": 1234567890,
+                "userid": 12,
                 "weapon": "weapon_glock ",
                 "silenced": "0 "
             }
         },
         {
             "item_equip": {
-                "userid": 1234567890,
+                "userid": 12,
                 "item": "knife ",
                 "defindex": "522 ",
                 "canzoom": "0 ",
@@ -411,14 +411,14 @@ def event_dirty():
         },
         {
             "item_remove": {
-                "userid": 1234567890,
+                "userid": 12,
                 "item": "glock ",
                 "defindex": "4 "
             }
         },
         {
             "item_pickup": {
-                "userid": 1234567890,
+                "userid": 12,
                 "item": "hkp2000 ",
                 "silent": "0 ",
                 "defindex": "32 "
@@ -431,8 +431,8 @@ def event_dirty():
                 "objective": "BOMB TARGET "
             }
         },
-        {"bomb_planted": {"userid": 1234567890, "site": "301 "}},
-        {"bomb_defused": {"userid": 1234567890, "site": "301 "}},
+        {"bomb_planted": {"userid": 12, "site": "301 "}},
+        {"bomb_defused": {"userid": 12, "site": "301 "}},
     ]
 
 
@@ -450,7 +450,7 @@ def event_clean():
         {
             "item_pickup": {
                 "game_id": 1,
-                "player_id": 1234567890,
+                "player_id": 12,
                 "item_id": 6,
                 "silent": False,
                 "event_number": 2,
@@ -460,7 +460,7 @@ def event_clean():
         {
             "item_remove": {
                 "game_id": 1,
-                "player_id": 1234567890,
+                "player_id": 12,
                 "item_id": 1,
                 "event_number": 3,
                 "round": 1
@@ -469,7 +469,7 @@ def event_clean():
         {
             "item_remove": {
                 "game_id": 1,
-                "player_id": 1234567890,
+                "player_id": 12,
                 "item_id": 7,
                 "event_number": 4,
                 "round": 1
@@ -478,9 +478,9 @@ def event_clean():
         {
             "player_death": {
                 "game_id": 1,
-                "player_id": 1234567890,
-                "attacker_id": 1234567890,
-                "assister_id": 1234567890,
+                "player_id": 12,
+                "attacker_id": 12,
+                "assister_id": 12,
                 "assistedflash": False,
                 "item_id": 25,
                 "headshot": True,
@@ -499,8 +499,8 @@ def event_clean():
         {
             "player_blind": {
                 "game_id": 1,
-                "player_id": 1234567890,
-                "attacker_id": 1234567890,
+                "player_id": 12,
+                "attacker_id": 12,
                 "blind_duration": 3.031657,
                 "event_number": 6,
                 "round": 1
@@ -509,8 +509,8 @@ def event_clean():
         {
             "player_hurt": {
                 "game_id": 1,
-                "player_id": 1234567890,
-                "attacker_id": 1234567890,
+                "player_id": 12,
+                "attacker_id": 12,
                 "health": 0,
                 "armor": 95,
                 "item_id": 6,
@@ -523,7 +523,7 @@ def event_clean():
         }, {
             "player_falldamage": {
                 "game_id": 1,
-                "player_id": 1234567890,
+                "player_id": 12,
                 "damage": 0.297619,
                 "event_number": 8,
                 "round": 1
@@ -532,7 +532,7 @@ def event_clean():
         {
             "round_mvp": {
                 "game_id": 1,
-                "player_id": 1234567890,
+                "player_id": 12,
                 "event_number": 9,
                 "round": 1
             }
@@ -550,7 +550,7 @@ def event_clean():
         {
             "weapon_fire": {
                 "game_id": 1,
-                "player_id": 1234567890,
+                "player_id": 12,
                 "item_id": 6,
                 "silenced": False,
                 "event_number": 11,
@@ -560,7 +560,7 @@ def event_clean():
         {
             "item_equip": {
                 "game_id": 1,
-                "player_id": 1234567890,
+                "player_id": 12,
                 "item_id": 1,
                 "event_number": 12,
                 "round": 1
@@ -569,7 +569,7 @@ def event_clean():
         {
             "item_remove": {
                 "game_id": 1,
-                "player_id": 1234567890,
+                "player_id": 12,
                 "event_number": 13,
                 "round": 1
             }
@@ -577,7 +577,7 @@ def event_clean():
         {
             "item_pickup": {
                 "game_id": 1,
-                "player_id": 1234567890,
+                "player_id": 12,
                 "item_id": 7,
                 "silent": False,
                 "event_number": 14,
@@ -592,10 +592,198 @@ def event_clean():
                 "round": 2
             }
         },
-        {"bomb_planted": {"game_id": 1, "player_id": 1234567890, "site": 301,
+        {"bomb_planted": {"game_id": 1, "player_id": 12, "site": 301,
                           "event_number": 16,
                           "round": 2}},
-        {"bomb_defused": {"game_id": 1, "player_id": 1234567890, "site": 301,
+        {"bomb_defused": {"game_id": 1, "player_id": 12, "site": 301,
                           "event_number": 2,
                           "round": 16}},
+    ]
+
+
+@pytest.fixture
+def item_equip_data():
+    return [
+        {
+            "item_equip": {
+                "defindex": "4 ",
+                "canzoom": "0 ",
+                "issilenced": "0 ",
+                "hassilencer": "0 ",
+                "weptype": "1 ",
+                "item": "glock ",
+                "hastracers": "1 ",
+                "userid": 4,
+                "ispainted": "1 "
+            }
+        },
+        {
+            "item_pickup": {
+                "defindex": "4 ",
+                "silent": "1 ",
+                "userid": 4,
+                "item": "glock "
+            }
+        },
+        {
+            "item_equip": {
+                "defindex": "515 ",
+                "canzoom": "0 ",
+                "issilenced": "0 ",
+                "hassilencer": "0 ",
+                "weptype": "0 ",
+                "item": "knife ",
+                "hastracers": "0 ",
+                "userid": 5,
+                "ispainted": "1 "
+            }
+        },
+        {
+            "item_remove": {
+                "defindex": "515 ",
+                "userid": 5,
+                "item": "knife "
+            }
+        },
+        {
+            "item_equip": {
+                "defindex": "61 ",
+                "canzoom": "0 ",
+                "issilenced": "1 ",
+                "hassilencer": "1 ",
+                "weptype": "1 ",
+                "item": "hkp2000 ",
+                "hastracers": "1 ",
+                "userid": 6,
+                "ispainted": "1 "
+            }
+        },
+        {
+            "item_remove": {
+                "defindex": "61 ",
+                "userid": 6,
+                "item": "hkp2000 "
+            }
+        },
+        {
+            "item_equip": {
+                "defindex": "7 ",
+                "canzoom": "0 ",
+                "issilenced": "0 ",
+                "hassilencer": "0 ",
+                "weptype": "3 ",
+                "item": "ak47 ",
+                "hastracers": "1 ",
+                "userid": 7,
+                "ispainted": "0 "
+            }
+        },
+        {
+            "item_pickup": {
+                "defindex": "7 ",
+                "silent": "1 ",
+                "userid": 7,
+                "item": "ak47 "
+            }
+        },
+        {
+            "item_equip": {
+                "defindex": "60 ",
+                "canzoom": "0 ",
+                "issilenced": "1 ",
+                "hassilencer": "1 ",
+                "weptype": "3 ",
+                "item": "m4a1 ",
+                "hastracers": "1 ",
+                "userid": 6,
+                "ispainted": "1 "
+            }
+        },
+        {
+            "item_equip": {
+                "defindex": "16 ",
+                "canzoom": "0 ",
+                "issilenced": "0 ",
+                "hassilencer": "0 ",
+                "weptype": "3 ",
+                "item": "m4a1 ",
+                "hastracers": "1 ",
+                "userid": 3,
+                "ispainted": "0 "
+            }
+        },
+        {
+            "item_equip": {
+                "defindex": "32 ",
+                "canzoom": "0 ",
+                "issilenced": "0 ",
+                "hassilencer": "0 ",
+                "weptype": "1 ",
+                "item": "hkp2000 ",
+                "hastracers": "1 ",
+                "userid": 7,
+                "ispainted": "0 "
+            }
+        },
+        {
+            "item_equip": {
+                "defindex": "99 ",
+                "canzoom": "0 ",
+                "issilenced": "0 ",
+                "hassilencer": "0 ",
+                "weptype": "1 ",
+                "item": "p250 ",
+                "hastracers": "1 ",
+                "userid": 7,
+                "ispainted": "0 "
+            }
+        }
+    ]
+
+
+@pytest.fixture
+def item_equip_data_clean():
+    return [
+        {
+            "item_equip": {
+                "userid": 4,
+                "item_id": 5
+            }
+        },
+        {
+            "item_equip": {
+                "userid": 5,
+                "item_id": 42
+            }
+        },
+        {
+            "item_equip": {
+                "userid": 6,
+                "item_id": 10
+            }
+        },
+        {
+            "item_equip": {
+                "userid": 7,
+                "item_id": 24
+            }
+        },
+        {
+            "item_equip": {
+                "userid": 6,
+                "item_id": 28
+            }
+        },
+        {
+            "item_equip": {
+                "userid": 3,
+                "item_id": 29
+            }
+        },
+        {
+            "item_equip": {
+                "userid": 7,
+                "item_id": 6
+            }
+        }
     ]
