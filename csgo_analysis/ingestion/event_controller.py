@@ -6,8 +6,6 @@ from csgo_analysis.ingestion.models import (
     PlayerFallDamage,
     WeaponFire,
     ItemEquip,
-    ItemPickup,
-    ItemRemove,
     BombDefused,
     BombPlanted,
     RoundEnd,
@@ -26,9 +24,7 @@ class EventsController:
         self.player_hurt = PlayerHurt()
         self.player_falldamage = PlayerFallDamage()
         self.weapon_fire = WeaponFire()
-        self.item_pickup = ItemPickup()
         self.item_equip = ItemEquip()
-        self.item_remove = ItemRemove()
         self.bomb_planted = BombPlanted()
         self.bomb_defused = BombDefused()
         self.round_start = RoundStart()

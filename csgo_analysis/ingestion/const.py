@@ -21,9 +21,7 @@ class EventTypes:
 
     WEAPON_FIRE = 'weapon_fire'
 
-    ITEM_PICKUP = 'item_pickup'
     ITEM_EQUIP = 'item_equip'
-    ITEM_REMOVE = 'item_remove'
 
     BOMB_PLANTED = 'bomb_planted'
     BOMB_DEFUSED = 'bomb_defused'
@@ -35,6 +33,8 @@ class EventTypes:
     _PLAYER_INFO = 'player_info'
     _PLAYER_SPAWN = 'player_spawn'
 
+    PLAYER_CLEANUP = [_PLAYER_INFO, _PLAYER_SPAWN]
+
     PLAYER_EVENTS = [
         PLAYER_DEATH,
         PLAYER_BLIND,
@@ -42,8 +42,6 @@ class EventTypes:
         PLAYER_FALLDAMAGE,
         WEAPON_FIRE,
         ITEM_EQUIP,
-        ITEM_REMOVE,
-        ITEM_PICKUP,
         BOMB_PLANTED,
         BOMB_DEFUSED,
         ROUND_MVP
@@ -53,9 +51,7 @@ class EventTypes:
         PLAYER_DEATH,
         PLAYER_HURT,
         WEAPON_FIRE,
-        ITEM_REMOVE,
         ITEM_EQUIP,
-        ITEM_PICKUP
     ]
 
     ALL_EVENTS = [
@@ -65,8 +61,6 @@ class EventTypes:
         PLAYER_FALLDAMAGE,
         WEAPON_FIRE,
         ITEM_EQUIP,
-        ITEM_REMOVE,
-        ITEM_PICKUP,
         BOMB_PLANTED,
         BOMB_DEFUSED,
         ROUND_MVP,
@@ -81,8 +75,6 @@ class EventTypes:
         PLAYER_FALLDAMAGE,
         WEAPON_FIRE,
         ITEM_EQUIP,
-        ITEM_REMOVE,
-        ITEM_PICKUP,
         BOMB_PLANTED,
         BOMB_DEFUSED,
         ROUND_MVP,
@@ -115,6 +107,8 @@ class EventTypes:
         'smokegrenade_expired',
         'weapon_reload',
         'weapon_zoom',
+        'item_pickup',
+        'item_remove'
     ]
 
 

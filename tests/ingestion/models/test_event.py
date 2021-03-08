@@ -7,8 +7,6 @@ from csgo_analysis.ingestion.models import (  # noqa
     PlayerFallDamage,
     WeaponFire,
     ItemEquip,
-    ItemPickup,
-    ItemRemove,
     BombDefused,
     BombPlanted,
     RoundEnd,

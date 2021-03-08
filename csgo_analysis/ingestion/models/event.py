@@ -234,35 +234,6 @@ class WeaponFire(Event, DB):
     _TABLE_NAME = EventTypes.WEAPON_FIRE
 
 
-class ItemPickup(Event):
-
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _PLAYER_ID = 'player_id'
-    _ITEM_ID = 'item_id'
-    _SILENT = 'silent'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _PLAYER_ID: int,
-        _ITEM_ID: int,
-        _SILENT: DB.custom_bool,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _PLAYER_ID: 'userid',
-        _ITEM_ID: 'item',
-        _SILENT: 'silent'
-    }
-
-    _TABLE_NAME = EventTypes.ITEM_PICKUP
-
-
 class ItemEquip(Event):
 
     _ID = 'id'
@@ -287,32 +258,6 @@ class ItemEquip(Event):
     }
 
     _TABLE_NAME = EventTypes.ITEM_EQUIP
-
-
-class ItemRemove(Event):
-
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _PLAYER_ID = 'player_id'
-    _ITEM_ID = 'item_id'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _PLAYER_ID: int,
-        _ITEM_ID: int,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _PLAYER_ID: 'userid',
-        _ITEM_ID: 'item',
-    }
-
-    _TABLE_NAME = EventTypes.ITEM_REMOVE
 
 
 class BombPlanted(Event):
