@@ -131,14 +131,15 @@ def test_get_player_xuid(player_fullid, output, created_players):
     assert player == output
 
 
-# @patch.object(Player, 'insert_prep')
+# @pytest.mark.data_collection
+# @patch.object(Player, 'insert')
 # def test_pre_event_data_collection(insert_patch, data_json):
 #     import json
 #     import os
+#     insert_patch.side_effect = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 #     p = Player(1, data_json)
 #     output = p.create_players()
-#     insert_patch.assert_called_once()
 
-#     save_path = os.path.join('tests', 'ingestion', 'fixtures', 'pre_event.json')
+#     save_path = os.path.join('tests', 'ingestion', 'fixtures', 'inferno.json')
 #     with open(save_path, 'w') as json_file:
 #         json.dump(output, json_file)
