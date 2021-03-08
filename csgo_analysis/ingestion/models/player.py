@@ -121,12 +121,6 @@ class Player(DBConn, DB):
                 self.xuid_id_dict[row[self._XUID]] = id
             self.userid_id_dict[player_userid] = self.xuid_id_dict[row[self._XUID]]
 
-    def get_player_xuid(self, player):
-        try:
-            return self.players[player][self._XUID]
-        except KeyError:
-            return None
-
     def cleanup(self):
         clean_data = []
         for event in self.data:
