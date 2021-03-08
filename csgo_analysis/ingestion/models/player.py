@@ -5,8 +5,9 @@ from enum import Enum
 
 
 class Team(Enum):
-    TEAM_TWO = 1  # CT first
-    TEAM_THREE = 2  # T first
+    TEAM_TWO = 1
+    TEAM_THREE = 2
+    TEAM_UNKNOWN = 999
 
 
 class Player(DBConn, DB):
@@ -46,6 +47,8 @@ class Player(DBConn, DB):
     def __init__(self, game_id, data):
         super().__init__()
         self.players = {}
+        self.userid_id_dict = {}
+        self.xuid_id_dict = {}
         self.game_id = game_id
         self.data = data
 
@@ -62,15 +65,15 @@ class Player(DBConn, DB):
             event_name = list(event.keys())[0]
             if self._INFO == event_name and event[self._INFO]['guid'] != 'BOT':
                 player_info = event[self._INFO]
-                player = {
+                data = {
                     self._GAME_ID: self.game_id,
-                    self._XUID: int(player_info[self._XUID]),
+                    self._XUID: player_info[self._XUID],
                     self._PLAYER_NAME: player_info[self._NAME],
-                    self._USER_ID: int(player_info[self._USER_ID]),
-                    self._TEAM_L_ID: None
+                    self._TEAM_L_ID: Team.TEAM_UNKNOWN.value
                 }
 
-                self.players[self.get_full_id(player)] = player
+                userid = int(player_info[self._USER_ID])
+                self.players[self.get_full_id(data, userid)] = self.cast_data(data)
 
             if self._SPAWN == event_name:
                 spawn_info = event[self._SPAWN]
@@ -81,45 +84,41 @@ class Player(DBConn, DB):
                 team_id = self.TEAM_L.get(int(spawn_info[self._TEAM_NUM])).value
                 self.players[spawn_info[self._FULL_ID]][self._TEAM_L_ID] = team_id
 
-            if event_name in EventTypes.PLAYER_EVENTS:
-                player = event[event_name][self._FULL_ID].strip()
-                attacker = event[event_name].get(self._ATTACKER)
-                assister = event[event_name].get(self._ASSISTER)
+            self.insert_prep()
 
-                if (player_xuid := self.get_player_xuid(player)):
-                    event[event_name][self._FULL_ID] = player_xuid
+            if event_name in EventTypes.PLAYER_EVENTS:
+                event_data = event[event_name]
+                player = event_data[self._FULL_ID].strip()
+                attacker = event_data.get(self._ATTACKER)
+                assister = event_data.get(self._ASSISTER)
+
+                event_data[self._FULL_ID] = self.userid_id_dict.get(player)
 
                 if attacker is not None:
                     attacker = attacker.strip()
-                    if (attacker_xuid := self.get_player_xuid(attacker)):
-                        event[event_name][self._ATTACKER] = attacker_xuid
+                    event_data[self._ATTACKER] = self.userid_id_dict.get(attacker)
                 if assister is not None:
                     assister = assister.strip()
-                    if (assister_xuid := self.get_player_xuid(assister)):
-                        event[event_name][self._ASSISTER] = assister_xuid
+                    event_data[self._ASSISTER] = self.userid_id_dict.get(assister)
 
-        self.insert_prep()
         return self.data
 
-    def get_full_id(self, player):
+    def get_full_id(self, data, userid):
         ''' Return userid in the original format
             eg. "userid": "Chris P. Bacon (id:3)"
         '''
-        return f'{player.get(self._PLAYER_NAME)} (id:{player.get(self._USER_ID)})'
+        return f'{data.get(self._PLAYER_NAME)} (id:{userid})'
 
     def insert_prep(self):
-        ''' Create list of unqiue player data and call insert to insert player data
-            into db.
-        '''
-        rows = []
-        xuids = []
-        for player in self.players.values():
-            player.pop(self._USER_ID)
-            if player[self._XUID] not in xuids:
-                xuids.append(player[self._XUID])
-                rows.append(self.cast_data(player))
+        ''' Insert each unqiue player into db and create userid - playerid pair. '''
 
-        self.insert(self._TABLE_NAME, rows, True)
+        for player_userid in self.players.keys():
+            row = self.players[player_userid]
+            if row[self._TEAM_L_ID] != Team.TEAM_UNKNOWN and \
+                    row[self._XUID] not in self.xuid_id_dict:
+                id = self.insert(self._TABLE_NAME, row, True)
+                self.xuid_id_dict[row[self._XUID]] = id
+            self.userid_id_dict[player_userid] = self.xuid_id_dict[row[self._XUID]]
 
     def get_player_xuid(self, player):
         try:

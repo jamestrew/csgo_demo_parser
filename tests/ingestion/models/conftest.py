@@ -134,30 +134,26 @@ def created_players():
     return {
         "Chris P. Bacon (id:3)": {
             "game_id": 1,
-            "xuid": 1,
+            "xuid": 76561197960512598,
             "player_name": "Chris P. Bacon",
-            "userID": 3,
             "team_l_id": 1
         },
         "Mike (id:4)": {
             "game_id": 1,
-            "xuid": 2,
+            "xuid": 76561197964398021,
             "player_name": "Mike",
-            "userID": 4,
             "team_l_id": 1
         },
         "digga (id:5)": {
             "game_id": 1,
-            "xuid": 3,
+            "xuid": 76561198133822308,
             "player_name": "digga",
-            "userID": 5,
             "team_l_id": 2
         },
         "digga (id:12)": {
             "game_id": 1,
-            "xuid": 3,
+            "xuid": 76561198133822308,
             "player_name": "digga",
-            "userID": 12,
             "team_l_id": 2
         }
     }
@@ -254,7 +250,7 @@ def new_players_data():
             "player_death": {
                 "userid": 1,
                 "attacker": 3,
-                "assister": "0 ",
+                "assister": None,
                 "assistedflash": "0 ",
                 "weapon": "usp_silencer ",
                 "weapon_itemid": "4348835034 ",
