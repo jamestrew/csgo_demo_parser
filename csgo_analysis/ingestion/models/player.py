@@ -101,6 +101,7 @@ class Player(DBConn, DB):
                     assister = assister.strip()
                     event_data[self._ASSISTER] = self.userid_id_dict.get(assister)
 
+        self.cleanup()
         return self.data
 
     def get_full_id(self, data, userid):
@@ -125,3 +126,12 @@ class Player(DBConn, DB):
             return self.players[player][self._XUID]
         except KeyError:
             return None
+
+    def cleanup(self):
+        clean_data = []
+        for event in self.data:
+            event_name = list(event.keys())[0]
+            if event_name not in EventTypes.PLAYER_CLEANUP:
+                clean_data.append(event)
+
+        self.data = clean_data
