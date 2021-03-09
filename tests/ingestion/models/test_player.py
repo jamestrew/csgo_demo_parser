@@ -118,19 +118,6 @@ def test_insert_prep(insert_patch, created_players, name_id, user_ids):
     assert p.xuid_id_dict == user_ids
 
 
-@pytest.mark.parametrize(
-    'player_fullid, output', [
-        ("Chris P. Bacon (id:3)", 76561197960512598),
-        ("Invalid Player", None)
-    ]
-)
-def test_get_player_xuid(player_fullid, output, created_players):
-    p = Player(1, None)
-    p.players = created_players
-    player = p.get_player_xuid(player_fullid)
-    assert player == output
-
-
 # @pytest.mark.data_collection
 # @patch.object(Player, 'insert')
 # def test_pre_event_data_collection(insert_patch, data_json):
