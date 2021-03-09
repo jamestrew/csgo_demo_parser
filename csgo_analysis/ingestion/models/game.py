@@ -4,7 +4,7 @@ from psycopg2._psycopg import TimestampFromTicks
 
 from csgo_analysis.ingestion.models.db import DB
 from csgo_analysis.ingestion.models.dbconn import DBConn
-from csgo_analysis.ingestion.models.map import MapL
+from csgo_analysis.ingestion.models.map import Map
 
 
 class Game(DBConn, DB):
@@ -38,7 +38,6 @@ class Game(DBConn, DB):
 
     def __init__(self):
         super().__init__()
-        self.map_l = MapL()
         self.recordset = {}
         # team 2 CT start, team 3 T start?
 
@@ -50,7 +49,7 @@ class Game(DBConn, DB):
             self._SHARE_CODE: scode,
             self._MATCH_TIME: epoch_time,
             self._MATCH_DURATION: match_scores.group(3),
-            self._MAP_L_ID: self.map_l.get_map_l_id(map_name),
+            self._MAP_L_ID: Map.get_map_id(map_name),
             self._FINAL_SCORE_TWO: match_scores.group(1),
             self._FINAL_SCORE_THREE: match_scores.group(2)
         }

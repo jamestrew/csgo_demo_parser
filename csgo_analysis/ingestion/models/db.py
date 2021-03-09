@@ -20,3 +20,10 @@ class DB:
     @staticmethod
     def custom_bool(value):
         return bool(int(value))
+
+
+class Lookup:
+
+    def __init__(self, id: int, name: str) -> None:
+        self.id = id
+        self.name = name
