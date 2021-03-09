@@ -1,5 +1,5 @@
 import re
-from csgo_analysis.ingestion.const import Items
+from csgo_analysis.ingestion.models import Items
 
 
 class ItemController:

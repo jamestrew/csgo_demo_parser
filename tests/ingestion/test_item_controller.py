@@ -1,5 +1,5 @@
 import unittest
-from csgo_analysis.ingestion.const import Items
+from csgo_analysis.ingestion.models import Items
 from csgo_analysis.ingestion.item_controller import ItemController
 import pytest
 
