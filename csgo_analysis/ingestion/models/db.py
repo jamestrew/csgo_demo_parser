@@ -27,3 +27,10 @@ class Lookup:
     def __init__(self, id: int, name: str) -> None:
         self.id = id
         self.name = name
+
+
+class ItemLookup(Lookup):
+
+    def __init__(self, id: int, name: str, short_name: str) -> None:
+        super().__init__(id, name)
+        self.short_name = short_name
