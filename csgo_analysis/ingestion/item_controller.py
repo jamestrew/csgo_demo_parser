@@ -1,5 +1,6 @@
 import re
 from csgo_analysis.ingestion.models import Item
+from csgo_analysis.ingestion.const import EventTypes
 
 
 class ItemController:
@@ -9,13 +10,15 @@ class ItemController:
     DEAGLE_DEFINDEX_P = r' item: deagle\s+defindex: (\d+)'
     P250_DEFINDEX_P = r' item: p250\s+defindex: (\d+)'
 
-    def __init__(self, data):
+    def __init__(self, data_txt, data, player_list):
+        self.data_txt = data_txt
         self.data = data
+        self.current_item = {player: None for player in player_list}
 
     def get_model_index(self):
         model_dict = {}
-        deagle_model = re.search(self.DEAGLE_MODEL_P, self.data).group(1)
-        p250_model = re.search(self.P250_MODEL_P, self.data).group(1)
+        deagle_model = re.search(self.DEAGLE_MODEL_P, self.data_txt).group(1)
+        p250_model = re.search(self.P250_MODEL_P, self.data_txt).group(1)
 
         model_dict[int(deagle_model)] = Item.DEAGLE
         model_dict[int(p250_model)] = Item.P250
@@ -23,10 +26,10 @@ class ItemController:
 
     def get_defindex(self):
         def_indices = {}
-        deagle_defindex = re.findall(self.DEAGLE_DEFINDEX_P, self.data)
+        deagle_defindex = re.findall(self.DEAGLE_DEFINDEX_P, self.data_txt)
         def_indices[Item.DEAGLE] = tuple(map(int, deagle_defindex))
 
-        p250_defindex = re.findall(self.P250_DEFINDEX_P, self.data)
+        p250_defindex = re.findall(self.P250_DEFINDEX_P, self.data_txt)
         def_indices[Item.P250] = tuple(map(int, p250_defindex))
         return def_indices
 
@@ -37,7 +40,7 @@ class ItemController:
                 p = r'402, m_iItemDefinitionIndex = $.+?429, m_nModelIndex = (\d+)'
                 p = p.replace('$', str(index))
                 pattern = re.compile(p, re.DOTALL | re.MULTILINE)
-                match = re.search(pattern, self.data)
+                match = re.search(pattern, self.data_txt)
                 if match is None:
                     index_dict[index] = item
                     continue
@@ -56,3 +59,4 @@ class ItemController:
                 index_item_dict[defindex] = self.get_model_index()[modelindex]
 
         return index_item_dict
+

@@ -129,3 +129,7 @@ class Player(DBConn, DB):
                 clean_data.append(event)
 
         self.data = clean_data
+
+    @property
+    def player_list(self):
+        return list(self.xuid_id_dict.values())

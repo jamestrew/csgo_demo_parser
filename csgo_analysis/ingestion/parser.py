@@ -14,6 +14,7 @@ from steam.client import SteamClient
 import definition
 from csgo_analysis.ingestion.models import Game, Player
 from csgo_analysis.ingestion.converter import JsonConverter
+from csgo_analysis.ingestion.item_controller import ItemController
 
 format = '[%(asctime)s] %(levelname)s %(name)s: %(message)s'
 logging.basicConfig(format=format, level=logging.DEBUG)
@@ -88,8 +89,8 @@ class Parser:
         print(sp_output.returncode)
 
         print('Done')
-        self.data_file = open(self.output_path, encoding='ascii', errors='ignore')
-        self.data_txt = self.data_file.read()
+        with open(self.output_path, encoding='ascii', errors='ignore') as data_file:
+            self.data_txt = data_file.read()
 
     def load_game_data(self):
         ''' Ingest game table data from match data and demo into DB'''
@@ -102,7 +103,8 @@ class Parser:
         ''' Convert demo data into json and ingest into DB'''
         self.data = JsonConverter().convert(self.data_txt, self.output_path, True)
         player = Player(self.game_id, self.data)
-        player.create_players()
+        self.data = player.create_players()
+        ItemController(self.data_txt, self.data, player.player_list)
 
     def test(self):
         print('good to go')

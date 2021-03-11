@@ -118,6 +118,13 @@ def test_insert_prep(insert_patch, created_players, name_id, user_ids):
     assert p.xuid_id_dict == user_ids
 
 
+def test_player_list(user_ids):
+    p = Player(None, None)
+    p.xuid_id_dict = user_ids
+
+    assert p.player_list == [1, 2, 3]
+
+
 # @pytest.mark.data_collection
 # @patch.object(Player, 'insert')
 # def test_pre_event_data_collection(insert_patch, data_json):

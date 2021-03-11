@@ -6,11 +6,13 @@ import pytest
 
 @pytest.fixture
 def item_controller(item_data):
-    return ItemController(item_data)
+    return ItemController(item_data, None, [1, 2, 3])
 
 
 def test_item_controller_init(item_controller, item_data):
-    assert item_controller.data == item_data
+    assert item_controller.data_txt == item_data
+    assert item_controller.data is None
+    assert item_controller.current_item == {1: None, 2: None, 3: None}
 
 
 def test_get_model_index(item_controller):
