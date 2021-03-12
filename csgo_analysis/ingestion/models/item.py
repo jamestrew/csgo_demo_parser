@@ -157,16 +157,13 @@ class Item:
     }
 
     SHORT_NAME_L = {
-        CZ75A.short_name: CZ75A,
         DEAGLE.short_name: DEAGLE,
         ELITE.short_name: ELITE,
         FIVESEVEN.short_name: FIVESEVEN,
         GLOCK.short_name: GLOCK,
         HKP2000.short_name: HKP2000,
         P250.short_name: P250,
-        REVOLVER.short_name: REVOLVER,
         TEC9.short_name: TEC9,
-        USP_SILENCER.short_name: USP_SILENCER,
         MAG7.short_name: MAG7,
         NOVA.short_name: NOVA,
         SAWEDOFF.short_name: SAWEDOFF,
@@ -174,7 +171,6 @@ class Item:
         M249.short_name: M249,
         NEGEV.short_name: NEGEV,
         MAC10.short_name: MAC10,
-        MP5SD.short_name: MP5SD,
         MP7.short_name: MP7,
         MP9.short_name: MP9,
         P90.short_name: P90,
@@ -184,7 +180,6 @@ class Item:
         AUG.short_name: AUG,
         FAMAS.short_name: FAMAS,
         GALILAR.short_name: GALILAR,
-        M4A1_SILENCER.short_name: M4A1_SILENCER,
         M4A1.short_name: M4A1,
         SG556.short_name: SG556,
         AWP.short_name: AWP,
@@ -227,6 +222,85 @@ class Item:
         C4.short_name: C4,
     }
 
+    SHORT_WEP_L = {
+        CZ75A.short_wep: CZ75A,
+        DEAGLE.short_wep: DEAGLE,
+        ELITE.short_wep: ELITE,
+        FIVESEVEN.short_wep: FIVESEVEN,
+        GLOCK.short_wep: GLOCK,
+        HKP2000.short_wep: HKP2000,
+        P250.short_wep: P250,
+        REVOLVER.short_wep: REVOLVER,
+        TEC9.short_wep: TEC9,
+        USP_SILENCER.short_wep: USP_SILENCER,
+        MAG7.short_wep: MAG7,
+        NOVA.short_wep: NOVA,
+        SAWEDOFF.short_wep: SAWEDOFF,
+        XM1014.short_wep: XM1014,
+        M249.short_wep: M249,
+        NEGEV.short_wep: NEGEV,
+        MAC10.short_wep: MAC10,
+        MP5SD.short_wep: MP5SD,
+        MP7.short_wep: MP7,
+        MP9.short_wep: MP9,
+        P90.short_wep: P90,
+        BIZON.short_wep: BIZON,
+        UMP45.short_wep: UMP45,
+        AK47.short_wep: AK47,
+        AUG.short_wep: AUG,
+        FAMAS.short_wep: FAMAS,
+        GALILAR.short_wep: GALILAR,
+        M4A1_SILENCER.short_wep: M4A1_SILENCER,
+        M4A1.short_wep: M4A1,
+        SG556.short_wep: SG556,
+        AWP.short_wep: AWP,
+        G3SG1.short_wep: G3SG1,
+        SCAR20.short_wep: SCAR20,
+        SSG08.short_wep: SSG08,
+        TASER.short_wep: TASER,
+        HEGRENADE.short_wep: HEGRENADE,
+        FLASHBANG.short_wep: FLASHBANG,
+        SMOKEGRENADE.short_wep: SMOKEGRENADE,
+        INCGRENADE.short_wep: INCGRENADE,
+        MOLOTOV.short_wep: MOLOTOV,
+        DECOY.short_wep: DECOY,
+        KNIFE.short_wep: KNIFE,
+        KNIFE_T.short_wep: KNIFE_T,
+        KNIFEGG.short_wep: KNIFEGG,
+        KNIFE_CSS.short_wep: KNIFE_CSS,
+        BAYONET.short_wep: BAYONET,
+        KNIFE_FLIP.short_wep: KNIFE_FLIP,
+        KNIFE_GUT.short_wep: KNIFE_GUT,
+        KNIFE_KARAMBIT.short_wep: KNIFE_KARAMBIT,
+        KNIFE_M9_BAYONET.short_wep: KNIFE_M9_BAYONET,
+        KNIFE_TACTICAL.short_wep: KNIFE_TACTICAL,
+        KNIFE_BUTTERFLY.short_wep: KNIFE_BUTTERFLY,
+        KNIFE_FALCHION.short_wep: KNIFE_FALCHION,
+        KNIFE_PUSH.short_wep: KNIFE_PUSH,
+        KNIFE_SURVIVAL.short_wep: KNIFE_SURVIVAL,
+        KNIFE_URSUS.short_wep: KNIFE_URSUS,
+        KNIFE_GYPSY_JACKKNIFE.short_wep: KNIFE_GYPSY_JACKKNIFE,
+        KNIFE_STILETTO.short_wep: KNIFE_STILETTO,
+        KNIFE_WIDOWMAKER.short_wep: KNIFE_WIDOWMAKER,
+        KNIFE_GHOST.short_wep: KNIFE_GHOST,
+        KNIFE_CANIS.short_wep: KNIFE_CANIS,
+        KNIFE_CORD.short_wep: KNIFE_CORD,
+        KNIFE_SKELETON.short_wep: KNIFE_SKELETON,
+        KNIFE_OUTDOOR.short_wep: KNIFE_OUTDOOR,
+        KEVLAR.short_wep: KEVLAR,
+        ASSAULTSUIT.short_wep: ASSAULTSUIT,
+        DEFUSER.short_wep: DEFUSER,
+        C4.short_wep: C4
+    }
+
+    ALT_WEAPONS = [P250.short_name, DEAGLE.short_name]
+    SUPP_WEAPONS = [HKP2000.short_name, M4A1.short_name, MP7.short_name]
+    SUPP_WEAPONS_L = {
+        HKP2000.short_name: USP_SILENCER,
+        M4A1.short_name: M4A1_SILENCER,
+        MP7.short_name: MP5SD
+    }
+
     @classmethod
     def get_id_with_name(cls, item_name):
         return cls.NAME_L.get(item_name).id
@@ -234,3 +308,11 @@ class Item:
     @classmethod
     def get_id_with_short_name(cls, item_short_name):
         return cls.SHORT_NAME_L.get(item_short_name).id
+
+    @classmethod
+    def get_id_with_short_wep(cls, short_wep):
+        return cls.SHORT_WEP_L.get(short_wep).id
+
+    @classmethod
+    def get_suppressed_weapon(cls, short_name):
+        return cls.SUPP_WEAPONS_L.get(short_name).id
