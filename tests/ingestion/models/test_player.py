@@ -47,7 +47,7 @@ def test_get_userid(player_info):
     p = Player(game_id=1, data='')
     player = player_info.get(11)
 
-    player_id = p.get_full_id(player, 11)
+    player_id = p._get_full_id(player, 11)
     assert player_id == 'paper girlfriend (id:11)'
 
 
@@ -75,7 +75,7 @@ def test_get_full_id():
         "player_name": "Chris P. Bacon",
         "team_l_id": 1
     }
-    full_id = p.get_full_id(player, 3)
+    full_id = p._get_full_id(player, 3)
     assert full_id == "Chris P. Bacon (id:3)"
 
 
@@ -86,7 +86,7 @@ def test_insert_prep(insert_patch, created_players, name_id, user_ids):
     created_players['digga (id:12)']['team_l_id'] = 999  # unknown
     p.players = created_players
 
-    p.insert_prep()
+    p._insert_prep()
     fields = [
         {
             'game_id': 1,

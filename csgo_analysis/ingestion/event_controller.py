@@ -19,17 +19,17 @@ class EventsController:
     def __init__(self, game_id, data, player_xuids):
         self.game_id = game_id
         self.data = data
-        self.player_blind = PlayerBlind()
-        self.player_death = PlayerDeath()
-        self.player_hurt = PlayerHurt()
-        self.player_falldamage = PlayerFallDamage()
-        self.weapon_fire = WeaponFire()
-        self.item_equip = ItemEquip()
-        self.bomb_planted = BombPlanted()
-        self.bomb_defused = BombDefused()
-        self.round_start = RoundStart()
-        self.round_end = RoundEnd()
-        self.round_mvp = RoundMVP()
+        self._player_blind = PlayerBlind()
+        self._player_death = PlayerDeath()
+        self._player_hurt = PlayerHurt()
+        self._player_falldamage = PlayerFallDamage()
+        self._weapon_fire = WeaponFire()
+        self._item_equip = ItemEquip()
+        self._bomb_planted = BombPlanted()
+        self._bomb_defused = BombDefused()
+        self._round_start = RoundStart()
+        self._round_end = RoundEnd()
+        self._round_mvp = RoundMVP()
         self.clean_data = []
         self.player_equip_state = {}
 
@@ -51,6 +51,6 @@ class EventsController:
                 round_cnt += 1
 
             data = event[event_name]
-            event_class = getattr(self, event_name)
+            event_class = getattr(self, '_' + event_name)
             data = event_class.build_event(self.game_id, data, event_cnt, round_cnt)
             self.clean_data.append(data)

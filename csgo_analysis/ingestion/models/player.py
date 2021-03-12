@@ -73,7 +73,7 @@ class Player(DBConn, DB):
                 }
 
                 userid = int(player_info[self._USER_ID])
-                self.players[self.get_full_id(data, userid)] = self.cast_data(data)
+                self.players[self._get_full_id(data, userid)] = self.cast_data(data)
 
             if self._SPAWN == event_name:
                 spawn_info = event[self._SPAWN]
@@ -84,7 +84,7 @@ class Player(DBConn, DB):
                 team_id = self.TEAM_L.get(int(spawn_info[self._TEAM_NUM])).value
                 self.players[spawn_info[self._FULL_ID]][self._TEAM_L_ID] = team_id
 
-            self.insert_prep()
+            self._insert_prep()
 
             if event_name in EventTypes.PLAYER_EVENTS:
                 event_data = event[event_name]
@@ -101,16 +101,16 @@ class Player(DBConn, DB):
                     assister = assister.strip()
                     event_data[self._ASSISTER] = self.userid_id_dict.get(assister)
 
-        self.cleanup()
+        self._cleanup()
         return self.data
 
-    def get_full_id(self, data, userid):
+    def _get_full_id(self, data, userid):
         ''' Return userid in the original format
             eg. "userid": "Chris P. Bacon (id:3)"
         '''
         return f'{data.get(self._PLAYER_NAME)} (id:{userid})'
 
-    def insert_prep(self):
+    def _insert_prep(self):
         ''' Insert each unqiue player into db and create userid - playerid pair. '''
 
         for player_userid in self.players.keys():
@@ -121,7 +121,7 @@ class Player(DBConn, DB):
                 self.xuid_id_dict[row[self._XUID]] = id
             self.userid_id_dict[player_userid] = self.xuid_id_dict[row[self._XUID]]
 
-    def cleanup(self):
+    def _cleanup(self):
         clean_data = []
         for event in self.data:
             event_name = list(event.keys())[0]
