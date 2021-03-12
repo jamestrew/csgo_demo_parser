@@ -23,7 +23,7 @@ class ItemController:
         self.data = data
         self.current_item = {player: None for player in player_list}
 
-    def get_model_index(self):
+    def _get_model_index(self):
         model_dict = {}
         deagle_model = re.search(self.DEAGLE_MODEL_P, self.data_txt).group(1)
         p250_model = re.search(self.P250_MODEL_P, self.data_txt).group(1)
@@ -32,7 +32,7 @@ class ItemController:
         model_dict[int(p250_model)] = Item.P250
         return model_dict
 
-    def get_defindex(self):
+    def _get_defindex(self):
         def_indices = {}
         deagle_defindex = re.findall(self.DEAGLE_DEFINDEX_P, self.data_txt)
         def_indices[Item.DEAGLE] = tuple(map(int, deagle_defindex))
@@ -41,9 +41,9 @@ class ItemController:
         def_indices[Item.P250] = tuple(map(int, p250_defindex))
         return def_indices
 
-    def get_def_model_index(self):
+    def _get_def_model_index(self):
         index_dict = {}
-        for item, indices in self.get_defindex().items():
+        for item, indices in self._get_defindex().items():
             for index in indices:
                 p = r'402, m_iItemDefinitionIndex = $.+?429, m_nModelIndex = (\d+)'
                 p = p.replace('$', str(index))
@@ -56,10 +56,10 @@ class ItemController:
 
         return index_dict
 
-    def get_def_index_ids(self):
+    def _get_def_index_ids(self):
         index_item_dict = {}
-        model_index = self.get_model_index()
-        for defindex, modelindex in self.get_def_model_index().items():
+        model_index = self._get_model_index()
+        for defindex, modelindex in self._get_def_model_index().items():
             if modelindex == Item.DEAGLE:
                 index_item_dict[defindex] = Item.REVOLVER
             elif modelindex == Item.P250:
@@ -70,7 +70,7 @@ class ItemController:
         return index_item_dict
 
     def sub_item_id(self):
-        def_index_ids = self.get_def_index_ids()
+        def_index_ids = self._get_def_index_ids()
 
         for event in self.data:
             event_name = list(event.keys())[0]
@@ -81,20 +81,20 @@ class ItemController:
                 continue
 
             if event_name == EventTypes.ITEM_EQUIP:
-                item_id = self.get_equip_id(event_data, def_index_ids)
+                item_id = self._get_equip_id(event_data, def_index_ids)
                 userid = event_data[self.USER_ID]
                 event_data[self.ITEM_ID] = item_id
                 self.current_item[userid] = item_id
                 event_data.pop(self.ITEM)
 
             elif event_name == EventTypes.PLAYER_DEATH:
-                attack_item_id, user_item_id = self.get_player_death_id(event_data)
+                attack_item_id, user_item_id = self._get_player_death_id(event_data)
                 event_data.pop(self.WEAPON)
                 event_data[self.ITEM_ID] = attack_item_id
                 event_data['player_item_id'] = user_item_id
 
             elif event_name == EventTypes.WEAPON_FIRE:
-                item_id = self.get_weapon_fire_id(event_data)
+                item_id = self._get_weapon_fire_id(event_data)
                 event_data.pop(self.WEAPON)
                 event_data[self.ITEM_ID] = item_id
 
@@ -105,7 +105,7 @@ class ItemController:
 
         return self.data
 
-    def get_equip_id(self, event_data, def_index_ids):
+    def _get_equip_id(self, event_data, def_index_ids):
         item_name = event_data[self.ITEM].strip()
         defindex = int(event_data[self.DEFINDEX])
 
@@ -119,7 +119,7 @@ class ItemController:
 
         return item_id
 
-    def get_player_death_id(self, event_data):
+    def _get_player_death_id(self, event_data):
         attack_item_name = event_data[self.WEAPON].strip()
         userid = event_data[self.USER_ID]
         attack_item_id = Item.get_id_with_short_wep(attack_item_name)
@@ -127,7 +127,7 @@ class ItemController:
 
         return attack_item_id, user_item_id
 
-    def get_weapon_fire_id(self, event_data):
+    def _get_weapon_fire_id(self, event_data):
         item_name = event_data[self.WEAPON].strip()
         return Item.get_id_with_name(item_name)
 

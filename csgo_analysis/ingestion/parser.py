@@ -15,6 +15,7 @@ import definition
 from csgo_analysis.ingestion.models import Game, Player
 from csgo_analysis.ingestion.converter import JsonConverter
 from csgo_analysis.ingestion.item_controller import ItemController
+from csgo_analysis.ingestion.event_controller import EventsController
 
 format = '[%(asctime)s] %(levelname)s %(name)s: %(message)s'
 logging.basicConfig(format=format, level=logging.DEBUG)
@@ -101,10 +102,13 @@ class Parser:
 
     def load_all_data(self):
         ''' Convert demo data into json and ingest into DB'''
-        self.data = JsonConverter().convert(self.data_txt, self.output_path, True)
+        self.data = JsonConverter.convert(self.data_txt, self.output_path, True)
         player = Player(self.game_id, self.data)
         self.data = player.create_players()
-        ItemController(self.data_txt, self.data, player.player_list)
+        item_con = ItemController(self.data_txt, self.data, player.player_list)
+        self.data = item_con.sub_item_id()
+        events_con = EventsController(self.game_id, self.data, player.player_list)
+        events_con.ingest_data()
 
     def test(self):
         print('good to go')

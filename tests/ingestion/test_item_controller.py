@@ -1,6 +1,5 @@
 from unittest.mock import patch
 import unittest
-import unittest
 from csgo_analysis.ingestion.models import Item
 from csgo_analysis.ingestion.item_controller import ItemController
 import pytest
@@ -18,25 +17,25 @@ def test_item_controller_init(item_controller, item_data):
 
 
 def test_get_model_index(item_controller):
-    model_dict = item_controller.get_model_index()
+    model_dict = item_controller._get_model_index()
     data = {444: Item.DEAGLE, 657: Item.P250}
     unittest.TestCase.assertCountEqual(None, model_dict, data)
 
 
 def test_get_defindex(item_controller):
-    def_indices = item_controller.get_defindex()
+    def_indices = item_controller._get_defindex()
     data = {Item.DEAGLE: (1, 64), Item.P250: (36, 63)}
     unittest.TestCase.assertCountEqual(None, def_indices, data)
 
 
 def test_get_def_model_index(item_controller):
-    index_dict = item_controller.get_def_model_index()
+    index_dict = item_controller._get_def_model_index()
     data = {1: 444, 64: Item.DEAGLE, 63: Item.P250, 36: 657}
     unittest.TestCase.assertCountEqual(None, index_dict, data)
 
 
 def test_get_def_index_ids(item_controller):
-    output = item_controller.get_def_index_ids()
+    output = item_controller._get_def_index_ids()
     data = {
         1: Item.DEAGLE,
         64: Item.REVOLVER,
@@ -46,7 +45,7 @@ def test_get_def_index_ids(item_controller):
     unittest.TestCase.assertCountEqual(None, output, data)
 
 
-@patch.object(ItemController, 'get_def_index_ids')
+@patch.object(ItemController, '_get_def_index_ids')
 def test_sub_item_id(get_def_index_ids_patch, weapons_data, weapons_data_clean):
     get_def_index_ids_patch.return_value = {999: Item.P250, 64: Item.CZ75A}
     ic = ItemController(None, weapons_data, [1, 2, 3, 4, 5, 8, 9])
