@@ -81,42 +81,56 @@ class ItemController:
                 continue
 
             if event_name == EventTypes.ITEM_EQUIP:
-                item_name = event_data[self.ITEM].strip()
-                defindex = int(event_data[self.DEFINDEX])
+                item_id = self.get_equip_id(event_data, def_index_ids)
                 userid = event_data[self.USER_ID]
-
-                item_id = Item.get_id_with_short_name(item_name)
-                if item_name in Item.ALT_WEAPONS:
-                    item_id = def_index_ids.get(defindex).id
-                elif item_name in Item.SUPP_WEAPONS:
-                    suppressed = DB.custom_bool(event_data[self.HASSILENCER])
-                    if suppressed:
-                        item_id = Item.get_suppressed_weapon(item_name)
-
-                event_data.pop(self.ITEM)
                 event_data[self.ITEM_ID] = item_id
                 self.current_item[userid] = item_id
+                event_data.pop(self.ITEM)
 
             elif event_name == EventTypes.PLAYER_DEATH:
-                attack_item_name = event_data[self.WEAPON].strip()
-                userid = event_data[self.USER_ID]
-                attack_item_id = Item.get_id_with_short_wep(attack_item_name)
-                user_item_id = self.current_item.get(userid)
-
+                attack_item_id, user_item_id = self.get_player_death_id(event_data)
                 event_data.pop(self.WEAPON)
                 event_data[self.ITEM_ID] = attack_item_id
                 event_data['user_item_id'] = user_item_id
 
             elif event_name == EventTypes.WEAPON_FIRE:
-                item_name = event_data[self.WEAPON].strip()
-                item_id = Item.get_id_with_name(item_name)
+                item_id = self.get_weapon_fire_id(event_data)
                 event_data.pop(self.WEAPON)
                 event_data[self.ITEM_ID] = item_id
 
             elif event_name == EventTypes.PLAYER_HURT:
-                userid = event_data[self.USER_ID]
-                item_id = self.current_item.get(userid)
+                item_id = self.get_player_hurt_id(event_data)
                 event_data.pop(self.WEAPON)
                 event_data[self.ITEM_ID] = item_id
 
         return self.data
+
+    def get_equip_id(self, event_data, def_index_ids):
+        item_name = event_data[self.ITEM].strip()
+        defindex = int(event_data[self.DEFINDEX])
+
+        item_id = Item.get_id_with_short_name(item_name)
+        if item_name in Item.ALT_WEAPONS:
+            item_id = def_index_ids.get(defindex).id
+        elif item_name in Item.SUPP_WEAPONS:
+            suppressed = DB.custom_bool(event_data[self.HASSILENCER])
+            if suppressed:
+                item_id = Item.get_suppressed_weapon(item_name)
+
+        return item_id
+
+    def get_player_death_id(self, event_data):
+        attack_item_name = event_data[self.WEAPON].strip()
+        userid = event_data[self.USER_ID]
+        attack_item_id = Item.get_id_with_short_wep(attack_item_name)
+        user_item_id = self.current_item.get(userid)
+
+        return attack_item_id, user_item_id
+
+    def get_weapon_fire_id(self, event_data):
+        item_name = event_data[self.WEAPON].strip()
+        return Item.get_id_with_name(item_name)
+
+    def get_player_hurt_id(self, event_data):
+        userid = event_data[self.USER_ID]
+        return self.current_item.get(userid)
