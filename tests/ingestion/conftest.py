@@ -74,3 +74,19 @@ def item_data(fixture_path):
     with open(path) as txt:
         data = txt.read()
     return data
+
+
+@pytest.fixture
+def weapons_data(fixture_path):
+    path = os.path.join(fixture_path, 'weapons.json')
+    with open(path) as jf:
+        data = json.load(jf)
+    return data
+
+
+@pytest.fixture
+def weapons_data_clean(fixture_path):
+    path = os.path.join(fixture_path, 'weapons_clean.json')
+    with open(path) as jf:
+        data = json.load(jf)
+    return data

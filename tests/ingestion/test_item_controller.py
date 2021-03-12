@@ -1,3 +1,5 @@
+from unittest.mock import patch
+import unittest
 import unittest
 from csgo_analysis.ingestion.models import Item
 from csgo_analysis.ingestion.item_controller import ItemController
@@ -42,3 +44,14 @@ def test_get_def_index_ids(item_controller):
         36: Item.P250
     }
     unittest.TestCase.assertCountEqual(None, output, data)
+
+
+@patch.object(ItemController, 'get_def_index_ids')
+def test_sub_item_id(get_def_index_ids_patch, weapons_data, weapons_data_clean):
+    get_def_index_ids_patch.return_value = {999: Item.P250, 64: Item.CZ75A}
+    ic = ItemController(None, weapons_data, [1, 2, 3, 4, 5, 8, 9])
+
+    output = ic.sub_item_id()
+    items = {1: 42, 4: 42, 3: 10, 2: 10, 5: 10, 9: 5, 8: 1}
+    assert output == weapons_data_clean
+    unittest.TestCase.assertCountEqual(None, ic.current_item, items)
