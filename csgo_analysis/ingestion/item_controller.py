@@ -91,7 +91,7 @@ class ItemController:
                 attack_item_id, user_item_id = self.get_player_death_id(event_data)
                 event_data.pop(self.WEAPON)
                 event_data[self.ITEM_ID] = attack_item_id
-                event_data['user_item_id'] = user_item_id
+                event_data['player_item_id'] = user_item_id
 
             elif event_name == EventTypes.WEAPON_FIRE:
                 item_id = self.get_weapon_fire_id(event_data)
