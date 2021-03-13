@@ -1,0 +1,131 @@
+[
+	{
+        "player_death": {
+            "game_id": 1,
+            "item_id": 26,
+            "player_item_id": 17,
+            "distance": 12.206310,
+            "penetrated": false,
+            "assistedflash": false,
+            "wipe": false,
+            "attacker_id": 8,
+            "assister_id": null,
+            "dominated": false,
+            "attackerblind": false,
+            "noscope": false,
+            "thrusmoke": false,
+            "headshot": true,
+            "revenge": false,
+            "player_id": 4,
+            "team": "CT",
+            "event_number": 1,
+            "round": 0
+        }
+    },
+    {
+        "player_blind": {
+            "game_id": 1,
+            "blind_duration": 2.782995,
+            "player_id": 8,
+            "attacker_id": 4,
+            "team": "CT",
+            "event_number": 2,
+            "round": 0
+        }
+    },
+    {
+        "player_hurt": {
+            "game_id": 1,
+            "item_id": 6,
+            "dmg_health": 8,
+            "armor": 95,
+            "health": 21,
+            "dmg_armor": 4,
+            "hitgroup": 2,
+            "player_id": 5,
+            "attacker_id": 6,
+            "team": "CT",
+            "event_number": 3,
+            "round": 0
+        }
+    },
+    {
+        "player_falldamage": {
+            "game_id": 1,
+            "player_id": 6,
+            "damage": 0.297619,
+            "team": "CT",
+            "event_number": 4,
+            "round": 0
+        }
+    },
+    {
+        "weapon_fire": {
+            "game_id": 1,
+            "item_id": 28,
+            "silenced": true,
+            "player_id": 8,
+            "team": "CT",
+            "event_number": 5,
+            "round": 0
+        }
+    },
+    {
+        "item_equip": {
+            "game_id": 1,
+            "player_id": 2,
+            "item_id": 42,
+            "team": "CT",
+            "event_number": 6,
+            "round": 0
+        }
+    },
+    {
+        "bomb_planted": {
+            "game_id": 1,
+            "site": 301,
+            "player_id": 4,
+            "team": "CT",
+            "event_number": 7,
+            "round": 0
+        }
+    },
+    {
+        "bomb_defused": {
+            "game_id": 1,
+            "site": 302,
+            "player_id": 1,
+            "team": "CT",
+            "event_number": 8,
+            "round": 0
+        }
+    },
+    {
+        "round_mvp": {
+            "game_id": 1,
+            "reason": 3,
+            "player_id": 1,
+            "team": "CT",
+            "event_number": 9,
+            "round": 0
+        }
+    },
+    {
+        "round_start": {
+            "game_id": 1,
+            "timelimit": 999,
+            "event_number": 10,
+            "round": 1
+        }
+    },
+    {
+        "round_end": {
+            "game_id": 1,
+            "reason": 9,
+            "message": "#SFUI_Notice_Terrorists_Win",
+            "team_l_id": 2,
+            "event_number": 11,
+            "round": 1
+        }
+    }
+]

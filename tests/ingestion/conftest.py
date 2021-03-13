@@ -90,3 +90,19 @@ def weapons_data_clean(fixture_path):
     with open(path) as jf:
         data = json.load(jf)
     return data
+
+
+@pytest.fixture
+def events(fixture_path):
+    path = os.path.join(fixture_path, 'events.json')
+    with open(path) as jf:
+        data = json.load(jf)
+    return data
+
+
+@pytest.fixture
+def events_clean(fixture_path):
+    path = os.path.join(fixture_path, 'events_clean.json')
+    with open(path) as jf:
+        data = json.load(jf)
+    return data

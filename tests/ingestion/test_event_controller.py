@@ -12,8 +12,8 @@ from unittest.mock import patch
 def test_player_equip_init():
     player_xuids = [1, 2, 3, 4, 5]
     ec = EventsController(1, None, player_xuids)
-    assert ec.player_equip_state == {
-        1: None, 2: None, 3: None, 4: None, 5: None
+    assert ec.player_health == {
+        1: 100, 2: 100, 3: 100, 4: 100, 5: 100
     }
 
 
@@ -22,7 +22,7 @@ def test_event_class_calling(build_patch):
     data = [
         {
             "item_equip": {
-                "userid": 76561198133822308,
+                "userid": 1,
                 "item": "knife ",
                 "defindex": "508 ",
                 "canzoom": "0 ",
@@ -54,3 +54,9 @@ def test_event_class_calling(build_patch):
     ec.ingest_data()
 
     build_patch.assert_called_once_with(1, event_data, 1, 0)
+
+
+def test_event_clean_data(events, events_clean):
+    ec = EventsController(1, events, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    ec.ingest_data()
+    assert ec.clean_data == events_clean

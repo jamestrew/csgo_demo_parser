@@ -16,7 +16,7 @@ from csgo_analysis.ingestion.models import (
 
 class EventsController:
 
-    def __init__(self, game_id, data, player_xuids):
+    def __init__(self, game_id, data, player_list):
         self.game_id = game_id
         self.data = data
         self._player_blind = PlayerBlind()
@@ -31,10 +31,8 @@ class EventsController:
         self._round_end = RoundEnd()
         self._round_mvp = RoundMVP()
         self.clean_data = []
-        self.player_equip_state = {}
 
-        for xuid in player_xuids:
-            self.player_equip_state[xuid] = None
+        self.player_health = {player: 100 for player in player_list}
 
     def ingest_data(self):
         round_cnt = 0
@@ -42,6 +40,7 @@ class EventsController:
         for event in self.data:
             event_name = list(event.keys())[0]
             event_data = event[event_name]
+
             if 'userid' in event_data.keys() and \
                     isinstance(event_data['userid'], str):
                 continue
@@ -53,4 +52,4 @@ class EventsController:
             data = event[event_name]
             event_class = getattr(self, '_' + event_name)
             data = event_class.build_event(self.game_id, data, event_cnt, round_cnt)
-            self.clean_data.append(data)
+            self.clean_data.append({event_class._TABLE_NAME: data})

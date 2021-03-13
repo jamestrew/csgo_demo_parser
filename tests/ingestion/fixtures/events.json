@@ -1,0 +1,118 @@
+[
+	{
+        "player_death": {
+            "item_id": 26,
+            "player_item_id": 17,
+            "distance": "12.206310 ",
+            "penetrated": "0 ",
+            "assistedflash": "0 ",
+            "wipe": "0 ",
+            "attacker": 8,
+            "weapon_fauxitemid": "17293822569119744010 ",
+            "assister": null,
+            "dominated": "0 ",
+            "weapon_originalowner_xuid": "76561198133822308 ",
+            "attackerblind": "0 ",
+            "weapon_itemid": "963864360 ",
+            "noscope": "0 ",
+            "noreplay": "0 ",
+            "thrusmoke": "0 ",
+            "headshot": "1 ",
+            "revenge": "0 ",
+            "userid": 4,
+            "team": "CT "
+        }
+    },
+    {
+        "player_blind": {
+            "entityid": "363 ",
+            "blind_duration": "2.782995 ",
+            "userid": 8,
+            "attacker": 4,
+            "team": "CT "
+        }
+    },
+    {
+        "player_hurt": {
+            "item_id": 6,
+            "dmg_health": "8 ",
+            "armor": "95 ",
+            "health": "21 ",
+            "dmg_armor": "4 ",
+            "hitgroup": "2 ",
+            "userid": 5,
+            "attacker": 6,
+            "team": "CT "
+        }
+    },
+    {
+        "player_falldamage": {
+            "userid": 6,
+            "damage": "0.297619 ",
+            "team": "CT "
+        }
+    },
+    {
+        "weapon_fire": {
+            "item_id": 28,
+            "silenced": "1 ",
+            "userid": 8,
+            "team": "CT "
+        }
+    },
+    {
+        "item_equip": {
+            "canzoom": "0 ",
+            "userid": 2,
+            "hastracers": "0 ",
+            "issilenced": "0 ",
+            "ispainted": "1 ",
+            "weptype": "0 ",
+            "defindex": "515 ",
+            "hassilencer": "0 ",
+            "item_id": 42,
+            "team": "CT "
+        }
+    },
+    {
+        "bomb_planted": {
+            "site": "301 ",
+            "userid": 4,
+            "team": "CT "
+        }
+    },
+    {
+        "bomb_defused": {
+            "site": "302 ",
+            "userid": 1,
+            "team": "CT "
+        }
+    },
+    {
+        "round_mvp": {
+            "nomusic": "0 ",
+            "value": "0 ",
+            "musickitmvps": "0 ",
+            "reason": "3 ",
+            "userid": 1,
+            "team": "CT "
+        }
+    },
+    {
+        "round_start": {
+            "fraglimit": "0 ",
+            "objective": "BOMB TARGET ",
+            "timelimit": "999 "
+        }
+    },
+    {
+        "round_end": {
+            "nomusic": "0 ",
+            "player_count": "10 ",
+            "reason": "9 ",
+            "legacy": "0 ",
+            "message": "#SFUI_Notice_Terrorists_Win ",
+            "winner": "2 "
+        }
+    }
+]
