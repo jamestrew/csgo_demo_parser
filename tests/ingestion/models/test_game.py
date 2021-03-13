@@ -61,15 +61,16 @@ def test_game_ingestion_insert(connect_patch, close_patch, db_cur, db_conn, raw_
 @pytest.mark.ingestion  # noqa
 @patch.object(Game, 'connect')
 @patch.object(Game, 'close')
-def test_game_ingestion_duplicate(db_cur, db_conn, raw_match_txt):
+def test_game_ingestion_duplicate(connect_patch, close_patch, db_cur, db_conn, raw_match_txt):
+    insert_str = "INSERT INTO game (share_code, match_time, match_duration, map_l_id, final_score_two, final_score_three) VALUES (%s, %s, %s, %s, %s, %s)"
+    val = ['CSGO-xQKYC-4Nbc4-h43V2-Jc66v-EWtrX', TimestampFromTicks(1613364114), 2319, 1, 10, 16]
+
     scode = 'CSGO-xQKYC-4Nbc4-h43V2-Jc66v-EWtrX'
     g1 = Game()
     g1.cur = db_cur
     g1.conn = db_conn
     g1.ingest_data(raw_match_txt, scode, 'de_dust2')
+    print(g1.cur, g1.conn)
 
-    g2 = Game()
-    g2.cur = db_cur
-    g2.conn = db_conn
     with pytest.raises(psycopg2.errors.UniqueViolation):
-        g2.ingest_data(raw_match_txt, scode, 'de_inferno')
+        db_cur.execute(insert_str, val)

@@ -74,6 +74,6 @@ class DBConn:
         else:
             self.cur.execute(insert_str, val)
 
-        self.return_id = self.cur.fetchone() if returning else None
+        self.return_id = self.cur.fetchone()[0] if returning else None
 
         self.close()

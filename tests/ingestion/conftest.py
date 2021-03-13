@@ -20,7 +20,7 @@ def db_conn(db_config):
     conn.close()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def db_cur(db_conn):
     cur = db_conn.cursor()
     yield cur

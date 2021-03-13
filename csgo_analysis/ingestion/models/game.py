@@ -56,4 +56,4 @@ class Game(DBConn, DB):
 
         self.recordset = self.cast_data(rs)
 
-        return self.insert(self._TABLE_NAME, self.recordset, returning=True)[0]
+        return self.insert(self._TABLE_NAME, self.recordset, returning=True)
