@@ -48,6 +48,7 @@ class PlayerBlind(Event, DB):
     _ID = 'id'
     _GAME_ID = 'game_id'
     _PLAYER_ID = 'player_id'
+    _TEAM = 'team'
     _ATTACKER_ID = 'attacker_id'
     _BLIND_DURATION = 'blind_duration'
     _EVENT_NUMBER = 'event_number'
@@ -57,6 +58,7 @@ class PlayerBlind(Event, DB):
         _ID: int,
         _GAME_ID: int,
         _PLAYER_ID: int,
+        _TEAM: str,
         _ATTACKER_ID: int,
         _BLIND_DURATION: float,
         _EVENT_NUMBER: int,
@@ -81,6 +83,8 @@ class PlayerDeath(Event, DB):
     _ID = 'id'
     _GAME_ID = 'game_id'
     _PLAYER_ID = 'player_id'
+    _TEAM = 'team'
+    _PLAYER_ITEM_ID = 'player_item_id'
     _ATTACKER_ID = 'attacker_id'
     _ASSISTER_ID = 'assister_id'
     _ITEM_ID = 'item_id'
@@ -100,6 +104,8 @@ class PlayerDeath(Event, DB):
         _ID: int,
         _GAME_ID: int,
         _PLAYER_ID: int,
+        _TEAM: str,
+        _PLAYER_ITEM_ID: int,
         _ATTACKER_ID: int,
         _ASSISTER_ID: int,
         _ITEM_ID: int,
@@ -121,7 +127,7 @@ class PlayerDeath(Event, DB):
         _ATTACKER_ID: 'attacker',
         _ASSISTER_ID: 'assister',
         _ASSISTEDFLASH: 'assistedflash',
-        _ITEM_ID: 'weapon',
+        _ITEM_ID: 'item_id',
         _HEADSHOT: 'headshot',
         _DOMINATED: 'dominated',
         _REVENGE: 'revenge',
@@ -140,6 +146,7 @@ class PlayerHurt(Event, DB):
     _ID = 'id'
     _GAME_ID = 'game_id'
     _PLAYER_ID = 'player_id'
+    _TEAM = 'team'
     _ATTACKER_ID = 'attacker_id'
     _ITEM_ID = 'item_id'
     _HEALTH = 'health'
@@ -154,6 +161,7 @@ class PlayerHurt(Event, DB):
         _ID: int,
         _GAME_ID: int,
         _PLAYER_ID: int,
+        _TEAM: str,
         _ATTACKER_ID: int,
         _ITEM_ID: int,
         _HEALTH: int,
@@ -168,7 +176,7 @@ class PlayerHurt(Event, DB):
     _COMP = {
         _PLAYER_ID: 'userid',
         _ATTACKER_ID: 'attacker',
-        _ITEM_ID: 'weapon',
+        _ITEM_ID: 'item_id',
         _HEALTH: 'health',
         _ARMOR: 'armor',
         _DMG_HEALTH: 'dmg_health',
@@ -184,6 +192,7 @@ class PlayerFallDamage(Event, DB):
     _ID = 'id'
     _GAME_ID = 'game_id'
     _PLAYER_ID = 'player_id'
+    _TEAM = 'team'
     _DAMAGE = 'damage'
     _EVENT_NUMBER = 'event_number'
     _ROUND = 'round'
@@ -192,6 +201,7 @@ class PlayerFallDamage(Event, DB):
         _ID: int,
         _GAME_ID: int,
         _PLAYER_ID: int,
+        _TEAM: str,
         _DAMAGE: float,
         _EVENT_NUMBER: int,
         _ROUND: int
@@ -210,6 +220,7 @@ class WeaponFire(Event, DB):
     _ID = 'id'
     _GAME_ID = 'game_id'
     _PLAYER_ID = 'player_id'
+    _TEAM =  'team'
     _ITEM_ID = 'item_id'
     _SILENCED = 'silenced'
     _EVENT_NUMBER = 'event_number'
@@ -219,6 +230,7 @@ class WeaponFire(Event, DB):
         _ID: int,
         _GAME_ID: int,
         _PLAYER_ID: int,
+        _TEAM: str,
         _ITEM_ID: int,
         _SILENCED: DB.custom_bool,
         _EVENT_NUMBER: int,
@@ -227,7 +239,7 @@ class WeaponFire(Event, DB):
 
     _COMP = {
         _PLAYER_ID: 'userid',
-        _ITEM_ID: 'weapon',
+        _ITEM_ID: 'item_id',
         _SILENCED: 'silenced'
     }
 
@@ -239,6 +251,7 @@ class ItemEquip(Event):
     _ID = 'id'
     _GAME_ID = 'game_id'
     _PLAYER_ID = 'player_id'
+    _TEAM = 'team'
     _ITEM_ID = 'item_id'
     _EVENT_NUMBER = 'event_number'
     _ROUND = 'round'
@@ -247,6 +260,7 @@ class ItemEquip(Event):
         _ID: int,
         _GAME_ID: int,
         _PLAYER_ID: int,
+        _TEAM: str,
         _ITEM_ID: int,
         _EVENT_NUMBER: int,
         _ROUND: int
@@ -254,7 +268,7 @@ class ItemEquip(Event):
 
     _COMP = {
         _PLAYER_ID: 'userid',
-        _ITEM_ID: 'item',
+        _ITEM_ID: 'item_id',
     }
 
     _TABLE_NAME = EventTypes.ITEM_EQUIP
@@ -265,6 +279,7 @@ class BombPlanted(Event):
     _ID = 'id'
     _GAME_ID = 'game_id'
     _PLAYER_ID = 'player_id'
+    _TEAM = 'team'
     _SITE = 'site'
     _EVENT_NUMBER = 'event_number'
     _ROUND = 'round'
@@ -273,6 +288,7 @@ class BombPlanted(Event):
         _ID: int,
         _GAME_ID: int,
         _PLAYER_ID: int,
+        _TEAM: str,
         _SITE: int,
         _EVENT_NUMBER: int,
         _ROUND: int
@@ -291,6 +307,7 @@ class BombDefused(Event):
     _ID = 'id'
     _GAME_ID = 'game_id'
     _PLAYER_ID = 'player_id'
+    _TEAM = 'team'
     _SITE = 'site'
     _EVENT_NUMBER = 'event_number'
     _ROUND = 'round'
@@ -299,6 +316,7 @@ class BombDefused(Event):
         _ID: int,
         _GAME_ID: int,
         _PLAYER_ID: int,
+        _TEAM: str,
         _SITE: int,
         _EVENT_NUMBER: int,
         _ROUND: int
@@ -369,6 +387,7 @@ class RoundMVP(Event):
     _ID = 'id'
     _GAME_ID = 'game_id'
     _PLAYER_ID = 'player_id'
+    _TEAM = 'team'
     _REASON = 'reason'
     _EVENT_NUMBER = 'event_number'
     _ROUND = 'round'
@@ -377,6 +396,7 @@ class RoundMVP(Event):
         _ID: int,
         _GAME_ID: int,
         _PLAYER_ID: int,
+        _TEAM: str,
         _REASON: int,
         _EVENT_NUMBER: int,
         _ROUND: int
