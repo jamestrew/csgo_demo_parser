@@ -15,12 +15,6 @@ class Event:
     def __init__(self):
         self.data_set = []
 
-    # TODO handle weapon-item translation
-    # TODO handle item-weapon-item translation (pickup, equip, remove)
-    # TODO handle team_l_id: winner in round_end
-
-    # TODO PLAYER_DEATH handle null player
-
     def build_event(self, game_id, event_data, event_number, round_count):
         rs = {self._GAME_ID: game_id}
         for dest_col, orig_cal in self._COMP.items():
@@ -31,7 +25,10 @@ class Event:
 
             if isinstance(self, PlayerDeath) and dest_col == self._ASSISTER_ID \
                     and data is None:
-                rs[dest_col] = data
+                rs[dest_col] = data  # no assist
+            elif isinstance(self, PlayerHurt) and dest_col == self._ATTACKER_ID \
+                    and data is None:
+                rs[dest_col] = data  # fall damage
             else:
                 rs[dest_col] = self._TYPES[dest_col](data)
 
@@ -39,19 +36,6 @@ class Event:
         rs[self._ROUND] = round_count
         self.data_set.append(rs)
         return rs
-
-    # tables yet to be completed
-    # ! player_death
-    # ! player_hurt
-    # ! weapon_fire
-    # ! item_pickup
-    # ! item_equip
-    # ! item_remove
-    # bomb_planted
-    # bomb_defused
-    # round_start
-    # ? round_end
-    # round_mvp
 
 
 class PlayerBlind(Event, DB):
