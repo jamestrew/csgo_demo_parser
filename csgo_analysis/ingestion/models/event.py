@@ -19,10 +19,22 @@ class Event:
     # TODO handle item-weapon-item translation (pickup, equip, remove)
     # TODO handle team_l_id: winner in round_end
 
+    # TODO PLAYER_DEATH handle null player
+
     def build_event(self, game_id, event_data, event_number, round_count):
         rs = {self._GAME_ID: game_id}
         for dest_col, orig_cal in self._COMP.items():
-            rs[dest_col] = self._TYPES[dest_col](event_data[orig_cal])
+            data = event_data[orig_cal]
+
+            if isinstance(data, str):
+                data = data.strip()
+
+            if isinstance(self, PlayerDeath) and dest_col == self._ASSISTER_ID \
+                    and data is None:
+                rs[dest_col] = data
+            else:
+                rs[dest_col] = self._TYPES[dest_col](data)
+
         rs[self._EVENT_NUMBER] = event_number
         rs[self._ROUND] = round_count
         self.data_set.append(rs)
@@ -68,6 +80,7 @@ class PlayerBlind(Event, DB):
     _COMP = {
         _ATTACKER_ID: 'attacker',
         _PLAYER_ID: 'userid',
+        _TEAM: 'team',
         _BLIND_DURATION: 'blind_duration'
     }
 
@@ -93,6 +106,7 @@ class PlayerDeath(Event, DB):
     _DOMINATED = 'dominated'
     _REVENGE = 'revenge'
     _WIPE = 'wipe'
+    _THRUSMOKE = 'thrusmoke'
     _PENETRATED = 'penetrated'
     _NOSCOPE = 'noscope'
     _ATTACKERBLIND = 'attackerblind'
@@ -114,6 +128,7 @@ class PlayerDeath(Event, DB):
         _DOMINATED: DB.custom_bool,
         _REVENGE: DB.custom_bool,
         _WIPE: DB.custom_bool,
+        _THRUSMOKE: DB.custom_bool,
         _PENETRATED: DB.custom_bool,
         _NOSCOPE: DB.custom_bool,
         _ATTACKERBLIND: DB.custom_bool,
@@ -124,6 +139,8 @@ class PlayerDeath(Event, DB):
 
     _COMP = {
         _PLAYER_ID: 'userid',
+        _PLAYER_ITEM_ID: 'player_item_id',
+        _TEAM: 'team',
         _ATTACKER_ID: 'attacker',
         _ASSISTER_ID: 'assister',
         _ASSISTEDFLASH: 'assistedflash',
@@ -132,6 +149,7 @@ class PlayerDeath(Event, DB):
         _DOMINATED: 'dominated',
         _REVENGE: 'revenge',
         _WIPE: 'wipe',
+        _THRUSMOKE: 'thrusmoke',
         _PENETRATED: 'penetrated',
         _NOSCOPE: 'noscope',
         _ATTACKERBLIND: 'attackerblind',
@@ -153,7 +171,7 @@ class PlayerHurt(Event, DB):
     _ARMOR = 'armor'
     _DMG_HEALTH = 'dmg_health'
     _DMG_ARMOR = 'dmg_armor'
-    _HIT_GROUP = 'hit_group'
+    _HITGROUP = 'hitgroup'
     _EVENT_NUMBER = 'event_number'
     _ROUND = 'round'
 
@@ -168,20 +186,21 @@ class PlayerHurt(Event, DB):
         _ARMOR: int,
         _DMG_HEALTH: int,
         _DMG_ARMOR: int,
-        _HIT_GROUP: int,
+        _HITGROUP: int,
         _EVENT_NUMBER: int,
         _ROUND: int
     }
 
     _COMP = {
         _PLAYER_ID: 'userid',
+        _TEAM: 'team',
         _ATTACKER_ID: 'attacker',
         _ITEM_ID: 'item_id',
         _HEALTH: 'health',
         _ARMOR: 'armor',
         _DMG_HEALTH: 'dmg_health',
         _DMG_ARMOR: 'dmg_armor',
-        _HIT_GROUP: 'hitgroup'
+        _HITGROUP: 'hitgroup'
     }
 
     _TABLE_NAME = EventTypes.PLAYER_HURT
@@ -209,6 +228,7 @@ class PlayerFallDamage(Event, DB):
 
     _COMP = {
         _PLAYER_ID: 'userid',
+        _TEAM: 'team',
         _DAMAGE: 'damage'
     }
 
@@ -220,7 +240,7 @@ class WeaponFire(Event, DB):
     _ID = 'id'
     _GAME_ID = 'game_id'
     _PLAYER_ID = 'player_id'
-    _TEAM =  'team'
+    _TEAM = 'team'
     _ITEM_ID = 'item_id'
     _SILENCED = 'silenced'
     _EVENT_NUMBER = 'event_number'
@@ -239,6 +259,7 @@ class WeaponFire(Event, DB):
 
     _COMP = {
         _PLAYER_ID: 'userid',
+        _TEAM: 'team',
         _ITEM_ID: 'item_id',
         _SILENCED: 'silenced'
     }
@@ -268,6 +289,7 @@ class ItemEquip(Event):
 
     _COMP = {
         _PLAYER_ID: 'userid',
+        _TEAM: 'team',
         _ITEM_ID: 'item_id',
     }
 
@@ -296,6 +318,7 @@ class BombPlanted(Event):
 
     _COMP = {
         _PLAYER_ID: 'userid',
+        _TEAM: 'team',
         _SITE: 'site'
     }
 
@@ -324,6 +347,7 @@ class BombDefused(Event):
 
     _COMP = {
         _PLAYER_ID: 'userid',
+        _TEAM: 'team',
         _SITE: 'site'
     }
 
@@ -404,6 +428,7 @@ class RoundMVP(Event):
 
     _COMP = {
         _PLAYER_ID: 'userid',
+        _TEAM: 'team',
         _REASON: 'reason',
     }
 
