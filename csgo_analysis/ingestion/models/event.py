@@ -1,8 +1,9 @@
 from csgo_analysis.ingestion.const import EventTypes
 from csgo_analysis.ingestion.models.db import DB
+from csgo_analysis.ingestion.models.dbconn import DBConn
 
 
-class Event:
+class Event(DBConn):
 
     _ID = 'id'
     _GAME_ID = 'game_id'

@@ -60,6 +60,7 @@ def test_event_clean_data(events, events_clean):
     ec = EventsController(1, events, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     ec.ingest_data()
     assert ec.clean_data == events_clean
+    assert ec.player_health[5] == 21
 
 
 @patch.object(PlayerHurt, 'build_event')

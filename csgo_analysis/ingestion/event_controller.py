@@ -30,6 +30,19 @@ class EventsController:
         self._round_start = RoundStart()
         self._round_end = RoundEnd()
         self._round_mvp = RoundMVP()
+        self._events = [
+            self._player_blind,
+            self._player_death,
+            self._player_hurt,
+            self._player_falldamage,
+            self._weapon_fire,
+            self._item_equip,
+            self._bomb_planted,
+            self._bomb_defused,
+            self._round_end,
+            self._round_start,
+            self._round_mvp
+        ]
         self.clean_data = []
 
         self.player_health = {player: 100 for player in player_list}
@@ -65,3 +78,6 @@ class EventsController:
 
             data = event_class.build_event(self.game_id, data, event_cnt, round_cnt)
             self.clean_data.append({event_class._TABLE_NAME: data})
+
+        for event_type in self._events:
+            event_type.insert(event_type._TABLE_NAME, event_type.data_set)
