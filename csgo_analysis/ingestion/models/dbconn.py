@@ -26,6 +26,7 @@ class DBConn:
         self.cur = self.conn.cursor()
 
     def close(self):
+        self.conn.commit()
         self.cur.close()
         self.conn.close()
 
@@ -67,14 +68,11 @@ class DBConn:
         val = kwargs.get(self._VAL)
         many = kwargs.get(self._MANY)
         returning = kwargs.get(self._RETURNING)
-        print(insert_str, val)
-        print()
 
         if many:
             execute_values(self.cur, insert_str, val)
         else:
             self.cur.execute(insert_str, val)
-        self.conn.commit()
 
         self.return_id = self.cur.fetchone() if returning else None
 
