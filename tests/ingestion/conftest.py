@@ -106,3 +106,19 @@ def events_clean(fixture_path):
     with open(path) as jf:
         data = json.load(jf)
     return data
+
+
+@pytest.fixture
+def hurt(fixture_path):
+    path = os.path.join(fixture_path, 'hurt.json')
+    with open(path) as jf:
+        data = json.load(jf)
+    return data
+
+
+@pytest.fixture
+def hurt_clean(fixture_path):
+    path = os.path.join(fixture_path, 'hurt_clean.json')
+    with open(path) as jf:
+        data = json.load(jf)
+    return data

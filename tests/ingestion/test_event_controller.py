@@ -1,6 +1,6 @@
 from csgo_analysis.ingestion.event_controller import EventsController
-from csgo_analysis.ingestion.models import ItemEquip
-from unittest.mock import patch
+from csgo_analysis.ingestion.models import ItemEquip, PlayerHurt
+from unittest.mock import patch, call
 
 
 # def test_events_prep(event_dirty, event_clean):
@@ -60,3 +60,15 @@ def test_event_clean_data(events, events_clean):
     ec = EventsController(1, events, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     ec.ingest_data()
     assert ec.clean_data == events_clean
+
+
+@patch.object(PlayerHurt, 'build_event')
+def test_overkill_damage_correction(build_event_patch, hurt, hurt_clean):
+    ec = EventsController(1, hurt, [1])
+    ec.ingest_data()
+
+    args = [
+        call(1, data['player_hurt'], i + 1, 0) for i, data in enumerate(hurt_clean)
+    ]
+    build_event_patch.call_count == 11
+    build_event_patch.assert_has_calls(args)

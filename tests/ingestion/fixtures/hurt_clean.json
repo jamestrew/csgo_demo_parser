@@ -1,0 +1,134 @@
+[
+	{
+    "player_hurt": {
+      "userid": 1,
+      "attacker": "0 ",
+      "health": "97 ",
+      "armor": "100 ",
+      "weapon": " ",
+      "dmg_health": "3 ",
+      "dmg_armor": "0 ",
+      "hitgroup": "0 "
+    }
+  },
+  {
+    "player_hurt": {
+      "userid": 1,
+      "attacker": "jun (id:9)",
+      "health": "76 ",
+      "armor": "96 ",
+      "weapon": "p250 ",
+      "dmg_health": "21 ",
+      "dmg_armor": "3 ",
+      "hitgroup": "2 "
+    }
+  },{
+    "player_hurt": {
+      "userid": 1,
+      "attacker": "jun (id:9)",
+      "health": "55 ",
+      "armor": "92 ",
+      "weapon": "p250 ",
+      "dmg_health": "21 ",
+      "dmg_armor": "3 ",
+      "hitgroup": "2 "
+    }
+  },
+  {
+    "player_hurt": {
+      "userid": 1,
+      "attacker": "jun (id:9)",
+      "health": "34 ",
+      "armor": "88 ",
+      "weapon": "p250 ",
+      "dmg_health": "21 ",
+      "dmg_armor": "3 ",
+      "hitgroup": "2 "
+    }
+  },
+  {
+    "player_hurt": {
+      "userid": 1,
+      "attacker": "jun (id:9)",
+      "health": "13 ",
+      "armor": "84 ",
+      "weapon": "p250 ",
+      "dmg_health": "21 ",
+      "dmg_armor": "3 ",
+      "hitgroup": "2 "
+    }
+  },
+  {
+    "player_hurt": {
+      "userid": 1,
+      "attacker": "csr (id:7)",
+      "health": "0 ",
+      "armor": "82 ",
+      "weapon": "awp ",
+      "dmg_health": 13,
+      "dmg_armor": "1 ",
+      "hitgroup": "3 "
+    }
+  },
+  {
+    "player_hurt": {
+      "userid": 1,
+      "attacker": "digga (id:5)",
+      "health": "78 ",
+      "armor": "95 ",
+      "weapon": "m4a1 ",
+      "dmg_health": "22 ",
+      "dmg_armor": "4 ",
+      "hitgroup": "2 "
+    }
+  },
+  {
+    "player_hurt": {
+      "userid": 1,
+      "attacker": "digga (id:5)",
+      "health": "56 ",
+      "armor": "90 ",
+      "weapon": "m4a1 ",
+      "dmg_health": "22 ",
+      "dmg_armor": "4 ",
+      "hitgroup": "2 "
+    }
+  },
+  {
+    "player_hurt": {
+      "userid": 1,
+      "attacker": "digga (id:5)",
+      "health": "33 ",
+      "armor": "90 ",
+      "weapon": "m4a1 ",
+      "dmg_health": "23 ",
+      "dmg_armor": "0 ",
+      "hitgroup": "6 "
+    }
+  },
+  {
+    "player_hurt": {
+      "userid": 1,
+      "attacker": "digga (id:5)",
+      "health": "10 ",
+      "armor": "90 ",
+      "weapon": "m4a1 ",
+      "dmg_health": "23 ",
+      "dmg_armor": "0 ",
+      "hitgroup": "6 "
+    }
+  },
+  {
+    "player_hurt": {
+      "userid": 1,
+      "attacker": "digga (id:5)",
+      "health": "0 ",
+      "armor": "84 ",
+      "weapon": "m4a1 ",
+      "dmg_health": 10,
+      "dmg_armor": "5 ",
+      "hitgroup": "3 "
+    }
+  }
+]
+

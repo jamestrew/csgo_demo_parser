@@ -51,5 +51,17 @@ class EventsController:
 
             data = event[event_name]
             event_class = getattr(self, '_' + event_name)
+
+            # correct for overkill damage
+            if event_name == EventTypes.PLAYER_HURT:
+                player_id = data[PlayerHurt._COMP[PlayerHurt._PLAYER_ID]]
+                health = int(data[PlayerHurt._COMP[PlayerHurt._HEALTH]])
+                if health > 0:
+                    self.player_health[player_id] = health
+                else:  # overkill situation
+                    prev_health = self.player_health[player_id]  # actual dmg done
+                    data[PlayerHurt._COMP[PlayerHurt._DMG_HEALTH]] = prev_health
+                    self.player_health[player_id] = 100
+
             data = event_class.build_event(self.game_id, data, event_cnt, round_cnt)
             self.clean_data.append({event_class._TABLE_NAME: data})
