@@ -115,11 +115,11 @@ class Player(DBConn, DB):
 
         for player_userid in self.players.keys():
             row = self.players[player_userid]
-            if row[self._TEAM_L_ID] != Team.TEAM_UNKNOWN and \
+            if row[self._TEAM_L_ID] != Team.TEAM_UNKNOWN.value and \
                     row[self._XUID] not in self.xuid_id_dict:
                 id = self.insert(self._TABLE_NAME, row, True)
                 self.xuid_id_dict[row[self._XUID]] = id
-            self.userid_id_dict[player_userid] = self.xuid_id_dict[row[self._XUID]]
+            self.userid_id_dict[player_userid] = self.xuid_id_dict.get(row[self._XUID])
 
     def _cleanup(self):
         clean_data = []
