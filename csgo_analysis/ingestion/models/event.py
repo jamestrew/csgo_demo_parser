@@ -1,6 +1,7 @@
 from csgo_analysis.ingestion.const import EventTypes
 from csgo_analysis.ingestion.models.db import DB
 from csgo_analysis.ingestion.models.dbconn import DBConn
+import json
 
 
 class Event(DBConn):
@@ -14,6 +15,7 @@ class Event(DBConn):
     _COMP = {}
 
     def __init__(self):
+        super().__init__()
         self.data_set = []
 
     def build_event(self, game_id, event_data, event_number, round_count):
@@ -37,6 +39,22 @@ class Event(DBConn):
         rs[self._ROUND] = round_count
         self.data_set.append(rs)
         return rs
+
+
+class EventJson(DBConn):
+
+    _ID = 'id'
+    _GAME_ID = 'game_id'
+    _DATA = 'data'
+
+    _TABLE_NAME = 'event_json'
+
+    def insert_prep(self, game_id, data):
+        rs = {
+            self._GAME_ID: game_id,
+            self._DATA: json.dumps(data)
+        }
+        self.insert(self._TABLE_NAME, rs)
 
 
 class PlayerBlind(Event, DB):
