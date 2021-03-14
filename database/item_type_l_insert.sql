@@ -8,4 +8,4 @@ VALUES
 (6, 'sniper'),
 (7, 'melee'),
 (8, 'grenade'),
-(0, 'item')
+(0, 'item');

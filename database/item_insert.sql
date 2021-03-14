@@ -67,4 +67,4 @@ VALUES
 (65, 'item_kevlar', 'vest', false, 0),
 (66, 'item_assaultsuit', 'vesthelm', false, 0),
 (67, 'item_defuser', 'defuser', false, 0),
-(68, 'weapon_c4', 'c4', false, 0)
+(68, 'weapon_c4', 'c4', false, 0);

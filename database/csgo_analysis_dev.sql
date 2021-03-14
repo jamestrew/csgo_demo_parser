@@ -95,9 +95,9 @@ game_id serial NOT NULL,
 player_id serial NOT NULL,
 team text NOT NULL,
 player_item_id integer NOT NULL,
-attacker_id serial NOT NULL,
+attacker_id serial,
 assister_id serial,
-item_id integer NOT NULL,
+item_id integer,
 assistedflash boolean NOT NULL,
 headshot boolean NOT NULL,
 dominated boolean NOT NULL,
@@ -107,7 +107,7 @@ penetrated boolean NOT NULL,
 noscope boolean NOT NULL,
 thrusmoke boolean NOT NULL,
 attackerblind boolean NOT NULL,
-distance real NOT NULL,
+distance real,
 event_number integer NOT NULL,
 round integer NOT NULL,
 PRIMARY KEY(id));
@@ -129,8 +129,8 @@ id serial NOT NULL,
 game_id serial NOT NULL,
 player_id serial NOT NULL,
 team text NOT NULL,
-attacker_id serial NOT NULL,
-item_id integer NOT NULL,
+attacker_id serial,
+item_id integer,
 health integer NOT NULL,
 armor integer NOT NULL,
 dmg_health integer NOT NULL,
@@ -186,6 +186,7 @@ team text NOT NULL,
 item_id integer NOT NULL,
 silenced boolean NOT NULL,
 event_number integer NOT NULL,
+round integer NOT NULL,
 PRIMARY KEY(id));
 
 /* Table 'event_json' */
@@ -199,7 +200,7 @@ PRIMARY KEY(id));
 ALTER TABLE public.bomb_defused ADD CONSTRAINT "game-bomb_defused"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'player-bomb_defused' */
@@ -213,7 +214,7 @@ ON UPDATE No action;
 ALTER TABLE public.bomb_planted ADD CONSTRAINT "game-bomb_planted"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'player-bomb_planted' */
@@ -241,7 +242,7 @@ ON UPDATE No action;
 ALTER TABLE public.item_equip ADD CONSTRAINT "game-item_equip"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'item-item_equip' */
@@ -262,7 +263,7 @@ ON UPDATE No action;
 ALTER TABLE public.player ADD CONSTRAINT "games-players"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'team_l-player' */
@@ -283,7 +284,7 @@ ON UPDATE No action;
 ALTER TABLE public.player_blind ADD CONSTRAINT "game-player_blind"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'player-player_blind' */
@@ -311,7 +312,7 @@ ON UPDATE No action;
 ALTER TABLE public.player_death ADD CONSTRAINT "game-player_death"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'item-player_death' */
@@ -332,7 +333,7 @@ ON UPDATE No action;
 ALTER TABLE public.player_falldamage ADD CONSTRAINT "game-player_falldamage"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'player-player_falldamage' */
@@ -353,7 +354,7 @@ ON UPDATE No action;
 ALTER TABLE public.player_hurt ADD CONSTRAINT "game-player_hurt"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'item-player_hurt' */
@@ -374,7 +375,7 @@ ON UPDATE No action;
 ALTER TABLE public.round_end ADD CONSTRAINT "game-round_end"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'team_l-round_end' */
@@ -388,7 +389,7 @@ ON UPDATE No action;
 ALTER TABLE public.round_mvp ADD CONSTRAINT "game-round_mvp"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'player-round_mvp' */
@@ -402,14 +403,14 @@ ON UPDATE No action;
 ALTER TABLE public.round_start ADD CONSTRAINT "game-round_start"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'game-weapon_fire' */
 ALTER TABLE public.weapon_fire ADD CONSTRAINT "game-weapon_fire"
 FOREIGN KEY (game_id)
 REFERENCES public.game(id)
-ON DELETE No action
+ON DELETE Cascade
 ON UPDATE No action;
 
 /* Relation 'item-weapon_fire' */
@@ -434,5 +435,6 @@ REFERENCES public.item(id);
 /* Relation 'game-event_json' */
 ALTER TABLE public.event_json ADD CONSTRAINT "game-event_json"
 FOREIGN KEY (game_id)
-REFERENCES public.game(id);
+REFERENCES public.game(id)
+ON DELETE Cascade;
 

@@ -8,4 +8,4 @@ VALUES
 (6, 'de_train'),
 (7, 'de_nuke'),
 (8, 'de_cbble'),
-(9, 'de_vertigo')
+(9, 'de_vertigo');
