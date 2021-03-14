@@ -31,6 +31,7 @@ class Parser:
     def get_match_data(self, share_url):
         ''' Call Steam API to gather basic match info '''
         self.scode = share_url[-30:]
+        # ! TODO check scode isn't in game table
         try:
             match_params = sharecode.decode(self.scode)
         except ValueError:
@@ -108,7 +109,5 @@ class Parser:
         item_con = ItemController(self.data_txt, self.data, player.player_list)
         self.data = item_con.sub_item_id()
         events_con = EventsController(self.game_id, self.data, player.player_list)
-        events_con.ingest_data()
+        events_con.ingest_prep()
 
-    def test(self):
-        print('good to go')

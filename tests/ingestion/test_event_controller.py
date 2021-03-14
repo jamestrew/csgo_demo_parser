@@ -51,14 +51,14 @@ def test_event_class_calling(build_patch):
     event_data = data[0]['item_equip']
 
     ec = EventsController(1, data, [1, 2, 3])
-    ec.ingest_data()
+    ec.ingest_prep()
 
     build_patch.assert_called_once_with(1, event_data, 1, 0)
 
 
 def test_event_clean_data(events, events_clean):
     ec = EventsController(1, events, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    ec.ingest_data()
+    ec.ingest_prep()
     assert ec.clean_data == events_clean
     assert ec.player_health[5] == 21
 
@@ -66,7 +66,7 @@ def test_event_clean_data(events, events_clean):
 @patch.object(PlayerHurt, 'build_event')
 def test_overkill_damage_correction(build_event_patch, hurt, hurt_clean):
     ec = EventsController(1, hurt, [1])
-    ec.ingest_data()
+    ec.ingest_prep()
 
     args = [
         call(1, data['player_hurt'], i + 1, 0) for i, data in enumerate(hurt_clean)

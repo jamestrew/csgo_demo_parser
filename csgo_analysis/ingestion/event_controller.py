@@ -47,7 +47,7 @@ class EventsController:
 
         self.player_health = {player: 100 for player in player_list}
 
-    def ingest_data(self):
+    def ingest_prep(self):
         round_cnt = 0
         event_cnt = 0
         for event in self.data:
@@ -79,5 +79,7 @@ class EventsController:
             data = event_class.build_event(self.game_id, data, event_cnt, round_cnt)
             self.clean_data.append({event_class._TABLE_NAME: data})
 
-        for event_type in self._events:
-            event_type.insert(event_type._TABLE_NAME, event_type.data_set)
+    def ingest_data(self):
+        for event in self._events:
+            if len(event.data_set) > 0:
+                event.insert(event._TABLE_NAME, event.data_set)
