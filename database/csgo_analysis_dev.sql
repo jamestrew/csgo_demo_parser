@@ -188,6 +188,13 @@ silenced boolean NOT NULL,
 event_number integer NOT NULL,
 PRIMARY KEY(id));
 
+/* Table 'event_json' */
+CREATE TABLE public.event_json (
+id serial NOT NULL,
+game_id serial NOT NULL,
+"data" json NOT NULL,
+PRIMARY KEY(id));
+
 /* Relation 'game-bomb_defused' */
 ALTER TABLE public.bomb_defused ADD CONSTRAINT "game-bomb_defused"
 FOREIGN KEY (game_id)
@@ -419,8 +426,13 @@ REFERENCES public.player(id)
 ON DELETE No action
 ON UPDATE No action;
 
-/* Relation 'item-player_death' */
+/* Relation 'player-item-player_death' */
 ALTER TABLE public.player_death ADD CONSTRAINT "player-item-player_death"
 FOREIGN KEY (player_item_id)
 REFERENCES public.item(id);
+
+/* Relation 'game-event_json' */
+ALTER TABLE public.event_json ADD CONSTRAINT "game-event_json"
+FOREIGN KEY (game_id)
+REFERENCES public.game(id);
 
