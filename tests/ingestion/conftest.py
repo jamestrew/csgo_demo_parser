@@ -69,14 +69,6 @@ def raw_match_txt(raw_match_path):
 
 
 @pytest.fixture
-def item_data(fixture_path):
-    path = os.path.join(fixture_path, 'item_data.txt')
-    with open(path) as txt:
-        data = txt.read()
-    return data
-
-
-@pytest.fixture
 def weapons_data(fixture_path):
     path = os.path.join(fixture_path, 'weapons.json')
     with open(path) as jf:

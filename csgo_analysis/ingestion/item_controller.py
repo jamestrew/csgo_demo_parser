@@ -1,15 +1,9 @@
-import re
 from csgo_analysis.ingestion.models import Item
 from csgo_analysis.ingestion.models.db import DB
 from csgo_analysis.ingestion.const import EventTypes
 
 
 class ItemController:
-
-    DEAGLE_MODEL_P = r' (\d+), models\/[a-z]weapons\/v_pist_deagle.mdl'
-    P250_MODEL_P = r' (\d+), models\/[a-z]weapons\/v_pist_p250.mdl'
-    DEAGLE_DEFINDEX_P = r' item: deagle\s+defindex: (\d+)'
-    P250_DEFINDEX_P = r' item: p250\s+defindex: (\d+)'
 
     DEFINDEX = 'defindex'
     HASSILENCER = 'hassilencer'
@@ -18,62 +12,18 @@ class ItemController:
     ITEM_ID = 'item_id'
     USER_ID = 'userid'
 
-    def __init__(self, data_txt, data, player_list):
-        self.data_txt = data_txt
+    WEP_INDEX_L = {
+        1: Item.DEAGLE,
+        36: Item.P250,
+        63: Item.CZ75A,
+        64: Item.REVOLVER
+    }
+
+    def __init__(self, data, player_list):
         self.data = data
         self.current_item = {player: None for player in player_list}
 
-    def _get_model_index(self):
-        model_dict = {}
-        deagle_model = re.search(self.DEAGLE_MODEL_P, self.data_txt).group(1)
-        p250_model = re.search(self.P250_MODEL_P, self.data_txt).group(1)
-
-        model_dict[int(deagle_model)] = Item.DEAGLE
-        model_dict[int(p250_model)] = Item.P250
-        return model_dict
-
-    def _get_defindex(self):
-        def_indices = {}
-        deagle_defindex = re.findall(self.DEAGLE_DEFINDEX_P, self.data_txt)
-        def_indices[Item.DEAGLE] = tuple(map(int, deagle_defindex))
-
-        p250_defindex = re.findall(self.P250_DEFINDEX_P, self.data_txt)
-        def_indices[Item.P250] = tuple(map(int, p250_defindex))
-        return def_indices
-
-    def _get_def_model_index(self):
-        index_dict = {}
-        for item, indices in self._get_defindex().items():
-            for index in indices:
-                p = r'402, m_iItemDefinitionIndex = $.+?429, m_nModelIndex = (\d+)'
-                # TODO
-                # 402, m_iItemDefinitionIndex = (\d)\n(.+\n){7,10}?.+m_nModelIndex = (\d+)
-                # try above without DOTALL
-                p = p.replace('$', str(index))
-                pattern = re.compile(p, re.DOTALL | re.MULTILINE)
-                match = re.search(pattern, self.data_txt)
-                if match is None:
-                    index_dict[index] = item
-                    continue
-                index_dict[index] = int(match.group(1))
-
-        return index_dict
-
-    def _get_def_index_ids(self):
-        index_item_dict = {}
-        model_index = self._get_model_index()
-        for defindex, modelindex in self._get_def_model_index().items():
-            if modelindex == Item.DEAGLE:
-                index_item_dict[defindex] = Item.REVOLVER
-            elif modelindex == Item.P250:
-                index_item_dict[defindex] = Item.CZ75A
-            else:
-                index_item_dict[defindex] = model_index[modelindex]
-
-        return index_item_dict
-
     def sub_item_id(self):
-        def_index_ids = self._get_def_index_ids()
 
         for event in self.data:
             event_name = list(event.keys())[0]
@@ -84,7 +34,7 @@ class ItemController:
                 continue
 
             if event_name == EventTypes.ITEM_EQUIP:
-                item_id = self._get_equip_id(event_data, def_index_ids)
+                item_id = self._get_equip_id(event_data)
                 userid = event_data[self.USER_ID]
                 event_data[self.ITEM_ID] = item_id
                 self.current_item[userid] = item_id
@@ -108,13 +58,13 @@ class ItemController:
 
         return self.data
 
-    def _get_equip_id(self, event_data, def_index_ids):
+    def _get_equip_id(self, event_data):
         item_name = event_data[self.ITEM].strip()
         defindex = int(event_data[self.DEFINDEX])
 
         item_id = Item.get_id_with_short_name(item_name)
         if item_name in Item.ALT_WEAPONS:
-            item_id = def_index_ids.get(defindex).id
+            item_id = self.WEP_INDEX_L.get(defindex).id
         elif item_name in Item.SUPP_WEAPONS:
             suppressed = DB.custom_bool(event_data[self.HASSILENCER])
             if suppressed:
