@@ -84,6 +84,7 @@ class Item:
     ASSAULTSUIT = ItemLookup(66, 'item_assaultsuit', 'vesthelm')
     DEFUSER = ItemLookup(67, 'item_defuser', 'defuser')
     C4 = ItemLookup(68, 'weapon_c4', 'c4')
+    INFERNO = ItemLookup(69, 'inferno', 'inferno')
 
     NAME_L = {
         CZ75A.name: CZ75A,
@@ -154,6 +155,7 @@ class Item:
         ASSAULTSUIT.name: ASSAULTSUIT,
         DEFUSER.name: DEFUSER,
         C4.name: C4,
+        INFERNO.name: INFERNO
     }
 
     SHORT_NAME_L = {
@@ -220,6 +222,7 @@ class Item:
         ASSAULTSUIT.short_name: ASSAULTSUIT,
         DEFUSER.short_name: DEFUSER,
         C4.short_name: C4,
+        INFERNO.name: INFERNO
     }
 
     SHORT_WEP_L = {
@@ -290,7 +293,10 @@ class Item:
         KEVLAR.short_wep: KEVLAR,
         ASSAULTSUIT.short_wep: ASSAULTSUIT,
         DEFUSER.short_wep: DEFUSER,
-        C4.short_wep: C4
+        C4.short_wep: C4,
+        'planted_c4': C4,
+        INFERNO.name: INFERNO
+
     }
 
     ALT_WEAPONS = [P250.short_name, DEAGLE.short_name]

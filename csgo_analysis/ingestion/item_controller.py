@@ -46,6 +46,9 @@ class ItemController:
         for item, indices in self._get_defindex().items():
             for index in indices:
                 p = r'402, m_iItemDefinitionIndex = $.+?429, m_nModelIndex = (\d+)'
+                # TODO
+                # 402, m_iItemDefinitionIndex = (\d)\n(.+\n){7,10}?.+m_nModelIndex = (\d+)
+                # try above without DOTALL
                 p = p.replace('$', str(index))
                 pattern = re.compile(p, re.DOTALL | re.MULTILINE)
                 match = re.search(pattern, self.data_txt)
