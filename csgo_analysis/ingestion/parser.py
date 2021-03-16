@@ -23,14 +23,14 @@ logging.basicConfig(format=format, level=logging.DEBUG)
 
 class Parser:
 
-    min_flags = '-gameevents -nofootsteps -nowarmup -stringtables'
+    min_flags = '-gameevents -nofootsteps -nowarmup -stringtables -packetentities'
 
     def __init__(self):
         self.game_data = {}
 
     def get_match_data(self, share_url):
         ''' Call Steam API to gather basic match info '''
-        self.scode = share_url[-30:]
+        self.scode = share_url[-34:]
         # ! TODO check scode isn't in game table
         try:
             match_params = sharecode.decode(self.scode)
@@ -90,9 +90,10 @@ class Parser:
         sp_output = subprocess.run(cmd.split(), cwd=exe_path, shell=True)
         print(sp_output.returncode)
 
-        print('Done')
+        print('Demoinfogo Complete')
         with open(self.output_path, encoding='ascii', errors='ignore') as data_file:
             self.data_txt = data_file.read()
+        self.load_game_data()
 
     def load_game_data(self):
         ''' Ingest game table data from match data and demo into DB'''
@@ -108,6 +109,8 @@ class Parser:
         self.data = player.create_players()
         item_con = ItemController(self.data_txt, self.data, player.player_list)
         self.data = item_con.sub_item_id()
+        del self.data_txt
+        del item_con
         events_con = EventsController(self.game_id, self.data, player.player_list)
         events_con.ingest_prep()
-
+        events_con.ingest_data()
