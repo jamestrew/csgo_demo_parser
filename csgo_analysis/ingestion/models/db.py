@@ -39,4 +39,7 @@ class ItemLookup(Lookup):
 
     @staticmethod
     def get_short_wep(name):
-        return re.search(r'_([a-z_0-9]+)', name).group(1)
+        try:
+            return re.search(r'_([a-z_0-9]+)', name).group(1)
+        except AttributeError:
+            return name
