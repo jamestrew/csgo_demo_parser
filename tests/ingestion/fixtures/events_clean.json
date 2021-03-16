@@ -123,7 +123,7 @@
             "game_id": 1,
             "reason": 9,
             "message": "#SFUI_Notice_Terrorists_Win",
-            "team_l_id": 2,
+            "team_l_id": 1,
             "event_number": 11,
             "round": 1
         }
