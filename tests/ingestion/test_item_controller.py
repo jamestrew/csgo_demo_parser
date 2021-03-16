@@ -1,6 +1,4 @@
-from unittest.mock import patch
 import unittest
-from csgo_analysis.ingestion.models import Item
 from csgo_analysis.ingestion.item_controller import ItemController
 import pytest
 
