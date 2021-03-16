@@ -80,11 +80,12 @@ class Item:
     KNIFE_CORD = ItemLookup(42, 'weapon_knife_cord', 'knife')
     KNIFE_SKELETON = ItemLookup(42, 'weapon_knife_skeleton', 'knife')
     KNIFE_OUTDOOR = ItemLookup(42, 'weapon_knife_outdoor', 'knife')
-    KEVLAR = ItemLookup(65, 'item_kevlar', 'vest')
-    ASSAULTSUIT = ItemLookup(66, 'item_assaultsuit', 'vesthelm')
-    DEFUSER = ItemLookup(67, 'item_defuser', 'defuser')
-    C4 = ItemLookup(68, 'weapon_c4', 'c4')
-    INFERNO = ItemLookup(69, 'inferno', 'inferno')
+    KNIFE_BOWIE = ItemLookup(42, 'weapon_knife_survival_bowie', 'knife')
+    KEVLAR = ItemLookup(66, 'item_kevlar', 'vest')
+    ASSAULTSUIT = ItemLookup(67, 'item_assaultsuit', 'vesthelm')
+    DEFUSER = ItemLookup(68, 'item_defuser', 'defuser')
+    C4 = ItemLookup(69, 'weapon_c4', 'c4')
+    INFERNO = ItemLookup(70, 'inferno', 'inferno')
 
     NAME_L = {
         CZ75A.name: CZ75A,
@@ -151,6 +152,7 @@ class Item:
         KNIFE_CORD.name: KNIFE_CORD,
         KNIFE_SKELETON.name: KNIFE_SKELETON,
         KNIFE_OUTDOOR.name: KNIFE_OUTDOOR,
+        KNIFE_BOWIE.name: KNIFE_BOWIE,
         KEVLAR.name: KEVLAR,
         ASSAULTSUIT.name: ASSAULTSUIT,
         DEFUSER.name: DEFUSER,
@@ -218,6 +220,7 @@ class Item:
         KNIFE_CORD.short_name: KNIFE_CORD,
         KNIFE_SKELETON.short_name: KNIFE_SKELETON,
         KNIFE_OUTDOOR.short_name: KNIFE_OUTDOOR,
+        KNIFE_BOWIE.short_name: KNIFE_BOWIE,
         KEVLAR.short_name: KEVLAR,
         ASSAULTSUIT.short_name: ASSAULTSUIT,
         DEFUSER.short_name: DEFUSER,
@@ -290,13 +293,13 @@ class Item:
         KNIFE_CORD.short_wep: KNIFE_CORD,
         KNIFE_SKELETON.short_wep: KNIFE_SKELETON,
         KNIFE_OUTDOOR.short_wep: KNIFE_OUTDOOR,
+        KNIFE_BOWIE.short_wep: KNIFE_BOWIE,
         KEVLAR.short_wep: KEVLAR,
         ASSAULTSUIT.short_wep: ASSAULTSUIT,
         DEFUSER.short_wep: DEFUSER,
         C4.short_wep: C4,
         'planted_c4': C4,
         INFERNO.name: INFERNO
-
     }
 
     ALT_WEAPONS = [P250.short_name, DEAGLE.short_name]
