@@ -69,4 +69,4 @@ VALUES
 (67, 'item_assaultsuit', 'vesthelm', false, 0),
 (68, 'item_defuser', 'defuser', false, 0),
 (69, 'weapon_c4', 'c4', false, 0)
-(70, 'inferno', 'inferno', false, 8);jk
+(70, 'inferno', 'inferno', false, 8);
