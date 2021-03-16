@@ -1,13 +1,7 @@
+from csgo_analysis.ingestion.const import EventTypes
 from csgo_analysis.ingestion.models.db import DB
 from csgo_analysis.ingestion.models.dbconn import DBConn
-from csgo_analysis.ingestion.const import EventTypes
-from enum import Enum
-
-
-class Team(Enum):
-    TEAM_TWO = 1
-    TEAM_THREE = 2
-    TEAM_UNKNOWN = 999
+from csgo_analysis.ingestion.models.team import Team
 
 
 class Player(DBConn, DB):
