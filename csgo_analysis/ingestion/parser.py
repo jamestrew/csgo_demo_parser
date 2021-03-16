@@ -3,6 +3,7 @@ import bz2
 import logging
 import os
 import re
+import json
 import subprocess
 from urllib.parse import urlparse
 
@@ -23,7 +24,7 @@ logging.basicConfig(format=format, level=logging.DEBUG)
 
 class Parser:
 
-    min_flags = '-gameevents -nofootsteps -nowarmup -stringtables'
+    min_flags = '-gameevents -extrainfo -nofootsteps -nowarmup -stringtables'
 
     def __init__(self):
         self.game_data = {}
@@ -104,13 +105,15 @@ class Parser:
 
     def load_all_data(self):
         ''' Convert demo data into json and ingest into DB'''
-        self.data = JsonConverter.convert(self.data_txt, self.output_path, True)
+        self.data = JsonConverter.convert(self.data_txt, self.output_path)
         del self.data_txt
         player = Player(self.game_id, self.data)
         self.data = player.create_players()
         item_con = ItemController(self.data, player.player_list)
         self.data = item_con.sub_item_id()
         del item_con
+        with open('test.json', 'w') as jf:
+            json.dump(self.data, jf)
         events_con = EventsController(self.game_id, self.data, player.player_list)
         events_con.ingest_prep()
         events_con.ingest_data()
