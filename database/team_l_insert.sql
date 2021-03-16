@@ -1,4 +1,4 @@
-INSERT INTO team_l (id, number)
+INSERT INTO team_l (id, team_name)
 VALUES
-(1, 2),
-(2, 3);
+(2, 'T'),
+(3, 'CT');

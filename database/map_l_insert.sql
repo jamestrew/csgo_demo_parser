@@ -1,4 +1,4 @@
-INSERT INTO map_l (id, map_name)
+INSERT INTO map_l (map_name)
 VALUES
 (1, 'de_dust2'),
 (2, 'de_mirage'),
