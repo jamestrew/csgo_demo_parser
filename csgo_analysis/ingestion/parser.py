@@ -23,7 +23,7 @@ logging.basicConfig(format=format, level=logging.DEBUG)
 
 class Parser:
 
-    min_flags = '-gameevents -nofootsteps -nowarmup -stringtables -packetentities'
+    min_flags = '-gameevents -nofootsteps -nowarmup -stringtables'
 
     def __init__(self):
         self.game_data = {}
@@ -105,11 +105,11 @@ class Parser:
     def load_all_data(self):
         ''' Convert demo data into json and ingest into DB'''
         self.data = JsonConverter.convert(self.data_txt, self.output_path, True)
+        del self.data_txt
         player = Player(self.game_id, self.data)
         self.data = player.create_players()
-        item_con = ItemController(self.data_txt, self.data, player.player_list)
+        item_con = ItemController(self.data, player.player_list)
         self.data = item_con.sub_item_id()
-        del self.data_txt
         del item_con
         events_con = EventsController(self.game_id, self.data, player.player_list)
         events_con.ingest_prep()
