@@ -35,7 +35,7 @@ def test_event_class_calling(build_patch):
         },
         {
             "item_equip": {
-                "userid": "Waldo (id:16)",
+                "userid": None,
                 "item": "famas ",
                 "defindex": "10 ",
                 "canzoom": "0 ",

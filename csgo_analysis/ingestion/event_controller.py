@@ -10,7 +10,8 @@ from csgo_analysis.ingestion.models import (
     BombPlanted,
     RoundEnd,
     RoundMVP,
-    RoundStart
+    RoundStart,
+    EventJson
 )
 
 
@@ -54,8 +55,10 @@ class EventsController:
             event_name = list(event.keys())[0]
             event_data = event[event_name]
 
-            if 'userid' in event_data.keys() and \
-                    isinstance(event_data['userid'], str):
+            if event_name not in EventTypes.ALL_EVENTS:
+                continue
+
+            if 'userid' in event_data.keys() and event_data['userid'] is None:
                 continue
             if event_name in EventTypes.ALL_EVENTS:
                 event_cnt += 1
@@ -83,3 +86,5 @@ class EventsController:
         for event in self._events:
             if len(event.data_set) > 0:
                 event.insert(event._TABLE_NAME, event.data_set)
+
+        EventJson().insert_prep(self.game_id, self.clean_data)
