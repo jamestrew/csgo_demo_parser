@@ -296,6 +296,11 @@ class ItemEquip(Event):
 
     _TABLE_NAME = EventTypes.ITEM_EQUIP
 
+    def build_event(self, game_id, event_data, event_number, round_count):
+        if event_data.get(self._COMP[self._TEAM]) is None:
+            return False
+        return super().build_event(game_id, event_data, event_number, round_count)
+
 
 class BombPlanted(Event):
 

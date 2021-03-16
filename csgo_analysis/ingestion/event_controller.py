@@ -80,7 +80,8 @@ class EventsController:
                     self.player_health[player_id] = 100
 
             data = event_class.build_event(self.game_id, data, event_cnt, round_cnt)
-            self.clean_data.append({event_class._TABLE_NAME: data})
+            if data:
+                self.clean_data.append({event_class._TABLE_NAME: data})
 
     def ingest_data(self):
         for event in self._events:
