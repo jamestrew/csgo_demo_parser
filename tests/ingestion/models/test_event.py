@@ -155,6 +155,58 @@ def test_build_event_player_death():
     assert event._TABLE_NAME == EventTypes.PLAYER_DEATH
 
 
+def test_build_event_player_death2():
+    event_data = {
+        "item_id": None,
+        "player_item_id": 17,
+        "distance": "12.206310 ",
+        "penetrated": "0 ",
+        "assistedflash": "0 ",
+        "wipe": "0 ",
+        "attacker": None,
+        "weapon_fauxitemid": "17293822569119744010 ",
+        "assister": None,
+        "dominated": "0 ",
+        "weapon_originalowner_xuid": "76561198133822308 ",
+        "attackerblind": "0 ",
+        "weapon_itemid": "963864360 ",
+        "noscope": "0 ",
+        "noreplay": "0 ",
+        "thrusmoke": "0 ",
+        "headshot": "1 ",
+        "revenge": "0 ",
+        "userid": 4,
+        "team": "CT "
+    }
+
+    rs = {
+        "game_id": 1,
+        "item_id": None,
+        "player_item_id": 17,
+        "distance": 12.206310,
+        "penetrated": False,
+        "assistedflash": False,
+        "wipe": False,
+        "attacker_id": None,
+        "assister_id": None,
+        "dominated": False,
+        "attackerblind": False,
+        "noscope": False,
+        "thrusmoke": False,
+        "headshot": True,
+        "revenge": False,
+        "player_id": 4,
+        "team": "CT",
+        "event_number": 1,
+        "round": 1
+    }
+    event = PlayerDeath()
+    output = event.build_event(1, event_data, 1, 1)
+    assert output == rs
+    assert event.data_set == [rs]
+    assert event._TABLE_NAME == EventTypes.PLAYER_DEATH
+
+
 @patch.object(PlayerDeath, 'connect')
 @patch.object(PlayerDeath, 'close')
 def test_player_death_insert(connect_patch, close_path,
@@ -648,7 +700,7 @@ def test_build_event_round_end():
         "game_id": 1,
         "reason": 9,
         "message": "#SFUI_Notice_Terrorists_Win",
-        "team_l_id": 2,
+        "team_l_id": 1,
         "event_number": 1,
         "round": 1
     }

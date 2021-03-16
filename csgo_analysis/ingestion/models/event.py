@@ -1,7 +1,9 @@
+import json
+
 from csgo_analysis.ingestion.const import EventTypes
 from csgo_analysis.ingestion.models.db import DB
 from csgo_analysis.ingestion.models.dbconn import DBConn
-import json
+from csgo_analysis.ingestion.models.team import Team
 
 
 class Event(DBConn):
@@ -26,12 +28,8 @@ class Event(DBConn):
             if isinstance(data, str):
                 data = data.strip()
 
-            if isinstance(self, PlayerDeath) and dest_col == self._ASSISTER_ID \
-                    and data is None:
-                rs[dest_col] = data  # no assist
-            elif isinstance(self, PlayerHurt) and dest_col == self._ATTACKER_ID \
-                    and data is None:
-                rs[dest_col] = data  # fall damage
+            if data is None:
+                rs[dest_col] = data
             else:
                 rs[dest_col] = self._TYPES[dest_col](data)
 
@@ -406,7 +404,18 @@ class RoundEnd(Event):
         _MESSAGE: 'message'
     }
 
+    TEAM_L = {
+        2: Team.TEAM_TWO,
+        3: Team.TEAM_THREE
+    }
+
     _TABLE_NAME = EventTypes.ROUND_END
+
+    def build_event(self, game_id, event_data, event_number, round_count):
+        team_num = event_data[self._COMP[self._TEAM_L_ID]]
+        team_id = self.TEAM_L[int(team_num)].value
+        event_data[self._COMP[self._TEAM_L_ID]] = team_id
+        return super().build_event(game_id, event_data, event_number, round_count)
 
 
 class RoundMVP(Event):
