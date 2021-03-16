@@ -32,12 +32,13 @@ class DBConn:
 
     def insert(self, tablename, fields, returning=False):
         if isinstance(fields, list):
+            columns = [col.name for col in fields[0].keys()]
             val_holder = '%s'
-            col_holder = '(' + ', '.join(list(fields[0].keys())) + ')'
+            col_holder = '(' + ', '.join(columns) + ')'
             val = [list(row.values()) for row in fields]
             many = True
         else:
-            field_keys = list(fields.keys())
+            field_keys = [col.name for col in fields.keys()]
             val_holder = '(' + ', '.join(['%s'] * len(field_keys)) + ')'
             col_holder = '(' + ', '.join(field_keys) + ')'
             val = list(fields.values())

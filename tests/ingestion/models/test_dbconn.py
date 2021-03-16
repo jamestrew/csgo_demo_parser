@@ -1,38 +1,48 @@
 from unittest.mock import patch
-from csgo_analysis.ingestion.models.dbconn import DBConn
+from csgo_analysis.ingestion.db.dbconn import DBConn
+from csgo_analysis.ingestion.models.db import DB
 import pytest
 
 
 @pytest.mark.parametrize(
-    "tablename, fields, val, statement,  many", [
+    "tablename, fields, val, statement, returning, many", [
         (
-            'map_l',
-            {'id': 10, 'map_name': 'de_anubis'},
-            [10, 'de_anubis'],
-            "INSERT INTO map_l (id, map_name) VALUES (%s, %s)",
+            'test_table',
+            {DB._ID: 10, DB._TEAM_L_ID: 2},
+            [10, 2],
+            "INSERT INTO test_table (id, team_l_id) VALUES (%s, %s)",
+            False,
             False
         ),
         (
-            'map_l',
-            [{'id': 10, 'map_name': 'de_anubis'}, {'id': 11, 'map_name': 'cs_office'}],
-            [[10, 'de_anubis'], [11, 'cs_office']],
-            "INSERT INTO map_l (id, map_name) VALUES %s",
+            'test_table',
+            {DB._ID: 10, DB._TEAM_L_ID: 2},
+            [10, 2],
+            "INSERT INTO test_table (id, team_l_id) VALUES (%s, %s) RETURNING id",
+            True,
+            False
+        ),
+        (
+            'test_table',
+            [{DB._ID: 10, DB._TEAM_L_ID: 2}, {DB._ID: 11, DB._TEAM_L_ID: 3}],
+            [[10, 2], [11, 3]],
+            "INSERT INTO test_table (id, team_l_id) VALUES %s",
+            False,
             True
-        )
+        ),
     ]
 )
 @patch.object(DBConn, 'execute')
-def test_db_insert(exe_patch, tablename, fields, statement, val, many):
+def test_db_insert(exe_patch, tablename, fields, statement, val, returning, many):
     db = DBConn()
-    output = db.insert(tablename, fields)
+    db.insert(tablename, fields, returning)
     kwargs = {
         DBConn._OPSTR: statement,
         DBConn._VAL: val,
         DBConn._MANY: many,
-        DBConn._RETURNING: False
+        DBConn._RETURNING: returning
     }
     exe_patch.assert_called_with('insert', kwargs)
-    assert output is None
 
 
 @patch.object(DBConn, 'execute_insert')

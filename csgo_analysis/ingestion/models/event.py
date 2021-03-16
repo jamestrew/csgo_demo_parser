@@ -2,7 +2,7 @@ import json
 
 from csgo_analysis.ingestion.const import EventTypes
 from csgo_analysis.ingestion.models.db import DB
-from csgo_analysis.ingestion.models.dbconn import DBConn
+from csgo_analysis.ingestion.db.dbconn import DBConn
 from csgo_analysis.ingestion.models.team import Team
 
 
@@ -407,11 +407,6 @@ class RoundEnd(Event):
         _TEAM_L_ID: 'winner',
         _REASON: 'reason',
         _MESSAGE: 'message'
-    }
-
-    TEAM_L = {
-        2: Team.TEAM_TWO,
-        3: Team.TEAM_THREE
     }
 
     _TABLE_NAME = EventTypes.ROUND_END

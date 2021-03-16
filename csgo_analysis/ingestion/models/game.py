@@ -3,7 +3,7 @@ import re
 from psycopg2._psycopg import TimestampFromTicks
 
 from csgo_analysis.ingestion.models.db import DB
-from csgo_analysis.ingestion.models.dbconn import DBConn
+from csgo_analysis.ingestion.db.dbconn import DBConn
 from csgo_analysis.ingestion.models.map import Map
 
 
