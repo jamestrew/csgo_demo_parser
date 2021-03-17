@@ -17,10 +17,10 @@ class EventTypes:
     ROUND_END = 'round_end'
     ROUND_MVP = 'round_mvp'
 
-    _PLAYER_INFO = 'player_info'
-    _PLAYER_SPAWN = 'player_spawn'
+    PLAYER_INFO = 'player_info'
+    PLAYER_SPAWN = 'player_spawn'
 
-    PLAYER_CLEANUP = [_PLAYER_INFO, _PLAYER_SPAWN]
+    PLAYER_CLEANUP = [PLAYER_INFO, PLAYER_SPAWN]
 
     PLAYER_EVENTS = [
         PLAYER_DEATH,
@@ -67,8 +67,8 @@ class EventTypes:
         ROUND_MVP,
         ROUND_START,
         ROUND_END,
-        _PLAYER_INFO,
-        _PLAYER_SPAWN
+        PLAYER_INFO,
+        PLAYER_SPAWN
     ]
 
     UNNECESSARY_DATA = [

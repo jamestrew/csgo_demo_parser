@@ -1,4 +1,24 @@
 import re
+from collections import namedtuple
+
+FieldBase = namedtuple('Field', ['col_name', 'data_type'])
+
+
+class Field(FieldBase):
+    def __new__(cls, col_name, data_type, ref):
+        obj = FieldBase.__new__(cls, col_name, data_type)
+        obj.ref = ref
+        return obj
+
+    def __repr__(self):
+        return self.col_name
+
+
+class Table:
+
+    def __init__(self, columns):
+        for column in columns:
+            setattr(self, column, None)
 
 
 class DB:
@@ -6,6 +26,17 @@ class DB:
     _TYPE = 'type'
     _NULLABLE = 'nullable'
 
+    # common fields
+    _ID = Field('id', int, None)
+    _GAME_ID = Field('game_id', int, None)
+    _PLAYER_ID = Field('player_id', int, 'userid')
+    _ATTACKER_ID = Field('attacker_id', int, 'attacker_id')
+    _TEAM_L_ID = Field('team_l_id', int, 'team')
+    _ITEM_ID = Field('item_id', int, 'item_id')
+    _EVENT_NUMBER = Field('event_number', int, None)
+    _ROUND = Field('round', int, None)
+
+    _FIELDS = []
     _TYPES = {}
 
     def __init__(self):

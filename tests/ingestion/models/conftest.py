@@ -1,4 +1,5 @@
 import pytest
+from csgo_analysis.ingestion.models.player import Player
 
 
 @pytest.fixture
@@ -133,28 +134,28 @@ def players_data():
 def created_players():
     return {
         "Chris P. Bacon (id:3)": {
-            "game_id": 1,
-            "xuid": 76561197960512598,
-            "player_name": "Chris P. Bacon",
-            "team_l_id": 1
+            Player._GAME_ID: 1,
+            Player._XUID: 76561197960512598,
+            Player._PLAYER_NAME: "Chris P. Bacon",
+            Player._TEAM_L_ID: 2
         },
         "Mike (id:4)": {
-            "game_id": 1,
-            "xuid": 76561197964398021,
-            "player_name": "Mike",
-            "team_l_id": 1
+            Player._GAME_ID: 1,
+            Player._XUID: 76561197964398021,
+            Player._PLAYER_NAME: "Mike",
+            Player._TEAM_L_ID: 2
         },
         "digga (id:5)": {
-            "game_id": 1,
-            "xuid": 76561198133822308,
-            "player_name": "digga",
-            "team_l_id": 2
+            Player._GAME_ID: 1,
+            Player._XUID: 76561198133822308,
+            Player._PLAYER_NAME: "digga",
+            Player._TEAM_L_ID: 3
         },
         "digga (id:12)": {
-            "game_id": 1,
-            "xuid": 76561198133822308,
-            "player_name": "digga",
-            "team_l_id": 2
+            Player._GAME_ID: 1,
+            Player._XUID: 76561198133822308,
+            Player._PLAYER_NAME: "digga",
+            Player._TEAM_L_ID: 3
         }
     }
 
@@ -372,7 +373,7 @@ def event_clean():
     return [
         {
             "round_start": {
-                "game_id": 1,
+                Player._GAME_ID: 1,
                 "timelimit": 999,
                 "event_number": 1,
                 "round": 1

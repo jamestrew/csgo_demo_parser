@@ -1,16 +1,17 @@
 from csgo_analysis.ingestion.const import EventTypes
-from csgo_analysis.ingestion.models.db import DB
-from csgo_analysis.ingestion.models.dbconn import DBConn
+from csgo_analysis.ingestion.models.db import DB, Field
+from csgo_analysis.ingestion.db.dbconn import DBConn
 from csgo_analysis.ingestion.models.team import Team
 
 
 class Player(DBConn, DB):
 
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _TEAM_L_ID = 'team_l_id'
-    _XUID = 'xuid'
-    _PLAYER_NAME = 'player_name'
+    # columns
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
+    _TEAM_L_ID = DB._TEAM_L_ID  # _FIRST_TEAM_L_ID = 'first_team_l_id'
+    _XUID = Field('xuid', int, None)  # int -> str
+    _PLAYER_NAME = Field('player_name', str, None)
 
     _TYPES = {
         _ID: int,
@@ -33,11 +34,6 @@ class Player(DBConn, DB):
     _INFO = 'player_info'
     _SPAWN = 'player_spawn'
 
-    TEAM_L = {
-        2: Team.TEAM_TWO,
-        3: Team.TEAM_THREE
-    }
-
     def __init__(self, game_id, data):
         super().__init__()
         self.players = {}
@@ -57,25 +53,26 @@ class Player(DBConn, DB):
 
         for event in self.data:
             event_name = list(event.keys())[0]
-            if self._INFO == event_name and event[self._INFO]['guid'] != 'BOT':
-                player_info = event[self._INFO]
+            if EventTypes.PLAYER_INFO == event_name and \
+                    event[EventTypes.PLAYER_INFO]['guid'] != 'BOT':
+                player_info = event[EventTypes.PLAYER_INFO]
                 data = {
                     self._GAME_ID: self.game_id,
-                    self._XUID: player_info[self._XUID],
+                    self._XUID: player_info[self._XUID.col_name],
                     self._PLAYER_NAME: player_info[self._NAME],
-                    self._TEAM_L_ID: Team.TEAM_UNKNOWN.value
+                    self._TEAM_L_ID: Team.GOTV
                 }
 
                 userid = int(player_info[self._USER_ID])
                 self.players[self._get_full_id(data, userid)] = self.cast_data(data)
 
-            if self._SPAWN == event_name:
-                spawn_info = event[self._SPAWN]
+            if EventTypes.PLAYER_SPAWN == event_name:
+                spawn_info = event[EventTypes.PLAYER_SPAWN]
                 if int(spawn_info[self._TEAM_NUM]) == 0 or \
                         spawn_info[self._FULL_ID] not in self.players:
                     continue
 
-                team_id = self.TEAM_L.get(int(spawn_info[self._TEAM_NUM])).value
+                team_id = int(spawn_info[self._TEAM_NUM])
                 self.players[spawn_info[self._FULL_ID]][self._TEAM_L_ID] = team_id
 
             self._insert_prep()
@@ -109,7 +106,7 @@ class Player(DBConn, DB):
 
         for player_userid in self.players.keys():
             row = self.players[player_userid]
-            if row[self._TEAM_L_ID] != Team.TEAM_UNKNOWN.value and \
+            if row[self._TEAM_L_ID] != Team.GOTV and \
                     row[self._XUID] not in self.xuid_id_dict:
                 id = self.insert(self._TABLE_NAME, row, True)
                 self.xuid_id_dict[row[self._XUID]] = id

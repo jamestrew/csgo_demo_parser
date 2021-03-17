@@ -9,16 +9,16 @@ from csgo_analysis.ingestion.models import Player
 def player_info():
     player_info = {
         13: {
-            'game_id': 1,
-            'team_l_id': 1,
-            'xuid': 76561197960512598,
-            'player_name': 'Chris P. Bacon'
+            Player._GAME_ID: 1,
+            Player._TEAM_L_ID: 1,
+            Player._XUID: 76561197960512598,
+            Player._PLAYER_NAME: 'Chris P. Bacon'
         },
         11: {
-            'game_id': 1,
-            'team_l_id': 1,
-            'xuid': 76561198026942816,
-            'player_name': 'paper girlfriend'
+            Player._GAME_ID: 1,
+            Player._TEAM_L_ID: 1,
+            Player._XUID: 76561198026942816,
+            Player._PLAYER_NAME: 'paper girlfriend'
         }
     }
     return player_info
@@ -70,10 +70,10 @@ def test_create_players(
 def test_get_full_id():
     p = Player(1, None)
     player = {
-        "game_id": 1,
-        "xuid": 76561197960512598,
-        "player_name": "Chris P. Bacon",
-        "team_l_id": 1
+        Player._GAME_ID: 1,
+        Player._XUID: 76561197960512598,
+        Player._PLAYER_NAME: "Chris P. Bacon",
+        Player._TEAM_L_ID: 1
     }
     full_id = p._get_full_id(player, 3)
     assert full_id == "Chris P. Bacon (id:3)"
@@ -83,28 +83,28 @@ def test_get_full_id():
 def test_insert_prep(insert_patch, created_players, name_id, user_ids):
     insert_patch.side_effect = [1, 2, 3]
     p = Player(1, None)
-    created_players['digga (id:12)']['team_l_id'] = 999  # unknown
+    created_players['digga (id:12)'][Player._TEAM_L_ID] = 0  # unknown
     p.players = created_players
 
     p._insert_prep()
     fields = [
         {
-            'game_id': 1,
-            'xuid': 76561197960512598,
-            'player_name': "Chris P. Bacon",
-            'team_l_id': 1
+            Player._GAME_ID: 1,
+            Player._XUID: 76561197960512598,
+            Player._PLAYER_NAME: "Chris P. Bacon",
+            Player._TEAM_L_ID: 2
         },
         {
-            'game_id': 1,
-            'xuid': 76561197964398021,
-            'player_name': "Mike",
-            'team_l_id': 1
+            Player._GAME_ID: 1,
+            Player._XUID: 76561197964398021,
+            Player._PLAYER_NAME: "Mike",
+            Player._TEAM_L_ID: 2
         },
         {
-            'game_id': 1,
-            'xuid': 76561198133822308,
-            'player_name': "digga",
-            'team_l_id': 2
+            Player._GAME_ID: 1,
+            Player._XUID: 76561198133822308,
+            Player._PLAYER_NAME: "digga",
+            Player._TEAM_L_ID: 3
         },
     ]
 
