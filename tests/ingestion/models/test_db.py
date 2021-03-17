@@ -1,5 +1,7 @@
-from csgo_analysis.ingestion.models.db import DB, ItemLookup
 import pytest
+from unittest import TestCase
+
+from csgo_analysis.ingestion.models.db import DB, Field, ItemLookup
 
 
 @pytest.mark.parametrize(
@@ -11,6 +13,25 @@ import pytest
 def test_custom_bool(value, output):
     db = DB()
     assert db.custom_bool(value) == output
+
+
+def test_type_casting():
+    rs = {
+        Field('id', int, None): "1 ",
+        Field('xuid', str, None): "987654421 ",
+        Field('isheadshot', DB.custom_bool, None): "1 ",
+        Field('penetration', DB.custom_bool, None): "0 ",
+        Field('distance', float, None): "29.0981 ",
+    }
+    output_rs = {
+        Field('id', int, None): 1,
+        Field('xuid', str, None): "987654421",
+        Field('isheadshot', DB.custom_bool, None): True,
+        Field('penetration', DB.custom_bool, None): False,
+        Field('distance', float, None): 29.0981,
+    }
+    output = DB.cast_data(rs)
+    TestCase().assertDictEqual(output, output_rs)
 
 
 @pytest.mark.parametrize(

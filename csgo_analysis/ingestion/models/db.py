@@ -22,9 +22,6 @@ class Table:
 
 
 class DB:
-    _NAME = 'name'
-    _TYPE = 'type'
-    _NULLABLE = 'nullable'
 
     # common fields
     _ID = Field('id', int, None)
@@ -36,17 +33,18 @@ class DB:
     _EVENT_NUMBER = Field('event_number', int, None)
     _ROUND = Field('round', int, None)
 
-    _FIELDS = []
-    _TYPES = {}
-
     def __init__(self):
         self.fields = {}
 
-    def cast_data(self, recordset):
+    @staticmethod
+    def cast_data(recordset):
         ''' Return dataset with data type-casted correctly. '''
         for col, val in recordset.items():
-            data_type = self._TYPES[col]
-            recordset[col] = data_type(val)
+            data_type = col.data_type
+            data = data_type(val)
+            if data_type == str:
+                data = data.strip()
+            recordset[col] = data
         return recordset
 
     @staticmethod
