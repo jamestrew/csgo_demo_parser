@@ -1,7 +1,6 @@
-from enum import Enum
 
 
-class Team(Enum):
-    TEAM_TWO = 1
-    TEAM_THREE = 2
-    TEAM_UNKNOWN = 999
+class Team:
+    GOTV = 0
+    T = 2
+    CT = 3
