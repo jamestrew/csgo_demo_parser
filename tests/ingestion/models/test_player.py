@@ -11,13 +11,13 @@ def player_info():
         13: {
             Player._GAME_ID: 1,
             Player._TEAM_L_ID: 1,
-            Player._XUID: 76561197960512598,
+            Player._XUID: '76561197960512598',
             Player._PLAYER_NAME: 'Chris P. Bacon'
         },
         11: {
             Player._GAME_ID: 1,
             Player._TEAM_L_ID: 1,
-            Player._XUID: 76561198026942816,
+            Player._XUID: '76561198026942816',
             Player._PLAYER_NAME: 'paper girlfriend'
         }
     }
@@ -27,9 +27,9 @@ def player_info():
 @pytest.fixture
 def user_ids():
     return {
-        76561197960512598: 1,
-        76561197964398021: 2,
-        76561198133822308: 3
+        '76561197960512598': 1,
+        '76561197964398021': 2,
+        '76561198133822308': 3
     }
 
 
@@ -90,19 +90,19 @@ def test_insert_prep(insert_patch, created_players, name_id, user_ids):
     fields = [
         {
             Player._GAME_ID: 1,
-            Player._XUID: 76561197960512598,
+            Player._XUID: '76561197960512598',
             Player._PLAYER_NAME: "Chris P. Bacon",
             Player._TEAM_L_ID: 2
         },
         {
             Player._GAME_ID: 1,
-            Player._XUID: 76561197964398021,
+            Player._XUID: '76561197964398021',
             Player._PLAYER_NAME: "Mike",
             Player._TEAM_L_ID: 2
         },
         {
             Player._GAME_ID: 1,
-            Player._XUID: 76561198133822308,
+            Player._XUID: '76561198133822308',
             Player._PLAYER_NAME: "digga",
             Player._TEAM_L_ID: 3
         },

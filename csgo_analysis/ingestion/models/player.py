@@ -9,17 +9,9 @@ class Player(DBConn, DB):
     # columns
     _ID = DB._ID
     _GAME_ID = DB._GAME_ID
-    _TEAM_L_ID = DB._TEAM_L_ID  # _FIRST_TEAM_L_ID = 'first_team_l_id'
-    _XUID = Field('xuid', int, None)  # int -> str
+    _FIRST_TEAM_L_ID = Field('first_team_l_id', int, ref='team_num')
+    _XUID = Field('xuid', str, None)
     _PLAYER_NAME = Field('player_name', str, None)
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _TEAM_L_ID: int,
-        _XUID: int,
-        _PLAYER_NAME: str
-    }
 
     # table
     _TABLE_NAME = 'player'
@@ -31,8 +23,6 @@ class Player(DBConn, DB):
     _FULL_ID = 'userid'
     _ATTACKER = 'attacker'
     _ASSISTER = 'assister'
-    _INFO = 'player_info'
-    _SPAWN = 'player_spawn'
 
     def __init__(self, game_id, data):
         super().__init__()
