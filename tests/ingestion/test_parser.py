@@ -1,8 +1,6 @@
 import pytest
 import os
-from unittest.mock import patch
 from csgo_analysis.ingestion.parser import Parser
-from csgo_analysis.ingestion.models.dbconn import DBConn
 
 
 @pytest.mark.integration
