@@ -297,7 +297,7 @@ def test_player_death_insert(connect_patch, close_path,
 
 def test_build_event_player_hurt():
     event_data = {
-        DB._ITEM_ID: 6,
+        "item_id": 6,
         "dmg_health": "8 ",
         "armor": "95 ",
         "health": "21 ",
@@ -310,11 +310,11 @@ def test_build_event_player_hurt():
     rs = {
         DB._GAME_ID: 1,
         DB._ITEM_ID: 6,
-        "dmg_health": 8,
-        "armor": 95,
-        "health": 21,
-        "dmg_armor": 4,
-        "hitgroup": 2,
+        PlayerHurt._DMG_HEALTH: 8,
+        PlayerHurt._ARMOR: 95,
+        PlayerHurt._HEALTH: 21,
+        PlayerHurt._DMG_ARMOR: 4,
+        PlayerHurt._HITGROUP: 2,
         DB._PLAYER_ID: 5,
         DB._ATTACKER_ID: 6,
         DB._TEAM_L_ID: 3,
@@ -324,8 +324,8 @@ def test_build_event_player_hurt():
 
     event = PlayerHurt()
     output = event.build_event(1, event_data, 1, 1)
-    assert output == rs
-    assert event.data_set == [rs]
+    TestCase().assertDictEqual(output, rs)
+    assert event.data_set == [output]
     assert event._TABLE_NAME == EventTypes.PLAYER_HURT
 
 
@@ -337,11 +337,11 @@ def test_player_hurt_insert(connect_patch, close_path,
         {
             DB._GAME_ID: game_id,
             DB._ITEM_ID: 6,
-            "dmg_health": 8,
-            "armor": 95,
-            "health": 21,
-            "dmg_armor": 4,
-            "hitgroup": 2,
+            PlayerHurt._DMG_HEALTH: 8,
+            PlayerHurt._ARMOR: 95,
+            PlayerHurt._HEALTH: 21,
+            PlayerHurt._DMG_ARMOR: 4,
+            PlayerHurt._HITGROUP: 2,
             DB._PLAYER_ID: player_id,
             DB._ATTACKER_ID: attacker_id,
             DB._TEAM_L_ID: 3,
@@ -351,11 +351,11 @@ def test_player_hurt_insert(connect_patch, close_path,
         {
             DB._GAME_ID: game_id,
             DB._ITEM_ID: 6,
-            "dmg_health": 8,
-            "armor": 95,
-            "health": 21,
-            "dmg_armor": 4,
-            "hitgroup": 2,
+            PlayerHurt._DMG_HEALTH: 8,
+            PlayerHurt._ARMOR: 95,
+            PlayerHurt._HEALTH: 21,
+            PlayerHurt._DMG_ARMOR: 4,
+            PlayerHurt._HITGROUP: 2,
             DB._PLAYER_ID: player_id,
             DB._ATTACKER_ID: attacker_id,
             DB._TEAM_L_ID: 3,
@@ -365,11 +365,11 @@ def test_player_hurt_insert(connect_patch, close_path,
         {
             DB._GAME_ID: game_id,
             DB._ITEM_ID: None,
-            "dmg_health": 8,
-            "armor": 95,
-            "health": 21,
-            "dmg_armor": 4,
-            "hitgroup": 2,
+            PlayerHurt._DMG_HEALTH: 8,
+            PlayerHurt._ARMOR: 95,
+            PlayerHurt._HEALTH: 21,
+            PlayerHurt._DMG_ARMOR: 4,
+            PlayerHurt._HITGROUP: 2,
             DB._PLAYER_ID: player_id,
             DB._ATTACKER_ID: None,
             DB._TEAM_L_ID: 3,

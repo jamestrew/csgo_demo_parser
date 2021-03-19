@@ -118,49 +118,34 @@ class PlayerDeath(Event, DB):
 
 class PlayerHurt(Event, DB):
 
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _PLAYER_ID = 'player_id'
-    _TEAM = 'team'
-    _ATTACKER_ID = 'attacker_id'
-    _ITEM_ID = 'item_id'
-    _HEALTH = 'health'
-    _ARMOR = 'armor'
-    _DMG_HEALTH = 'dmg_health'
-    _DMG_ARMOR = 'dmg_armor'
-    _HITGROUP = 'hitgroup'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _PLAYER_ID: int,
-        _TEAM: str,
-        _ATTACKER_ID: int,
-        _ITEM_ID: int,
-        _HEALTH: int,
-        _ARMOR: int,
-        _DMG_HEALTH: int,
-        _DMG_ARMOR: int,
-        _HITGROUP: int,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _PLAYER_ID: 'userid',
-        _TEAM: 'team',
-        _ATTACKER_ID: 'attacker',
-        _ITEM_ID: 'item_id',
-        _HEALTH: 'health',
-        _ARMOR: 'armor',
-        _DMG_HEALTH: 'dmg_health',
-        _DMG_ARMOR: 'dmg_armor',
-        _HITGROUP: 'hitgroup'
-    }
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
+    _PLAYER_ID = DB._PLAYER_ID
+    _TEAM_L_ID = DB._TEAM_L_ID
+    _ATTACKER_ID = DB._ATTACKER_ID
+    _ITEM_ID = DB._ITEM_ID
+    _HEALTH = Field('health', int, 'health')
+    _ARMOR = Field('armor', int, 'armor')
+    _DMG_HEALTH = Field('dmg_health', int, 'dmg_health')
+    _DMG_ARMOR = Field('dmg_armor', int, 'dmg_armor')
+    _HITGROUP = Field('hitgroup', int, 'hitgroup')
+    _EVENT_NUMBER = DB._EVENT_NUMBER
+    _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.PLAYER_HURT
+
+    def build_rs(self, event_data):
+        self.rs = {
+            self._PLAYER_ID: event_data[self._PLAYER_ID.ref],
+            self._TEAM_L_ID: Team.get_team_id(event_data[self._TEAM_L_ID.ref]),
+            self._ATTACKER_ID: event_data[self._ATTACKER_ID.ref],
+            self._ITEM_ID: event_data[self._ITEM_ID.ref],
+            self._HEALTH: event_data[self._HEALTH.ref],
+            self._ARMOR: event_data[self._ARMOR.ref],
+            self._DMG_ARMOR: event_data[self._DMG_ARMOR.ref],
+            self._DMG_HEALTH: event_data[self._DMG_HEALTH.ref],
+            self._HITGROUP: event_data[self._HITGROUP.ref],
+        }
 
 
 class PlayerFallDamage(Event, DB):
