@@ -65,6 +65,7 @@ def test_event_clean_data(events, events_clean):
 
 @patch.object(PlayerHurt, 'build_event')
 def test_overkill_damage_correction(build_event_patch, hurt, hurt_clean):
+    build_event_patch.return_value = False
     ec = EventsController(1, hurt, [1])
     ec.ingest_prep()
 

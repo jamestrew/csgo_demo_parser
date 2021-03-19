@@ -17,7 +17,7 @@
             "headshot": true,
             "revenge": false,
             "player_id": 4,
-            "team": "CT",
+            "team_l_id": 3,
             "event_number": 1,
             "round": 0
         }
@@ -28,7 +28,7 @@
             "blind_duration": 2.782995,
             "player_id": 8,
             "attacker_id": 4,
-            "team": "CT",
+            "team_l_id": 3,
             "event_number": 2,
             "round": 0
         }
@@ -44,7 +44,7 @@
             "hitgroup": 2,
             "player_id": 5,
             "attacker_id": 6,
-            "team": "CT",
+            "team_l_id": 3,
             "event_number": 3,
             "round": 0
         }
@@ -54,7 +54,7 @@
             "game_id": 1,
             "player_id": 6,
             "damage": 0.297619,
-            "team": "CT",
+            "team_l_id": 3,
             "event_number": 4,
             "round": 0
         }
@@ -65,7 +65,7 @@
             "item_id": 28,
             "silenced": true,
             "player_id": 8,
-            "team": "CT",
+            "team_l_id": 3,
             "event_number": 5,
             "round": 0
         }
@@ -75,7 +75,7 @@
             "game_id": 1,
             "player_id": 2,
             "item_id": 42,
-            "team": "CT",
+            "team_l_id": 3,
             "event_number": 6,
             "round": 0
         }
@@ -85,7 +85,7 @@
             "game_id": 1,
             "site": 301,
             "player_id": 4,
-            "team": "CT",
+            "team_l_id": 3,
             "event_number": 7,
             "round": 0
         }
@@ -95,7 +95,7 @@
             "game_id": 1,
             "site": 302,
             "player_id": 1,
-            "team": "CT",
+            "team_l_id": 3,
             "event_number": 8,
             "round": 0
         }
@@ -105,7 +105,7 @@
             "game_id": 1,
             "reason": 3,
             "player_id": 1,
-            "team": "CT",
+            "team_l_id": 3,
             "event_number": 9,
             "round": 0
         }
@@ -123,7 +123,7 @@
             "game_id": 1,
             "reason": 9,
             "message": "#SFUI_Notice_Terrorists_Win",
-            "team_l_id": 1,
+            "team_l_id": 2,
             "event_number": 11,
             "round": 1
         }
