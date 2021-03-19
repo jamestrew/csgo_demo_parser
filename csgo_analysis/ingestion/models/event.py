@@ -27,11 +27,11 @@ class Event(DBConn, DB):
         return rs
 
 
-class EventJson(DBConn):
+class EventJson(DBConn, DB):
 
     _ID = DB._ID
     _GAME_ID = DB._GAME_ID
-    _DATA = 'data'
+    _DATA = Field('data', json, None)
 
     _TABLE_NAME = 'event_json'
 
