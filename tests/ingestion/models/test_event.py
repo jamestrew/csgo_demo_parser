@@ -661,16 +661,16 @@ def test_build_event_round_start():
     }
 
     rs = {
-        'game_id': 1,
-        'timelimit': 999,
-        'event_number': 1,
-        'round': 1
+        DB._GAME_ID: 1,
+        RoundStart._TIMELIMIT: 999,
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
 
     event = RoundStart()
     output = event.build_event(1, event_data, 1, 1)
-    assert output == rs
-    assert event.data_set == [rs]
+    TestCase().assertDictEqual(output, rs)
+    assert event.data_set == [output]
     assert event._TABLE_NAME == EventTypes.ROUND_START
 
 
@@ -680,10 +680,10 @@ def test_round_start_insert(connect_patch, close_path,
                             game_id, db_conn, db_cur):
     rs = [
         {
-            'game_id': game_id,
-            'timelimit': 999,
-            'event_number': 1,
-            'round': 1
+            DB._GAME_ID: game_id,
+            RoundStart._TIMELIMIT: 999,
+            DB._EVENT_NUMBER: 1,
+            DB._ROUND: 1
         }
     ]
 

@@ -259,12 +259,16 @@ class RoundStart(Event):
 
     _ID = DB._ID
     _GAME_ID = DB._GAME_ID
-    _TIMELIMIT = 'timelimit'
+    _TIMELIMIT = Field('timelimit', int, 'timelimit')
     _EVENT_NUMBER = DB._EVENT_NUMBER
     _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.ROUND_START
 
+    def build_rs(self, event_data):
+        self.rs = {
+            self._TIMELIMIT: event_data[self._TIMELIMIT.ref],
+        }
 
 class RoundEnd(Event):
 
