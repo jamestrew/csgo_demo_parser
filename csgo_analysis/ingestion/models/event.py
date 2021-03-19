@@ -202,8 +202,15 @@ class ItemEquip(Event):
 
     _TABLE_NAME = EventTypes.ITEM_EQUIP
 
+    def build_rs(self, event_data):
+        self.rs = {
+            self._PLAYER_ID: event_data[self._PLAYER_ID.ref],
+            self._TEAM_L_ID: Team.get_team_id(event_data[self._TEAM_L_ID.ref]),
+            self._ITEM_ID: event_data[self._ITEM_ID.ref],
+        }
+
     def build_event(self, game_id, event_data, event_number, round_count):
-        if event_data.get(self._COMP[self._TEAM]) is None:
+        if event_data[self._TEAM_L_ID.ref] is None:
             return False
         return super().build_event(game_id, event_data, event_number, round_count)
 

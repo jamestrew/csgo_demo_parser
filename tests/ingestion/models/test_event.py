@@ -509,7 +509,7 @@ def test_build_event_item_equip():
         "weptype": "0 ",
         "defindex": "515 ",
         "hassilencer": "0 ",
-        DB._ITEM_ID: 42,
+        "item_id": 42,
         "team": "CT "
     }
     rs = {
@@ -522,8 +522,8 @@ def test_build_event_item_equip():
     }
     event = ItemEquip()
     output = event.build_event(1, data, 1, 1)
-    assert output == rs
-    assert event.data_set == [rs]
+    TestCase().assertDictEqual(output, rs)
+    assert event.data_set == [output]
     assert event._TABLE_NAME == EventTypes.ITEM_EQUIP
 
 
