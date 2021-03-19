@@ -221,11 +221,18 @@ class BombPlanted(Event):
     _GAME_ID = DB._GAME_ID
     _PLAYER_ID = DB._PLAYER_ID
     _TEAM_L_ID = DB._TEAM_L_ID
-    _SITE = 'site'
+    _SITE = Field('site', int, 'site')
     _EVENT_NUMBER = DB._EVENT_NUMBER
     _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.BOMB_PLANTED
+
+    def build_rs(self, event_data):
+        self.rs = {
+            self._PLAYER_ID: event_data[self._PLAYER_ID.ref],
+            self._TEAM_L_ID: Team.get_team_id(event_data[self._TEAM_L_ID.ref]),
+            self._SITE: event_data[self._SITE.ref],
+        }
 
 
 class BombDefused(Event):
@@ -234,7 +241,7 @@ class BombDefused(Event):
     _GAME_ID = DB._GAME_ID
     _PLAYER_ID = DB._PLAYER_ID
     _TEAM_L_ID = DB._TEAM_L_ID
-    _SITE = 'site'
+    _SITE = Field('site', int, 'site')
     _EVENT_NUMBER = DB._EVENT_NUMBER
     _ROUND = DB._ROUND
 
