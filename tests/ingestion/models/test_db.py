@@ -22,6 +22,7 @@ def test_type_casting():
         Field('isheadshot', DB.custom_bool, None): "1 ",
         Field('penetration', DB.custom_bool, None): "0 ",
         Field('distance', float, None): "29.0981 ",
+        Field('assister_id', int, None, True): None
     }
     output_rs = {
         Field('id', int, None): 1,
@@ -29,6 +30,7 @@ def test_type_casting():
         Field('isheadshot', DB.custom_bool, None): True,
         Field('penetration', DB.custom_bool, None): False,
         Field('distance', float, None): 29.0981,
+        Field('assister_id', int, None, True): None
     }
     output = DB.cast_data(rs)
     TestCase().assertDictEqual(output, output_rs)

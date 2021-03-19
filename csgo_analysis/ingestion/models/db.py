@@ -1,14 +1,12 @@
 import re
 from collections import namedtuple
 
-FieldBase = namedtuple('Field', ['col_name', 'data_type'])
+FieldBase = namedtuple('Field', ['col_name', 'data_type', 'ref', 'nullable'])
 
 
 class Field(FieldBase):
-    def __new__(cls, col_name, data_type, ref):
-        obj = FieldBase.__new__(cls, col_name, data_type)
-        obj.ref = ref
-        return obj
+    def __new__(cls, col_name, data_type, ref, nullable=False):
+        return super().__new__(cls, col_name, data_type, ref, nullable)
 
     def __repr__(self):
         return self.col_name
@@ -27,9 +25,9 @@ class DB:
     _ID = Field('id', int, None)
     _GAME_ID = Field('game_id', int, None)
     _PLAYER_ID = Field('player_id', int, 'userid')
-    _ATTACKER_ID = Field('attacker_id', int, 'attacker_id')
+    _ATTACKER_ID = Field('attacker_id', int, 'attacker_id', True)
     _TEAM_L_ID = Field('team_l_id', int, 'team')
-    _ITEM_ID = Field('item_id', int, 'item_id')
+    _ITEM_ID = Field('item_id', int, 'item_id', True)
     _EVENT_NUMBER = Field('event_number', int, None)
     _ROUND = Field('round', int, None)
 
@@ -41,10 +39,13 @@ class DB:
         ''' Return dataset with data type-casted correctly. '''
         for col, val in recordset.items():
             data_type = col.data_type
-            data = data_type(val)
-            if data_type == str:
-                data = data.strip()
-            recordset[col] = data
+            nullable = col.nullable
+
+            if not nullable and val is not None:
+                val = data_type(val)
+                if data_type == str:
+                    val = val.strip()
+            recordset[col] = val
         return recordset
 
     @staticmethod
