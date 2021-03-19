@@ -247,6 +247,13 @@ class BombDefused(Event):
 
     _TABLE_NAME = EventTypes.BOMB_DEFUSED
 
+    def build_rs(self, event_data):
+        self.rs = {
+            self._PLAYER_ID: event_data[self._PLAYER_ID.ref],
+            self._TEAM_L_ID: Team.get_team_id(event_data[self._TEAM_L_ID.ref]),
+            self._SITE: event_data[self._SITE.ref],
+        }
+
 
 class RoundStart(Event):
 

@@ -615,7 +615,7 @@ def test_build_event_bomb_defused():
 
     rs = {
         DB._GAME_ID: 1,
-        "site": 302,
+        BombPlanted._SITE: 302,
         DB._PLAYER_ID: 1,
         DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
@@ -624,8 +624,8 @@ def test_build_event_bomb_defused():
 
     event = BombDefused()
     output = event.build_event(1, event_data, 1, 1)
-    assert output == rs
-    assert event.data_set == [rs]
+    TestCase().assertDictEqual(output, rs)
+    assert event.data_set == [output]
     assert event._TABLE_NAME == EventTypes.BOMB_DEFUSED
 
 
@@ -636,7 +636,7 @@ def test_bomb_defused_insert(connect_patch, close_path,
     rs = [
         {
             DB._GAME_ID: game_id,
-            "site": 302,
+            BombPlanted._SITE: 302,
             DB._PLAYER_ID: player_id,
             DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,
