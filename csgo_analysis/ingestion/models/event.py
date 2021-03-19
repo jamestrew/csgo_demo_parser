@@ -29,8 +29,8 @@ class Event(DBConn, DB):
 
 class EventJson(DBConn):
 
-    _ID = 'id'
-    _GAME_ID = 'game_id'
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
     _DATA = 'data'
 
     _TABLE_NAME = 'event_json'
@@ -150,90 +150,47 @@ class PlayerHurt(Event, DB):
 
 class PlayerFallDamage(Event, DB):
 
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _PLAYER_ID = 'player_id'
-    _TEAM = 'team'
-    _DAMAGE = 'damage'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _PLAYER_ID: int,
-        _TEAM: str,
-        _DAMAGE: float,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _PLAYER_ID: 'userid',
-        _TEAM: 'team',
-        _DAMAGE: 'damage'
-    }
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
+    _PLAYER_ID = DB._PLAYER_ID
+    _TEAM_L_ID = DB._TEAM_L_ID
+    _DAMAGE = Field('damage', float, 'damage')
+    _EVENT_NUMBER = DB._EVENT_NUMBER
+    _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.PLAYER_FALLDAMAGE
+
+    def build_rs(self, event_data):
+        self.rs = {
+            self._PLAYER_ID: event_data[self._PLAYER_ID.ref],
+            self._TEAM_L_ID: Team.get_team_id(event_data[self._TEAM_L_ID.ref]),
+            self._DAMAGE: event_data[self._DAMAGE.ref],
+        }
 
 
 class WeaponFire(Event, DB):
 
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _PLAYER_ID = 'player_id'
-    _TEAM = 'team'
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
+    _PLAYER_ID = DB._PLAYER_ID
+    _TEAM_L_ID = DB._TEAM_L_ID
     _ITEM_ID = 'item_id'
     _SILENCED = 'silenced'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _PLAYER_ID: int,
-        _TEAM: str,
-        _ITEM_ID: int,
-        _SILENCED: DB.custom_bool,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _PLAYER_ID: 'userid',
-        _TEAM: 'team',
-        _ITEM_ID: 'item_id',
-        _SILENCED: 'silenced'
-    }
+    _EVENT_NUMBER = DB._EVENT_NUMBER
+    _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.WEAPON_FIRE
 
 
 class ItemEquip(Event):
 
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _PLAYER_ID = 'player_id'
-    _TEAM = 'team'
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
+    _PLAYER_ID = DB._PLAYER_ID
+    _TEAM_L_ID = DB._TEAM_L_ID
     _ITEM_ID = 'item_id'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _PLAYER_ID: int,
-        _TEAM: str,
-        _ITEM_ID: int,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _PLAYER_ID: 'userid',
-        _TEAM: 'team',
-        _ITEM_ID: 'item_id',
-    }
+    _EVENT_NUMBER = DB._EVENT_NUMBER
+    _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.ITEM_EQUIP
 
@@ -245,110 +202,50 @@ class ItemEquip(Event):
 
 class BombPlanted(Event):
 
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _PLAYER_ID = 'player_id'
-    _TEAM = 'team'
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
+    _PLAYER_ID = DB._PLAYER_ID
+    _TEAM_L_ID = DB._TEAM_L_ID
     _SITE = 'site'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _PLAYER_ID: int,
-        _TEAM: str,
-        _SITE: int,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _PLAYER_ID: 'userid',
-        _TEAM: 'team',
-        _SITE: 'site'
-    }
+    _EVENT_NUMBER = DB._EVENT_NUMBER
+    _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.BOMB_PLANTED
 
 
 class BombDefused(Event):
 
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _PLAYER_ID = 'player_id'
-    _TEAM = 'team'
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
+    _PLAYER_ID = DB._PLAYER_ID
+    _TEAM_L_ID = DB._TEAM_L_ID
     _SITE = 'site'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _PLAYER_ID: int,
-        _TEAM: str,
-        _SITE: int,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _PLAYER_ID: 'userid',
-        _TEAM: 'team',
-        _SITE: 'site'
-    }
+    _EVENT_NUMBER = DB._EVENT_NUMBER
+    _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.BOMB_DEFUSED
 
 
 class RoundStart(Event):
 
-    _ID = 'id'
-    _GAME_ID = 'game_id'
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
     _TIMELIMIT = 'timelimit'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _TIMELIMIT: int,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _TIMELIMIT: 'timelimit'
-    }
+    _EVENT_NUMBER = DB._EVENT_NUMBER
+    _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.ROUND_START
 
 
 class RoundEnd(Event):
 
-    _ID = 'id'
-    _GAME_ID = 'game_id'
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
     _TEAM_L_ID = 'team_l_id'
     _REASON = 'reason'
     _MESSAGE = 'message'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _TEAM_L_ID: int,
-        _REASON: int,
-        _MESSAGE: str,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _TEAM_L_ID: 'winner',
-        _REASON: 'reason',
-        _MESSAGE: 'message'
-    }
+    _EVENT_NUMBER = DB._EVENT_NUMBER
+    _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.ROUND_END
 
@@ -361,28 +258,12 @@ class RoundEnd(Event):
 
 class RoundMVP(Event):
 
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _PLAYER_ID = 'player_id'
-    _TEAM = 'team'
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
+    _PLAYER_ID = DB._PLAYER_ID
+    _TEAM_L_ID = DB._TEAM_L_ID
     _REASON = 'reason'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _PLAYER_ID: int,
-        _TEAM: str,
-        _REASON: int,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _PLAYER_ID: 'userid',
-        _TEAM: 'team',
-        _REASON: 'reason',
-    }
+    _EVENT_NUMBER = DB._EVENT_NUMBER
+    _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.ROUND_MVP

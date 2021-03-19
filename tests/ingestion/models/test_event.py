@@ -397,7 +397,7 @@ def test_build_event_player_falldamage():
     rs = {
         DB._GAME_ID: 1,
         DB._PLAYER_ID: 6,
-        "damage": 0.297619,
+        PlayerFallDamage._DAMAGE: 0.297619,
         DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
         DB._ROUND: 1
@@ -405,8 +405,8 @@ def test_build_event_player_falldamage():
 
     event = PlayerFallDamage()
     output = event.build_event(1, event_data, 1, 1)
-    assert output == rs
-    assert event.data_set == [rs]
+    TestCase().assertDictEqual(output, rs)
+    assert event.data_set == [output]
     assert event._TABLE_NAME == EventTypes.PLAYER_FALLDAMAGE
 
 
@@ -418,7 +418,7 @@ def test_player_falldamage_insert(connect_patch, close_path,
         {
             DB._GAME_ID: game_id,
             DB._PLAYER_ID: player_id,
-            "damage": 0.297619,
+            PlayerFallDamage._DAMAGE: 0.297619,
             DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,
             DB._ROUND: 1
@@ -426,7 +426,7 @@ def test_player_falldamage_insert(connect_patch, close_path,
         {
             DB._GAME_ID: game_id,
             DB._PLAYER_ID: player_id,
-            "damage": 0.297619,
+            PlayerFallDamage._DAMAGE: 0.297619,
             DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 2,
             DB._ROUND: 1
