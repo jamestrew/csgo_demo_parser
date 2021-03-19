@@ -297,8 +297,15 @@ class RoundMVP(Event):
     _GAME_ID = DB._GAME_ID
     _PLAYER_ID = DB._PLAYER_ID
     _TEAM_L_ID = DB._TEAM_L_ID
-    _REASON = 'reason'
+    _REASON = Field('reason', int, 'reason')
     _EVENT_NUMBER = DB._EVENT_NUMBER
     _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.ROUND_MVP
+
+    def build_rs(self, event_data):
+        self.rs = {
+            self._PLAYER_ID: event_data[self._PLAYER_ID.ref],
+            self._TEAM_L_ID: Team.get_team_id(event_data[self._TEAM_L_ID.ref]),
+            self._REASON: event_data[self._REASON.ref],
+        }
