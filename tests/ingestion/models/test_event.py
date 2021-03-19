@@ -707,16 +707,16 @@ def test_build_event_round_end():
     }
     rs = {
         DB._GAME_ID: 1,
-        "reason": 9,
-        "message": "#SFUI_Notice_Terrorists_Win",
-        "team_l_id": 1,
+        RoundEnd._REASON: 9,
+        RoundEnd._MESSAGE: "#SFUI_Notice_Terrorists_Win",
+        RoundEnd._TEAM_L_ID: 2,
         DB._EVENT_NUMBER: 1,
         DB._ROUND: 1
     }
     event = RoundEnd()
     output = event.build_event(1, data, 1, 1)
-    assert output == rs
-    assert event.data_set == [rs]
+    TestCase().assertDictEqual(output, rs)
+    assert event.data_set == [output]
     assert event._TABLE_NAME == EventTypes.ROUND_END
 
 
@@ -727,9 +727,9 @@ def test_round_end_insert(connect_patch, close_path,
     rs = [
         {
             DB._GAME_ID: game_id,
-            "reason": 9,
-            "message": "#SFUI_Notice_Terrorists_Win",
-            "team_l_id": 2,
+            RoundEnd._REASON: 9,
+            RoundEnd._MESSAGE: "#SFUI_Notice_Terrorists_Win",
+            RoundEnd._TEAM_L_ID: 2,
             DB._EVENT_NUMBER: 1,
             DB._ROUND: 1
         }
@@ -756,7 +756,7 @@ def test_build_event_round_mvp():
 
     rs = {
         DB._GAME_ID: 1,
-        "reason": 3,
+        RoundEnd._REASON: 3,
         DB._PLAYER_ID: 1,
         DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
@@ -765,8 +765,8 @@ def test_build_event_round_mvp():
 
     event = RoundMVP()
     output = event.build_event(1, event_data, 1, 1)
-    assert output == rs
-    assert event.data_set == [rs]
+    TestCase().assertDictEqual(output, rs)
+    assert event.data_set == [output]
     assert event._TABLE_NAME == EventTypes.ROUND_MVP
 
 
@@ -777,7 +777,7 @@ def test_round_mvp_insert(connect_patch, close_path,
     rs = [
         {
             DB._GAME_ID: game_id,
-            "reason": 3,
+            RoundEnd._REASON: 3,
             DB._PLAYER_ID: player_id,
             DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,

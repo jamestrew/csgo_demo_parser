@@ -270,23 +270,25 @@ class RoundStart(Event):
             self._TIMELIMIT: event_data[self._TIMELIMIT.ref],
         }
 
+
 class RoundEnd(Event):
 
     _ID = DB._ID
     _GAME_ID = DB._GAME_ID
-    _TEAM_L_ID = DB._TEAM_L_ID
-    _REASON = 'reason'
-    _MESSAGE = 'message'
+    _TEAM_L_ID = Field('team_l_id', int, 'winner')
+    _REASON = Field('reason', int, 'reason')
+    _MESSAGE = Field('message', str, 'message')
     _EVENT_NUMBER = DB._EVENT_NUMBER
     _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.ROUND_END
 
-    def build_event(self, game_id, event_data, event_number, round_count):
-        team_num = event_data[self._COMP[self._TEAM_L_ID]]
-        team_id = self.TEAM_L[int(team_num)].value
-        event_data[self._COMP[self._TEAM_L_ID]] = team_id
-        return super().build_event(game_id, event_data, event_number, round_count)
+    def build_rs(self, event_data):
+        self.rs = {
+            self._TEAM_L_ID: event_data[self._TEAM_L_ID.ref],
+            self._REASON: event_data[self._REASON.ref],
+            self._MESSAGE: event_data[self._MESSAGE.ref],
+        }
 
 
 class RoundMVP(Event):
