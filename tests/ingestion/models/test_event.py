@@ -444,7 +444,7 @@ def test_player_falldamage_insert(connect_patch, close_path,
 
 def test_build_event_weapon_fire():
     data = {
-        DB._ITEM_ID: 28,
+        "item_id": 28,
         "silenced": "1 ",
         "userid": 8,
         "team": "CT "
@@ -452,7 +452,7 @@ def test_build_event_weapon_fire():
     rs = {
         DB._GAME_ID: 1,
         DB._ITEM_ID: 28,
-        "silenced": True,
+        WeaponFire._SILENCED: True,
         DB._PLAYER_ID: 8,
         DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
@@ -460,8 +460,8 @@ def test_build_event_weapon_fire():
     }
     event = WeaponFire()
     output = event.build_event(1, data, 1, 1)
-    assert output == rs
-    assert event.data_set == [rs]
+    TestCase().assertDictEqual(output, rs)
+    assert event.data_set == [output]
     assert event._TABLE_NAME == EventTypes.WEAPON_FIRE
 
 
@@ -473,7 +473,7 @@ def test_weapon_fire_insert(connect_patch, close_path,
         {
             DB._GAME_ID: game_id,
             DB._ITEM_ID: 28,
-            "silenced": True,
+            WeaponFire._SILENCED: True,
             DB._PLAYER_ID: player_id,
             DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,
@@ -482,7 +482,7 @@ def test_weapon_fire_insert(connect_patch, close_path,
         {
             DB._GAME_ID: game_id,
             DB._ITEM_ID: 28,
-            "silenced": True,
+            WeaponFire._SILENCED: True,
             DB._PLAYER_ID: player_id,
             DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 2,

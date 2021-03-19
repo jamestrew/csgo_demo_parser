@@ -174,12 +174,20 @@ class WeaponFire(Event, DB):
     _GAME_ID = DB._GAME_ID
     _PLAYER_ID = DB._PLAYER_ID
     _TEAM_L_ID = DB._TEAM_L_ID
-    _ITEM_ID = 'item_id'
-    _SILENCED = 'silenced'
+    _ITEM_ID = DB._ITEM_ID
+    _SILENCED = Field('silenced', DB.custom_bool, 'silenced')
     _EVENT_NUMBER = DB._EVENT_NUMBER
     _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.WEAPON_FIRE
+
+    def build_rs(self, event_data):
+        self.rs = {
+            self._PLAYER_ID: event_data[self._PLAYER_ID.ref],
+            self._TEAM_L_ID: Team.get_team_id(event_data[self._TEAM_L_ID.ref]),
+            self._ITEM_ID: event_data[self._ITEM_ID.ref],
+            self._SILENCED: event_data[self._SILENCED.ref],
+        }
 
 
 class ItemEquip(Event):
@@ -188,7 +196,7 @@ class ItemEquip(Event):
     _GAME_ID = DB._GAME_ID
     _PLAYER_ID = DB._PLAYER_ID
     _TEAM_L_ID = DB._TEAM_L_ID
-    _ITEM_ID = 'item_id'
+    _ITEM_ID = DB._ITEM_ID
     _EVENT_NUMBER = DB._EVENT_NUMBER
     _ROUND = DB._ROUND
 
@@ -241,7 +249,7 @@ class RoundEnd(Event):
 
     _ID = DB._ID
     _GAME_ID = DB._GAME_ID
-    _TEAM_L_ID = 'team_l_id'
+    _TEAM_L_ID = DB._TEAM_L_ID
     _REASON = 'reason'
     _MESSAGE = 'message'
     _EVENT_NUMBER = DB._EVENT_NUMBER
