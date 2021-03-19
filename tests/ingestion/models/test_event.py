@@ -139,34 +139,34 @@ def test_build_event_player_death():
     rs = {
         DB._GAME_ID: 1,
         DB._ITEM_ID: 26,
-        "player_item_id": 17,
-        "distance": 12.206310,
-        "penetrated": False,
-        "assistedflash": False,
-        "wipe": False,
+        PlayerDeath._PLAYER_ITEM_ID: 17,
+        PlayerDeath._DISTANCE: 12.206310,
+        PlayerDeath._PENETRATED: False,
+        PlayerDeath._ASSISTEDFLASH: False,
+        PlayerDeath._WIPE: False,
         DB._ATTACKER_ID: 8,
-        "assister_id": None,
-        "dominated": False,
-        "attackerblind": False,
-        "noscope": False,
-        "thrusmoke": False,
-        "headshot": True,
-        "revenge": False,
+        PlayerDeath._ASSISTER_ID: None,
+        PlayerDeath._DOMINATED: False,
+        PlayerDeath._ATTACKERBLIND: False,
+        PlayerDeath._NOSCOPE: False,
+        PlayerDeath._THRUSMOKE: False,
+        PlayerDeath._HEADSHOT: True,
+        PlayerDeath._REVENGE: False,
         DB._PLAYER_ID: 4,
-        DB._TEAM_L_ID: "CT",
+        DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
         DB._ROUND: 1
     }
     event = PlayerDeath()
     output = event.build_event(1, event_data, 1, 1)
-    assert output == rs
-    assert event.data_set == [rs]
+    TestCase().assertDictEqual(output, rs)
+    assert event.data_set == [output]
     assert event._TABLE_NAME == EventTypes.PLAYER_DEATH
 
 
 def test_build_event_player_death2():
     event_data = {
-        DB._ITEM_ID: None,
+        "item_id": None,
         "player_item_id": 17,
         "distance": "12.206310 ",
         "penetrated": "0 ",
@@ -191,28 +191,28 @@ def test_build_event_player_death2():
     rs = {
         DB._GAME_ID: 1,
         DB._ITEM_ID: None,
-        "player_item_id": 17,
-        "distance": 12.206310,
-        "penetrated": False,
-        "assistedflash": False,
-        "wipe": False,
+        PlayerDeath._PLAYER_ITEM_ID: 17,
+        PlayerDeath._DISTANCE: 12.206310,
+        PlayerDeath._PENETRATED: False,
+        PlayerDeath._ASSISTEDFLASH: False,
+        PlayerDeath._WIPE: False,
         DB._ATTACKER_ID: None,
-        "assister_id": None,
-        "dominated": False,
-        "attackerblind": False,
-        "noscope": False,
-        "thrusmoke": False,
-        "headshot": True,
-        "revenge": False,
+        PlayerDeath._ASSISTER_ID: None,
+        PlayerDeath._DOMINATED: False,
+        PlayerDeath._ATTACKERBLIND: False,
+        PlayerDeath._NOSCOPE: False,
+        PlayerDeath._THRUSMOKE: False,
+        PlayerDeath._HEADSHOT: True,
+        PlayerDeath._REVENGE: False,
         DB._PLAYER_ID: 4,
-        DB._TEAM_L_ID: "CT",
+        DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
         DB._ROUND: 1
     }
     event = PlayerDeath()
     output = event.build_event(1, event_data, 1, 1)
-    assert output == rs
-    assert event.data_set == [rs]
+    TestCase().assertDictEqual(output, rs)
+    assert event.data_set == [output]
     assert event._TABLE_NAME == EventTypes.PLAYER_DEATH
 
 
@@ -224,63 +224,63 @@ def test_player_death_insert(connect_patch, close_path,
         {
             DB._GAME_ID: game_id,
             DB._ITEM_ID: 26,
-            "player_item_id": 17,
-            "distance": 12.206310,
-            "penetrated": False,
-            "assistedflash": False,
-            "wipe": False,
+            PlayerDeath._PLAYER_ITEM_ID: 17,
+            PlayerDeath._DISTANCE: 12.206310,
+            PlayerDeath._PENETRATED: False,
+            PlayerDeath._ASSISTEDFLASH: False,
+            PlayerDeath._WIPE: False,
             DB._ATTACKER_ID: attacker_id,
-            "assister_id": None,
-            "dominated": False,
-            "attackerblind": False,
-            "noscope": False,
-            "thrusmoke": False,
-            "headshot": True,
-            "revenge": False,
+            PlayerDeath._ASSISTER_ID: None,
+            PlayerDeath._DOMINATED: False,
+            PlayerDeath._ATTACKERBLIND: False,
+            PlayerDeath._NOSCOPE: False,
+            PlayerDeath._THRUSMOKE: False,
+            PlayerDeath._HEADSHOT: True,
+            PlayerDeath._REVENGE: False,
             DB._PLAYER_ID: player_id,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,
             DB._ROUND: 1
         },
         {
             DB._GAME_ID: game_id,
             DB._ITEM_ID: 26,
-            "player_item_id": 17,
-            "distance": 12.206310,
-            "penetrated": False,
-            "assistedflash": False,
-            "wipe": False,
+            PlayerDeath._PLAYER_ITEM_ID: 17,
+            PlayerDeath._DISTANCE: 12.206310,
+            PlayerDeath._PENETRATED: False,
+            PlayerDeath._ASSISTEDFLASH: False,
+            PlayerDeath._WIPE: False,
             DB._ATTACKER_ID: attacker_id,
-            "assister_id": None,
-            "dominated": False,
-            "attackerblind": False,
-            "noscope": False,
-            "thrusmoke": False,
-            "headshot": True,
-            "revenge": False,
+            PlayerDeath._ASSISTER_ID: None,
+            PlayerDeath._DOMINATED: False,
+            PlayerDeath._ATTACKERBLIND: False,
+            PlayerDeath._NOSCOPE: False,
+            PlayerDeath._THRUSMOKE: False,
+            PlayerDeath._HEADSHOT: True,
+            PlayerDeath._REVENGE: False,
             DB._PLAYER_ID: player_id,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 2,
             DB._ROUND: 1
         },
         {
             DB._GAME_ID: game_id,
             DB._ITEM_ID: None,
-            "player_item_id": 17,
-            "distance": None,
-            "penetrated": False,
-            "assistedflash": False,
-            "wipe": False,
+            PlayerDeath._PLAYER_ITEM_ID: 17,
+            PlayerDeath._DISTANCE: None,
+            PlayerDeath._PENETRATED: False,
+            PlayerDeath._ASSISTEDFLASH: False,
+            PlayerDeath._WIPE: False,
             DB._ATTACKER_ID: None,
-            "assister_id": None,
-            "dominated": False,
-            "attackerblind": False,
-            "noscope": False,
-            "thrusmoke": False,
-            "headshot": True,
-            "revenge": False,
+            PlayerDeath._ASSISTER_ID: None,
+            PlayerDeath._DOMINATED: False,
+            PlayerDeath._ATTACKERBLIND: False,
+            PlayerDeath._NOSCOPE: False,
+            PlayerDeath._THRUSMOKE: False,
+            PlayerDeath._HEADSHOT: True,
+            PlayerDeath._REVENGE: False,
             DB._PLAYER_ID: player_id,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 3,
             DB._ROUND: 1
         }
@@ -317,7 +317,7 @@ def test_build_event_player_hurt():
         "hitgroup": 2,
         DB._PLAYER_ID: 5,
         DB._ATTACKER_ID: 6,
-        DB._TEAM_L_ID: "CT",
+        DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
         DB._ROUND: 1
     }
@@ -344,7 +344,7 @@ def test_player_hurt_insert(connect_patch, close_path,
             "hitgroup": 2,
             DB._PLAYER_ID: player_id,
             DB._ATTACKER_ID: attacker_id,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,
             DB._ROUND: 1
         },
@@ -358,7 +358,7 @@ def test_player_hurt_insert(connect_patch, close_path,
             "hitgroup": 2,
             DB._PLAYER_ID: player_id,
             DB._ATTACKER_ID: attacker_id,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 2,
             DB._ROUND: 1
         },
@@ -372,7 +372,7 @@ def test_player_hurt_insert(connect_patch, close_path,
             "hitgroup": 2,
             DB._PLAYER_ID: player_id,
             DB._ATTACKER_ID: None,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 3,
             DB._ROUND: 1
         }
@@ -398,7 +398,7 @@ def test_build_event_player_falldamage():
         DB._GAME_ID: 1,
         DB._PLAYER_ID: 6,
         "damage": 0.297619,
-        DB._TEAM_L_ID: "CT",
+        DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
         DB._ROUND: 1
     }
@@ -419,7 +419,7 @@ def test_player_falldamage_insert(connect_patch, close_path,
             DB._GAME_ID: game_id,
             DB._PLAYER_ID: player_id,
             "damage": 0.297619,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,
             DB._ROUND: 1
         },
@@ -427,7 +427,7 @@ def test_player_falldamage_insert(connect_patch, close_path,
             DB._GAME_ID: game_id,
             DB._PLAYER_ID: player_id,
             "damage": 0.297619,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 2,
             DB._ROUND: 1
         }
@@ -454,7 +454,7 @@ def test_build_event_weapon_fire():
         DB._ITEM_ID: 28,
         "silenced": True,
         DB._PLAYER_ID: 8,
-        DB._TEAM_L_ID: "CT",
+        DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
         DB._ROUND: 1
     }
@@ -475,7 +475,7 @@ def test_weapon_fire_insert(connect_patch, close_path,
             DB._ITEM_ID: 28,
             "silenced": True,
             DB._PLAYER_ID: player_id,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,
             DB._ROUND: 1
         },
@@ -484,7 +484,7 @@ def test_weapon_fire_insert(connect_patch, close_path,
             DB._ITEM_ID: 28,
             "silenced": True,
             DB._PLAYER_ID: player_id,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 2,
             DB._ROUND: 1
         }
@@ -516,7 +516,7 @@ def test_build_event_item_equip():
         DB._GAME_ID: 1,
         DB._PLAYER_ID: 2,
         DB._ITEM_ID: 42,
-        DB._TEAM_L_ID: "CT",
+        DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
         DB._ROUND: 1
     }
@@ -536,7 +536,7 @@ def test_item_equip_insert(connect_patch, close_path,
             DB._GAME_ID: game_id,
             DB._PLAYER_ID: player_id,
             DB._ITEM_ID: 42,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,
             DB._ROUND: 1
         },
@@ -544,7 +544,7 @@ def test_item_equip_insert(connect_patch, close_path,
             DB._GAME_ID: game_id,
             DB._PLAYER_ID: player_id,
             DB._ITEM_ID: 42,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 2,
             DB._ROUND: 1
         }
@@ -570,7 +570,7 @@ def test_build_event_bomb_planted():
         DB._GAME_ID: 1,
         "site": 301,
         DB._PLAYER_ID: 4,
-        DB._TEAM_L_ID: "CT",
+        DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
         DB._ROUND: 1
     }
@@ -591,7 +591,7 @@ def test_bomb_planted_insert(connect_patch, close_path,
             DB._GAME_ID: game_id,
             "site": 301,
             DB._PLAYER_ID: player_id,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,
             DB._ROUND: 1
         }
@@ -617,7 +617,7 @@ def test_build_event_bomb_defused():
         DB._GAME_ID: 1,
         "site": 302,
         DB._PLAYER_ID: 1,
-        DB._TEAM_L_ID: "CT",
+        DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
         DB._ROUND: 1
     }
@@ -638,7 +638,7 @@ def test_bomb_defused_insert(connect_patch, close_path,
             DB._GAME_ID: game_id,
             "site": 302,
             DB._PLAYER_ID: player_id,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,
             DB._ROUND: 1
         }
@@ -758,7 +758,7 @@ def test_build_event_round_mvp():
         DB._GAME_ID: 1,
         "reason": 3,
         DB._PLAYER_ID: 1,
-        DB._TEAM_L_ID: "CT",
+        DB._TEAM_L_ID: 3,
         DB._EVENT_NUMBER: 1,
         DB._ROUND: 1
     }
@@ -779,7 +779,7 @@ def test_round_mvp_insert(connect_patch, close_path,
             DB._GAME_ID: game_id,
             "reason": 3,
             DB._PLAYER_ID: player_id,
-            DB._TEAM_L_ID: "CT",
+            DB._TEAM_L_ID: 3,
             DB._EVENT_NUMBER: 1,
             DB._ROUND: 1
         }

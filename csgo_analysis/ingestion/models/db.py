@@ -39,9 +39,8 @@ class DB:
         ''' Return dataset with data type-casted correctly. '''
         for col, val in recordset.items():
             data_type = col.data_type
-            nullable = col.nullable
 
-            if not nullable and val is not None:
+            if val is not None:
                 val = data_type(val)
                 if data_type == str:
                     val = val.strip()

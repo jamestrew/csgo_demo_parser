@@ -89,11 +89,31 @@ class PlayerDeath(Event, DB):
     _PENETRATED = Field('penetrated', DB.custom_bool, 'penetrated')
     _NOSCOPE = Field('noscope', DB.custom_bool, 'noscope')
     _ATTACKERBLIND = Field('attackerblind', DB.custom_bool, 'attackerblind')
-    _DISTANCE = Field('distance', float, 'distance')
+    _DISTANCE = Field('distance', float, 'distance', True)
     _EVENT_NUMBER = DB._EVENT_NUMBER
     _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.PLAYER_DEATH
+
+    def build_rs(self, event_data):
+        self.rs = {
+            self._PLAYER_ID: event_data[self._PLAYER_ID.ref],
+            self._TEAM_L_ID: Team.get_team_id(event_data[self._TEAM_L_ID.ref]),
+            self._PLAYER_ITEM_ID: event_data[self._PLAYER_ITEM_ID.ref],
+            self._ATTACKER_ID: event_data[self._ATTACKER_ID.ref],
+            self._ASSISTER_ID: event_data[self._ASSISTER_ID.ref],
+            self._ITEM_ID: event_data[self._ITEM_ID.ref],
+            self._ASSISTEDFLASH: event_data[self._ASSISTEDFLASH.ref],
+            self._HEADSHOT: event_data[self._HEADSHOT.ref],
+            self._DOMINATED: event_data[self._DOMINATED.ref],
+            self._REVENGE: event_data[self._REVENGE.ref],
+            self._WIPE: event_data[self._WIPE.ref],
+            self._PENETRATED: event_data[self._PENETRATED.ref],
+            self._NOSCOPE: event_data[self._NOSCOPE.ref],
+            self._THRUSMOKE: event_data[self._THRUSMOKE.ref],
+            self._ATTACKERBLIND: event_data[self._ATTACKERBLIND.ref],
+            self._DISTANCE: event_data[self._DISTANCE.ref],
+        }
 
 
 class PlayerHurt(Event, DB):
