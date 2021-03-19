@@ -1,7 +1,10 @@
+from datetime import datetime
+from unittest import TestCase
 from unittest.mock import patch
-import pytest
-from psycopg2._psycopg import TimestampFromTicks
 
+import pytest
+
+from csgo_analysis.ingestion.models.db import DB
 from csgo_analysis.ingestion.const import EventTypes
 from csgo_analysis.ingestion.models import (BombDefused, BombPlanted,  # noqa
                                             EventJson, ItemEquip, PlayerBlind,
@@ -12,8 +15,14 @@ from csgo_analysis.ingestion.models import (BombDefused, BombPlanted,  # noqa
 
 @pytest.fixture(scope='module')
 def game_id(db_cur):
-    insert_str = "INSERT INTO game (share_code, match_time, match_duration, map_l_id, final_score_two, final_score_three) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id"
-    val = ['CSGO-xQKYC-4Nbc4-h43V2-Jc66v-EWtrT', TimestampFromTicks(1613364114), 2319, 1, 10, 16]
+    insert_str = """INSERT INTO game (
+        share_code,
+        match_time,
+        match_duration,
+        map_l_id
+    )
+    VALUES (%s, %s, %s, %s) RETURNING id"""
+    val = ['CSGO-xQKYC-4Nbc4-h43V2-Jc66v-EWtrT', datetime.fromtimestamp(1613364114), 2319, 1]
 
     db_cur.execute(insert_str, val)
     return db_cur.fetchone()[0]
@@ -22,11 +31,11 @@ def game_id(db_cur):
 @pytest.fixture(scope='module')
 def player_id(db_cur, game_id):
     insert_str = """
-        INSERT INTO player (game_id, team_l_id, xuid, player_name)
+        INSERT INTO player (game_id, first_team_l_id, xuid, player_name)
         VALUES (%s, %s, %s, %s)
         RETURNING id
     """
-    val = [game_id, 1, 123345, 's1mple']
+    val = [game_id, 2, '123345', 's1mple']
     db_cur.execute(insert_str, val)
     return db_cur.fetchone()[0]
 
@@ -34,11 +43,11 @@ def player_id(db_cur, game_id):
 @pytest.fixture(scope='module')
 def attacker_id(db_cur, game_id):
     insert_str = """
-        INSERT INTO player (game_id, team_l_id, xuid, player_name)
+        INSERT INTO player (game_id, first_team_l_id, xuid, player_name)
         VALUES (%s, %s, %s, %s)
         RETURNING id
     """
-    val = [game_id, 1, 456789, 'device']
+    val = [game_id, 3, '456788909', 'device']
     db_cur.execute(insert_str, val)
     return db_cur.fetchone()[0]
 
@@ -53,19 +62,19 @@ def test_build_event_player_blind():
     }
 
     rs = {
-        "game_id": 1,
-        "blind_duration": 2.782995,
-        "player_id": 8,
-        "attacker_id": 4,
-        "team": "CT",
-        "event_number": 1,
-        "round": 1
+        PlayerBlind._GAME_ID: 1,
+        PlayerBlind._BLIND_DURATION: 2.782995,
+        PlayerBlind._PLAYER_ID: 8,
+        PlayerBlind._ATTACKER_ID: 4,
+        PlayerBlind._TEAM_L_ID: 3,
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
 
     event = PlayerBlind()
     output = event.build_event(1, event_data, 1, 1)
-    assert output == rs
-    assert event.data_set == [rs]
+    TestCase().assertDictEqual(output, rs)
+    assert event.data_set == [output]
     assert event._TABLE_NAME == EventTypes.PLAYER_BLIND
 
 
@@ -75,22 +84,22 @@ def test_player_blind_insert(connect_patch, close_path,
                              game_id, player_id, db_conn, db_cur, attacker_id):
     rs = [
         {
-            "game_id": game_id,
-            "blind_duration": 2.782995,
-            "player_id": player_id,
-            "attacker_id": attacker_id,
-            "team": "CT",
-            "event_number": 1,
-            "round": 1
+            DB._GAME_ID: game_id,
+            PlayerBlind._BLIND_DURATION: 2.782995,
+            DB._PLAYER_ID: player_id,
+            DB._ATTACKER_ID: attacker_id,
+            DB._TEAM_L_ID: 3,
+            DB._EVENT_NUMBER: 1,
+            DB._ROUND: 1
         },
         {
-            "game_id": game_id,
-            "blind_duration": 2.782995,
-            "player_id": player_id,
-            "attacker_id": attacker_id,
-            "team": "CT",
-            "event_number": 2,
-            "round": 1
+            DB._GAME_ID: game_id,
+            PlayerBlind._BLIND_DURATION: 2.782995,
+            DB._PLAYER_ID: player_id,
+            DB._ATTACKER_ID: attacker_id,
+            DB._TEAM_L_ID: 3,
+            DB._EVENT_NUMBER: 2,
+            DB._ROUND: 1
         }
     ]
 
@@ -128,14 +137,14 @@ def test_build_event_player_death():
     }
 
     rs = {
-        "game_id": 1,
-        "item_id": 26,
+        DB._GAME_ID: 1,
+        DB._ITEM_ID: 26,
         "player_item_id": 17,
         "distance": 12.206310,
         "penetrated": False,
         "assistedflash": False,
         "wipe": False,
-        "attacker_id": 8,
+        DB._ATTACKER_ID: 8,
         "assister_id": None,
         "dominated": False,
         "attackerblind": False,
@@ -143,10 +152,10 @@ def test_build_event_player_death():
         "thrusmoke": False,
         "headshot": True,
         "revenge": False,
-        "player_id": 4,
-        "team": "CT",
-        "event_number": 1,
-        "round": 1
+        DB._PLAYER_ID: 4,
+        DB._TEAM_L_ID: "CT",
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
     event = PlayerDeath()
     output = event.build_event(1, event_data, 1, 1)
@@ -157,7 +166,7 @@ def test_build_event_player_death():
 
 def test_build_event_player_death2():
     event_data = {
-        "item_id": None,
+        DB._ITEM_ID: None,
         "player_item_id": 17,
         "distance": "12.206310 ",
         "penetrated": "0 ",
@@ -180,14 +189,14 @@ def test_build_event_player_death2():
     }
 
     rs = {
-        "game_id": 1,
-        "item_id": None,
+        DB._GAME_ID: 1,
+        DB._ITEM_ID: None,
         "player_item_id": 17,
         "distance": 12.206310,
         "penetrated": False,
         "assistedflash": False,
         "wipe": False,
-        "attacker_id": None,
+        DB._ATTACKER_ID: None,
         "assister_id": None,
         "dominated": False,
         "attackerblind": False,
@@ -195,10 +204,10 @@ def test_build_event_player_death2():
         "thrusmoke": False,
         "headshot": True,
         "revenge": False,
-        "player_id": 4,
-        "team": "CT",
-        "event_number": 1,
-        "round": 1
+        DB._PLAYER_ID: 4,
+        DB._TEAM_L_ID: "CT",
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
     event = PlayerDeath()
     output = event.build_event(1, event_data, 1, 1)
@@ -213,14 +222,14 @@ def test_player_death_insert(connect_patch, close_path,
                              game_id, player_id, db_conn, db_cur, attacker_id):
     rs = [
         {
-            "game_id": game_id,
-            "item_id": 26,
+            DB._GAME_ID: game_id,
+            DB._ITEM_ID: 26,
             "player_item_id": 17,
             "distance": 12.206310,
             "penetrated": False,
             "assistedflash": False,
             "wipe": False,
-            "attacker_id": attacker_id,
+            DB._ATTACKER_ID: attacker_id,
             "assister_id": None,
             "dominated": False,
             "attackerblind": False,
@@ -228,20 +237,20 @@ def test_player_death_insert(connect_patch, close_path,
             "thrusmoke": False,
             "headshot": True,
             "revenge": False,
-            "player_id": player_id,
-            "team": "CT",
-            "event_number": 1,
-            "round": 1
+            DB._PLAYER_ID: player_id,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 1,
+            DB._ROUND: 1
         },
         {
-            "game_id": game_id,
-            "item_id": 26,
+            DB._GAME_ID: game_id,
+            DB._ITEM_ID: 26,
             "player_item_id": 17,
             "distance": 12.206310,
             "penetrated": False,
             "assistedflash": False,
             "wipe": False,
-            "attacker_id": attacker_id,
+            DB._ATTACKER_ID: attacker_id,
             "assister_id": None,
             "dominated": False,
             "attackerblind": False,
@@ -249,20 +258,20 @@ def test_player_death_insert(connect_patch, close_path,
             "thrusmoke": False,
             "headshot": True,
             "revenge": False,
-            "player_id": player_id,
-            "team": "CT",
-            "event_number": 2,
-            "round": 1
+            DB._PLAYER_ID: player_id,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 2,
+            DB._ROUND: 1
         },
         {
-            "game_id": game_id,
-            "item_id": None,
+            DB._GAME_ID: game_id,
+            DB._ITEM_ID: None,
             "player_item_id": 17,
             "distance": None,
             "penetrated": False,
             "assistedflash": False,
             "wipe": False,
-            "attacker_id": None,
+            DB._ATTACKER_ID: None,
             "assister_id": None,
             "dominated": False,
             "attackerblind": False,
@@ -270,10 +279,10 @@ def test_player_death_insert(connect_patch, close_path,
             "thrusmoke": False,
             "headshot": True,
             "revenge": False,
-            "player_id": player_id,
-            "team": "CT",
-            "event_number": 3,
-            "round": 1
+            DB._PLAYER_ID: player_id,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 3,
+            DB._ROUND: 1
         }
     ]
 
@@ -288,7 +297,7 @@ def test_player_death_insert(connect_patch, close_path,
 
 def test_build_event_player_hurt():
     event_data = {
-        "item_id": 6,
+        DB._ITEM_ID: 6,
         "dmg_health": "8 ",
         "armor": "95 ",
         "health": "21 ",
@@ -299,18 +308,18 @@ def test_build_event_player_hurt():
         "team": "CT "
     }
     rs = {
-        "game_id": 1,
-        "item_id": 6,
+        DB._GAME_ID: 1,
+        DB._ITEM_ID: 6,
         "dmg_health": 8,
         "armor": 95,
         "health": 21,
         "dmg_armor": 4,
         "hitgroup": 2,
-        "player_id": 5,
-        "attacker_id": 6,
-        "team": "CT",
-        "event_number": 1,
-        "round": 1
+        DB._PLAYER_ID: 5,
+        DB._ATTACKER_ID: 6,
+        DB._TEAM_L_ID: "CT",
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
 
     event = PlayerHurt()
@@ -326,46 +335,46 @@ def test_player_hurt_insert(connect_patch, close_path,
                             game_id, player_id, db_conn, db_cur, attacker_id):
     rs = [
         {
-            "game_id": game_id,
-            "item_id": 6,
+            DB._GAME_ID: game_id,
+            DB._ITEM_ID: 6,
             "dmg_health": 8,
             "armor": 95,
             "health": 21,
             "dmg_armor": 4,
             "hitgroup": 2,
-            "player_id": player_id,
-            "attacker_id": attacker_id,
-            "team": "CT",
-            "event_number": 1,
-            "round": 1
+            DB._PLAYER_ID: player_id,
+            DB._ATTACKER_ID: attacker_id,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 1,
+            DB._ROUND: 1
         },
         {
-            "game_id": game_id,
-            "item_id": 6,
+            DB._GAME_ID: game_id,
+            DB._ITEM_ID: 6,
             "dmg_health": 8,
             "armor": 95,
             "health": 21,
             "dmg_armor": 4,
             "hitgroup": 2,
-            "player_id": player_id,
-            "attacker_id": attacker_id,
-            "team": "CT",
-            "event_number": 2,
-            "round": 1
+            DB._PLAYER_ID: player_id,
+            DB._ATTACKER_ID: attacker_id,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 2,
+            DB._ROUND: 1
         },
         {
-            "game_id": game_id,
-            "item_id": None,
+            DB._GAME_ID: game_id,
+            DB._ITEM_ID: None,
             "dmg_health": 8,
             "armor": 95,
             "health": 21,
             "dmg_armor": 4,
             "hitgroup": 2,
-            "player_id": player_id,
-            "attacker_id": None,
-            "team": "CT",
-            "event_number": 3,
-            "round": 1
+            DB._PLAYER_ID: player_id,
+            DB._ATTACKER_ID: None,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 3,
+            DB._ROUND: 1
         }
     ]
 
@@ -386,12 +395,12 @@ def test_build_event_player_falldamage():
     }
 
     rs = {
-        "game_id": 1,
-        "player_id": 6,
+        DB._GAME_ID: 1,
+        DB._PLAYER_ID: 6,
         "damage": 0.297619,
-        "team": "CT",
-        "event_number": 1,
-        "round": 1
+        DB._TEAM_L_ID: "CT",
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
 
     event = PlayerFallDamage()
@@ -407,20 +416,20 @@ def test_player_falldamage_insert(connect_patch, close_path,
                                   game_id, player_id, db_conn, db_cur):
     rs = [
         {
-            "game_id": game_id,
-            "player_id": player_id,
+            DB._GAME_ID: game_id,
+            DB._PLAYER_ID: player_id,
             "damage": 0.297619,
-            "team": "CT",
-            "event_number": 1,
-            "round": 1
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 1,
+            DB._ROUND: 1
         },
         {
-            "game_id": game_id,
-            "player_id": player_id,
+            DB._GAME_ID: game_id,
+            DB._PLAYER_ID: player_id,
             "damage": 0.297619,
-            "team": "CT",
-            "event_number": 2,
-            "round": 1
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 2,
+            DB._ROUND: 1
         }
     ]
 
@@ -435,19 +444,19 @@ def test_player_falldamage_insert(connect_patch, close_path,
 
 def test_build_event_weapon_fire():
     data = {
-        "item_id": 28,
+        DB._ITEM_ID: 28,
         "silenced": "1 ",
         "userid": 8,
         "team": "CT "
     }
     rs = {
-        "game_id": 1,
-        "item_id": 28,
+        DB._GAME_ID: 1,
+        DB._ITEM_ID: 28,
         "silenced": True,
-        "player_id": 8,
-        "team": "CT",
-        "event_number": 1,
-        "round": 1
+        DB._PLAYER_ID: 8,
+        DB._TEAM_L_ID: "CT",
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
     event = WeaponFire()
     output = event.build_event(1, data, 1, 1)
@@ -462,22 +471,22 @@ def test_weapon_fire_insert(connect_patch, close_path,
                             game_id, player_id, db_conn, db_cur):
     rs = [
         {
-            "game_id": game_id,
-            "item_id": 28,
+            DB._GAME_ID: game_id,
+            DB._ITEM_ID: 28,
             "silenced": True,
-            "player_id": player_id,
-            "team": "CT",
-            "event_number": 1,
-            "round": 1
+            DB._PLAYER_ID: player_id,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 1,
+            DB._ROUND: 1
         },
         {
-            "game_id": game_id,
-            "item_id": 28,
+            DB._GAME_ID: game_id,
+            DB._ITEM_ID: 28,
             "silenced": True,
-            "player_id": player_id,
-            "team": "CT",
-            "event_number": 2,
-            "round": 1
+            DB._PLAYER_ID: player_id,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 2,
+            DB._ROUND: 1
         }
     ]
 
@@ -500,16 +509,16 @@ def test_build_event_item_equip():
         "weptype": "0 ",
         "defindex": "515 ",
         "hassilencer": "0 ",
-        "item_id": 42,
+        DB._ITEM_ID: 42,
         "team": "CT "
     }
     rs = {
-        "game_id": 1,
-        "player_id": 2,
-        "item_id": 42,
-        "team": "CT",
-        "event_number": 1,
-        "round": 1
+        DB._GAME_ID: 1,
+        DB._PLAYER_ID: 2,
+        DB._ITEM_ID: 42,
+        DB._TEAM_L_ID: "CT",
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
     event = ItemEquip()
     output = event.build_event(1, data, 1, 1)
@@ -524,20 +533,20 @@ def test_item_equip_insert(connect_patch, close_path,
                            game_id, player_id, db_conn, db_cur):
     rs = [
         {
-            "game_id": game_id,
-            "player_id": player_id,
-            "item_id": 42,
-            "team": "CT",
-            "event_number": 1,
-            "round": 1
+            DB._GAME_ID: game_id,
+            DB._PLAYER_ID: player_id,
+            DB._ITEM_ID: 42,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 1,
+            DB._ROUND: 1
         },
         {
-            "game_id": game_id,
-            "player_id": player_id,
-            "item_id": 42,
-            "team": "CT",
-            "event_number": 2,
-            "round": 1
+            DB._GAME_ID: game_id,
+            DB._PLAYER_ID: player_id,
+            DB._ITEM_ID: 42,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 2,
+            DB._ROUND: 1
         }
     ]
 
@@ -558,12 +567,12 @@ def test_build_event_bomb_planted():
     }
 
     rs = {
-        "game_id": 1,
+        DB._GAME_ID: 1,
         "site": 301,
-        "player_id": 4,
-        "team": "CT",
-        "event_number": 1,
-        "round": 1
+        DB._PLAYER_ID: 4,
+        DB._TEAM_L_ID: "CT",
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
 
     event = BombPlanted()
@@ -579,12 +588,12 @@ def test_bomb_planted_insert(connect_patch, close_path,
                              game_id, player_id, db_conn, db_cur):
     rs = [
         {
-            "game_id": game_id,
+            DB._GAME_ID: game_id,
             "site": 301,
-            "player_id": player_id,
-            "team": "CT",
-            "event_number": 1,
-            "round": 1
+            DB._PLAYER_ID: player_id,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 1,
+            DB._ROUND: 1
         }
     ]
 
@@ -605,12 +614,12 @@ def test_build_event_bomb_defused():
     }
 
     rs = {
-        "game_id": 1,
+        DB._GAME_ID: 1,
         "site": 302,
-        "player_id": 1,
-        "team": "CT",
-        "event_number": 1,
-        "round": 1
+        DB._PLAYER_ID: 1,
+        DB._TEAM_L_ID: "CT",
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
 
     event = BombDefused()
@@ -626,12 +635,12 @@ def test_bomb_defused_insert(connect_patch, close_path,
                              game_id, player_id, db_conn, db_cur):
     rs = [
         {
-            "game_id": game_id,
+            DB._GAME_ID: game_id,
             "site": 302,
-            "player_id": player_id,
-            "team": "CT",
-            "event_number": 1,
-            "round": 1
+            DB._PLAYER_ID: player_id,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 1,
+            DB._ROUND: 1
         }
     ]
 
@@ -697,12 +706,12 @@ def test_build_event_round_end():
         "winner": "2 "
     }
     rs = {
-        "game_id": 1,
+        DB._GAME_ID: 1,
         "reason": 9,
         "message": "#SFUI_Notice_Terrorists_Win",
         "team_l_id": 1,
-        "event_number": 1,
-        "round": 1
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
     event = RoundEnd()
     output = event.build_event(1, data, 1, 1)
@@ -717,12 +726,12 @@ def test_round_end_insert(connect_patch, close_path,
                           game_id, db_conn, db_cur):
     rs = [
         {
-            "game_id": game_id,
+            DB._GAME_ID: game_id,
             "reason": 9,
             "message": "#SFUI_Notice_Terrorists_Win",
             "team_l_id": 2,
-            "event_number": 1,
-            "round": 1
+            DB._EVENT_NUMBER: 1,
+            DB._ROUND: 1
         }
     ]
 
@@ -746,12 +755,12 @@ def test_build_event_round_mvp():
     }
 
     rs = {
-        "game_id": 1,
+        DB._GAME_ID: 1,
         "reason": 3,
-        "player_id": 1,
-        "team": "CT",
-        "event_number": 1,
-        "round": 1
+        DB._PLAYER_ID: 1,
+        DB._TEAM_L_ID: "CT",
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
     }
 
     event = RoundMVP()
@@ -767,12 +776,12 @@ def test_round_mvp_insert(connect_patch, close_path,
                           game_id, player_id, db_conn, db_cur):
     rs = [
         {
-            "game_id": game_id,
+            DB._GAME_ID: game_id,
             "reason": 3,
-            "player_id": player_id,
-            "team": "CT",
-            "event_number": 1,
-            "round": 1
+            DB._PLAYER_ID: player_id,
+            DB._TEAM_L_ID: "CT",
+            DB._EVENT_NUMBER: 1,
+            DB._ROUND: 1
         }
     ]
 

@@ -1,40 +1,28 @@
 import json
 
 from csgo_analysis.ingestion.const import EventTypes
-from csgo_analysis.ingestion.models.db import DB
+from csgo_analysis.ingestion.models.db import DB, Field
 from csgo_analysis.ingestion.db.dbconn import DBConn
 from csgo_analysis.ingestion.models.team import Team
 
 
-class Event(DBConn):
-
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {}
-    _COMP = {}
+class Event(DBConn, DB):
 
     def __init__(self):
         super().__init__()
         self.data_set = []
+        self.rs = {}
+
+    def build_rs(self, event_data):
+        pass
 
     def build_event(self, game_id, event_data, event_number, round_count):
-        rs = {self._GAME_ID: game_id}
-        for dest_col, orig_cal in self._COMP.items():
-            data = event_data[orig_cal]
+        self.build_rs(event_data)
+        self.rs[self._GAME_ID] = game_id
+        self.rs[self._EVENT_NUMBER] = event_number
+        self.rs[self._ROUND] = round_count
 
-            if isinstance(data, str):
-                data = data.strip()
-
-            if data is None:
-                rs[dest_col] = data
-            else:
-                rs[dest_col] = self._TYPES[dest_col](data)
-
-        rs[self._EVENT_NUMBER] = event_number
-        rs[self._ROUND] = round_count
+        rs = self.cast_data(self.rs)
         self.data_set.append(rs)
         return rs
 
@@ -58,104 +46,52 @@ class EventJson(DBConn):
 class PlayerBlind(Event, DB):
 
     # columns
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _PLAYER_ID = 'player_id'
-    _TEAM = 'team'
-    _ATTACKER_ID = 'attacker_id'
-    _BLIND_DURATION = 'blind_duration'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _PLAYER_ID: int,
-        _TEAM: str,
-        _ATTACKER_ID: int,
-        _BLIND_DURATION: float,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _ATTACKER_ID: 'attacker',
-        _PLAYER_ID: 'userid',
-        _TEAM: 'team',
-        _BLIND_DURATION: 'blind_duration'
-    }
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
+    _PLAYER_ID = DB._PLAYER_ID
+    _TEAM_L_ID = DB._TEAM_L_ID
+    _ATTACKER_ID = DB._ATTACKER_ID
+    _BLIND_DURATION = Field('blind_duration', float, 'blind_duration')
+    _EVENT_NUMBER = DB._EVENT_NUMBER
+    _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.PLAYER_BLIND
 
     def __init__(self):
         super().__init__()
 
+    def build_rs(self, event_data):
+        self.rs = {
+            self._PLAYER_ID: event_data[self._PLAYER_ID.ref],
+            self._TEAM_L_ID: Team.get_team_id(event_data[self._TEAM_L_ID.ref]),
+            self._ATTACKER_ID: event_data[self._ATTACKER_ID.ref],
+            self._BLIND_DURATION: event_data[self._BLIND_DURATION.ref]
+        }
+
 
 class PlayerDeath(Event, DB):
 
     # columns
-    _ID = 'id'
-    _GAME_ID = 'game_id'
-    _PLAYER_ID = 'player_id'
-    _TEAM = 'team'
-    _PLAYER_ITEM_ID = 'player_item_id'
-    _ATTACKER_ID = 'attacker_id'
-    _ASSISTER_ID = 'assister_id'
-    _ITEM_ID = 'item_id'
-    _ASSISTEDFLASH = 'assistedflash'
-    _HEADSHOT = 'headshot'
-    _DOMINATED = 'dominated'
-    _REVENGE = 'revenge'
-    _WIPE = 'wipe'
-    _THRUSMOKE = 'thrusmoke'
-    _PENETRATED = 'penetrated'
-    _NOSCOPE = 'noscope'
-    _ATTACKERBLIND = 'attackerblind'
-    _DISTANCE = 'distance'
-    _EVENT_NUMBER = 'event_number'
-    _ROUND = 'round'
-
-    _TYPES = {
-        _ID: int,
-        _GAME_ID: int,
-        _PLAYER_ID: int,
-        _TEAM: str,
-        _PLAYER_ITEM_ID: int,
-        _ATTACKER_ID: int,
-        _ASSISTER_ID: int,
-        _ITEM_ID: int,
-        _ASSISTEDFLASH: DB.custom_bool,
-        _HEADSHOT: DB.custom_bool,
-        _DOMINATED: DB.custom_bool,
-        _REVENGE: DB.custom_bool,
-        _WIPE: DB.custom_bool,
-        _THRUSMOKE: DB.custom_bool,
-        _PENETRATED: DB.custom_bool,
-        _NOSCOPE: DB.custom_bool,
-        _ATTACKERBLIND: DB.custom_bool,
-        _DISTANCE: float,
-        _EVENT_NUMBER: int,
-        _ROUND: int
-    }
-
-    _COMP = {
-        _PLAYER_ID: 'userid',
-        _PLAYER_ITEM_ID: 'player_item_id',
-        _TEAM: 'team',
-        _ATTACKER_ID: 'attacker',
-        _ASSISTER_ID: 'assister',
-        _ASSISTEDFLASH: 'assistedflash',
-        _ITEM_ID: 'item_id',
-        _HEADSHOT: 'headshot',
-        _DOMINATED: 'dominated',
-        _REVENGE: 'revenge',
-        _WIPE: 'wipe',
-        _THRUSMOKE: 'thrusmoke',
-        _PENETRATED: 'penetrated',
-        _NOSCOPE: 'noscope',
-        _ATTACKERBLIND: 'attackerblind',
-        _DISTANCE: 'distance'
-    }
+    _ID = DB._ID
+    _GAME_ID = DB._GAME_ID
+    _PLAYER_ID = DB._PLAYER_ID
+    _TEAM_L_ID = DB._TEAM_L_ID
+    _PLAYER_ITEM_ID = Field('player_item_id', int, 'player_item_id')
+    _ATTACKER_ID = DB._ATTACKER_ID
+    _ASSISTER_ID = Field('assister_id', int, 'assister', True)
+    _ITEM_ID = DB._ITEM_ID
+    _ASSISTEDFLASH = Field('assistedflash', DB.custom_bool, 'assistedflash')
+    _HEADSHOT = Field('headshot', DB.custom_bool, 'headshot')
+    _DOMINATED = Field('dominated', DB.custom_bool, 'dominated')
+    _REVENGE = Field('revenge', DB.custom_bool, 'revenge')
+    _WIPE = Field('wipe', DB.custom_bool, 'wipe')
+    _THRUSMOKE = Field('thrusmoke', DB.custom_bool, 'thrusmoke')
+    _PENETRATED = Field('penetrated', DB.custom_bool, 'penetrated')
+    _NOSCOPE = Field('noscope', DB.custom_bool, 'noscope')
+    _ATTACKERBLIND = Field('attackerblind', DB.custom_bool, 'attackerblind')
+    _DISTANCE = Field('distance', float, 'distance')
+    _EVENT_NUMBER = DB._EVENT_NUMBER
+    _ROUND = DB._ROUND
 
     _TABLE_NAME = EventTypes.PLAYER_DEATH
 

@@ -25,7 +25,7 @@ class DB:
     _ID = Field('id', int, None)
     _GAME_ID = Field('game_id', int, None)
     _PLAYER_ID = Field('player_id', int, 'userid')
-    _ATTACKER_ID = Field('attacker_id', int, 'attacker_id', True)
+    _ATTACKER_ID = Field('attacker_id', int, 'attacker', True)
     _TEAM_L_ID = Field('team_l_id', int, 'team')
     _ITEM_ID = Field('item_id', int, 'item_id', True)
     _EVENT_NUMBER = Field('event_number', int, None)
