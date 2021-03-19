@@ -30,7 +30,7 @@ def db_cur(db_conn):
 
 @pytest.fixture()
 def fixture_path():
-    return 'tests/ingestion/fixtures'
+    return os.path.join(definition.ROOT_DIR, 'tests', 'ingestion', 'fixtures')
 
 
 @pytest.fixture()
