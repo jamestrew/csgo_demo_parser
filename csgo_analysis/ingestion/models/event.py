@@ -22,9 +22,15 @@ class Event(DBConn, DB):
         self.rs[self._EVENT_NUMBER] = event_number
         self.rs[self._ROUND] = round_count
 
-        rs = self.cast_data(self.rs)
-        self.data_set.append(rs)
-        return rs
+        self.rs = self.cast_data(self.rs)
+        self.data_set.append(self.rs)
+        return self.to_literal()
+
+    def to_literal(self):
+        lit_rs = {}
+        for col, val in self.rs.items():
+            lit_rs[col.col_name] = val
+        return lit_rs
 
 
 class EventJson(DBConn, DB):

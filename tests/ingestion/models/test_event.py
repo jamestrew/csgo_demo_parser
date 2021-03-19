@@ -72,9 +72,9 @@ def test_build_event_player_blind():
     }
 
     event = PlayerBlind()
-    output = event.build_event(1, event_data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, event_data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.PLAYER_BLIND
 
 
@@ -158,9 +158,9 @@ def test_build_event_player_death():
         DB._ROUND: 1
     }
     event = PlayerDeath()
-    output = event.build_event(1, event_data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, event_data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.PLAYER_DEATH
 
 
@@ -210,9 +210,9 @@ def test_build_event_player_death2():
         DB._ROUND: 1
     }
     event = PlayerDeath()
-    output = event.build_event(1, event_data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, event_data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.PLAYER_DEATH
 
 
@@ -323,9 +323,9 @@ def test_build_event_player_hurt():
     }
 
     event = PlayerHurt()
-    output = event.build_event(1, event_data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, event_data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.PLAYER_HURT
 
 
@@ -404,9 +404,9 @@ def test_build_event_player_falldamage():
     }
 
     event = PlayerFallDamage()
-    output = event.build_event(1, event_data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, event_data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.PLAYER_FALLDAMAGE
 
 
@@ -459,9 +459,9 @@ def test_build_event_weapon_fire():
         DB._ROUND: 1
     }
     event = WeaponFire()
-    output = event.build_event(1, data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.WEAPON_FIRE
 
 
@@ -521,9 +521,9 @@ def test_build_event_item_equip():
         DB._ROUND: 1
     }
     event = ItemEquip()
-    output = event.build_event(1, data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.ITEM_EQUIP
 
 
@@ -576,9 +576,9 @@ def test_build_event_bomb_planted():
     }
 
     event = BombPlanted()
-    output = event.build_event(1, event_data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, event_data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.BOMB_PLANTED
 
 
@@ -623,9 +623,9 @@ def test_build_event_bomb_defused():
     }
 
     event = BombDefused()
-    output = event.build_event(1, event_data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, event_data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.BOMB_DEFUSED
 
 
@@ -668,9 +668,9 @@ def test_build_event_round_start():
     }
 
     event = RoundStart()
-    output = event.build_event(1, event_data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, event_data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.ROUND_START
 
 
@@ -714,9 +714,9 @@ def test_build_event_round_end():
         DB._ROUND: 1
     }
     event = RoundEnd()
-    output = event.build_event(1, data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.ROUND_END
 
 
@@ -764,9 +764,9 @@ def test_build_event_round_mvp():
     }
 
     event = RoundMVP()
-    output = event.build_event(1, event_data, 1, 1)
-    TestCase().assertDictEqual(output, rs)
-    assert event.data_set == [output]
+    event.build_event(1, event_data, 1, 1)
+    TestCase().assertDictEqual(event.rs, rs)
+    assert event.data_set == [event.rs]
     assert event._TABLE_NAME == EventTypes.ROUND_MVP
 
 
@@ -792,6 +792,30 @@ def test_round_mvp_insert(connect_patch, close_path,
     event.insert(event._TABLE_NAME, rs)
     connect_patch.assert_called_once()
     close_path.assert_called_once()
+
+
+def test_to_literal(game_id, player_id):
+    rs = {
+        DB._GAME_ID: game_id,
+        RoundEnd._REASON: 3,
+        DB._PLAYER_ID: player_id,
+        DB._TEAM_L_ID: 3,
+        DB._EVENT_NUMBER: 1,
+        DB._ROUND: 1
+    }
+    literal_rs = {
+        'game_id': game_id,
+        'reason': 3,
+        'player_id': player_id,
+        'team_l_id': 3,
+        'event_number': 1,
+        'round': 1
+    }
+
+    event = RoundMVP()
+    event.rs = rs
+    output = event.to_literal()
+    TestCase().assertDictEqual(output, literal_rs)
 
 
 @ patch.object(EventJson, 'connect')
