@@ -92,19 +92,19 @@ def test_insert_prep(insert_patch, created_players, name_id, user_ids):
             Player._GAME_ID: 1,
             Player._XUID: '76561197960512598',
             Player._PLAYER_NAME: "Chris P. Bacon",
-            Player._TEAM_L_ID: 2
+            Player._FIRST_TEAM_L_ID: 2
         },
         {
             Player._GAME_ID: 1,
             Player._XUID: '76561197964398021',
             Player._PLAYER_NAME: "Mike",
-            Player._TEAM_L_ID: 2
+            Player._FIRST_TEAM_L_ID: 2
         },
         {
             Player._GAME_ID: 1,
             Player._XUID: '76561198133822308',
             Player._PLAYER_NAME: "digga",
-            Player._TEAM_L_ID: 3
+            Player._FIRST_TEAM_L_ID: 3
         },
     ]
 
@@ -129,8 +129,20 @@ def test_player_list(user_ids):
 @patch.object(Player, 'connect')
 @patch.object(Player, 'close')
 def test_player_ingestion_insert(p_connect_p, p_close_p, db_cur, db_conn, players_data):
-    insert_str = "INSERT INTO game (share_code, match_time, match_duration, map_l_id, final_score_two, final_score_three) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id"
-    val = ['CSGO-xQKYC-4Nbc4-h43V2-Jc66v-EWtrT', TimestampFromTicks(1613364114), 2319, 1, 10, 16]
+    insert_str = """
+        INSERT INTO game (
+            share_code,
+            match_time,
+            match_duration,
+            map_l_id
+            )
+        VALUES (%s, %s, %s, %s) RETURNING id"""
+    val = [
+        'CSGO-xQKYC-4Nbc4-h43V2-Jc66v-EWtrT',
+        TimestampFromTicks(1613364114),
+        2319,
+        1
+    ]
 
     db_cur.execute(insert_str, val)
     return_id = db_cur.fetchone()
@@ -143,7 +155,7 @@ def test_player_ingestion_insert(p_connect_p, p_close_p, db_cur, db_conn, player
     db_cur.execute("SELECT xuid FROM player WHERE game_id = (%s)", (return_id, ))
     players = [xuid[0] for xuid in db_cur.fetchall()]
 
-    assert set(players) == set([76561197960512598, 76561197964398021, 76561198133822308])
+    assert set(players) == set(['76561197960512598', '76561197964398021', '76561198133822308'])
 
 # @pytest.mark.data_collection
 # @patch.object(Player, 'insert')

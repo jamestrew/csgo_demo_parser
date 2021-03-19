@@ -50,7 +50,7 @@ class Player(DBConn, DB):
                     self._GAME_ID: self.game_id,
                     self._XUID: player_info[self._XUID.col_name],
                     self._PLAYER_NAME: player_info[self._NAME],
-                    self._TEAM_L_ID: Team.GOTV
+                    self._FIRST_TEAM_L_ID: Team.GOTV
                 }
 
                 userid = int(player_info[self._USER_ID])
@@ -63,7 +63,7 @@ class Player(DBConn, DB):
                     continue
 
                 team_id = int(spawn_info[self._TEAM_NUM])
-                self.players[spawn_info[self._FULL_ID]][self._TEAM_L_ID] = team_id
+                self.players[spawn_info[self._FULL_ID]][self._FIRST_TEAM_L_ID] = team_id
 
             self._insert_prep()
 
@@ -96,7 +96,7 @@ class Player(DBConn, DB):
 
         for player_userid in self.players.keys():
             row = self.players[player_userid]
-            if row[self._TEAM_L_ID] != Team.GOTV and \
+            if row[self._FIRST_TEAM_L_ID] != Team.GOTV and \
                     row[self._XUID] not in self.xuid_id_dict:
                 id = self.insert(self._TABLE_NAME, row, True)
                 self.xuid_id_dict[row[self._XUID]] = id

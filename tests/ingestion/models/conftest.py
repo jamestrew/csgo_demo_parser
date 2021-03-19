@@ -137,25 +137,25 @@ def created_players():
             Player._GAME_ID: 1,
             Player._XUID: '76561197960512598',
             Player._PLAYER_NAME: "Chris P. Bacon",
-            Player._TEAM_L_ID: 2
+            Player._FIRST_TEAM_L_ID: 2
         },
         "Mike (id:4)": {
             Player._GAME_ID: 1,
             Player._XUID: '76561197964398021',
             Player._PLAYER_NAME: "Mike",
-            Player._TEAM_L_ID: 2
+            Player._FIRST_TEAM_L_ID: 2
         },
         "digga (id:5)": {
             Player._GAME_ID: 1,
             Player._XUID: '76561198133822308',
             Player._PLAYER_NAME: "digga",
-            Player._TEAM_L_ID: 3
+            Player._FIRST_TEAM_L_ID: 3
         },
         "digga (id:12)": {
             Player._GAME_ID: 1,
             Player._XUID: '76561198133822308',
             Player._PLAYER_NAME: "digga",
-            Player._TEAM_L_ID: 3
+            Player._FIRST_TEAM_L_ID: 3
         }
     }
 
