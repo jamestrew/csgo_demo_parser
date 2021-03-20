@@ -3,6 +3,7 @@ from csgo_analysis.ingestion.models.db import Lookup, ItemLookup
 
 class ItemType:
 
+    _WORLD = Lookup(-1, 'world')
     _EQUIPMENT = Lookup(0, 'equipment')
     _PISTOL = Lookup(1, 'pistol')
     _SMG = Lookup(2, 'smg')
@@ -86,6 +87,7 @@ class Item:
     DEFUSER = ItemLookup(68, 'item_defuser', 'defuser')
     C4 = ItemLookup(69, 'weapon_c4', 'c4')
     INFERNO = ItemLookup(70, 'inferno', 'inferno')
+    WORLD = ItemLookup(0, 'world', 'world')
 
     NAME_L = {
         CZ75A.name: CZ75A,
@@ -157,7 +159,8 @@ class Item:
         ASSAULTSUIT.name: ASSAULTSUIT,
         DEFUSER.name: DEFUSER,
         C4.name: C4,
-        INFERNO.name: INFERNO
+        INFERNO.name: INFERNO,
+        WORLD.name: WORLD
     }
 
     SHORT_NAME_L = {
@@ -225,7 +228,8 @@ class Item:
         ASSAULTSUIT.short_name: ASSAULTSUIT,
         DEFUSER.short_name: DEFUSER,
         C4.short_name: C4,
-        INFERNO.name: INFERNO
+        INFERNO.name: INFERNO,
+        WORLD.short_name: WORLD
     }
 
     SHORT_WEP_L = {
@@ -299,7 +303,8 @@ class Item:
         DEFUSER.short_wep: DEFUSER,
         C4.short_wep: C4,
         'planted_c4': C4,
-        INFERNO.name: INFERNO
+        INFERNO.name: INFERNO,
+        WORLD.name: WORLD
     }
 
     ALT_WEAPONS = [P250.short_name, DEAGLE.short_name]
