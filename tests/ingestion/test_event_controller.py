@@ -1,5 +1,6 @@
 from csgo_analysis.ingestion.event_controller import EventsController
 from csgo_analysis.ingestion.models import ItemEquip, PlayerHurt
+from csgo_analysis.ingestion.const import EventTypes
 from unittest.mock import patch, call
 
 
@@ -19,7 +20,9 @@ def test_player_equip_init():
 
 @patch.object(ItemEquip, 'build_event')
 def test_event_class_calling(build_patch):
+    begin = EventTypes.BEGIN_NEW_MATCH
     data = [
+        {begin: None},
         {
             "item_equip": {
                 "userid": 1,
@@ -48,7 +51,7 @@ def test_event_class_calling(build_patch):
         }
     ]
 
-    event_data = data[0]['item_equip']
+    event_data = data[1]['item_equip']
 
     ec = EventsController(1, data, [1, 2, 3])
     ec.ingest_prep()

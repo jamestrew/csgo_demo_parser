@@ -51,9 +51,16 @@ class EventsController:
     def ingest_prep(self):
         round_cnt = 0
         event_cnt = 0
+        match_begin = False
         for event in self.data:
             event_name = list(event.keys())[0]
             event_data = event[event_name]
+
+            if event_name == EventTypes.BEGIN_NEW_MATCH:
+                match_begin = True
+
+            if not match_begin:
+                continue
 
             if event_name not in EventTypes.ALL_EVENTS:
                 continue

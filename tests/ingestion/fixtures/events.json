@@ -1,4 +1,5 @@
 [
+    {"begin_new_match": ""},
 	{
         "player_death": {
             "item_id": 26,
