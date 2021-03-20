@@ -1,0 +1,85 @@
+CreateStringTable:downloadables:8192:83:0:0:
+ 0, maps/de_mirage.bsp, 0, (null) 
+ 1, maps/de_mirage.bnav, 0, (null) 
+ 2, models/player/custom_player/legacy/tm_leet_variantA.mdl, 28, ¯ï 
+ 3, models/player/custom_player/legacy/tm_leet_variantB.mdl, 28, ¯ï 
+ 4, models/player/custom_player/legacy/tm_leet_variantC.mdl, 28, ¯ï 
+ 5, models/player/custom_player/legacy/tm_leet_variantD.mdl, 28, ¯ï 
+ 6, models/player/custom_player/legacy/tm_leet_variantE.mdl, 28, ¯ï 
+ 7, models/player/custom_player/legacy/ctm_sas.mdl, 28, ¯ï 
+ 8, models/player/custom_player/legacy/ctm_sas_variantA.mdl, 28, ¯ï 
+ 9, models/player/custom_player/legacy/ctm_sas_variantB.mdl, 28, ¯ï 
+ 10, models/player/custom_player/legacy/ctm_sas_variantC.mdl, 28, ¯ï 
+ 11, models/player/custom_player/legacy/ctm_sas_variantD.mdl, 28, ¯ï 
+ 12, models/player/custom_player/legacy/ctm_st6_variantj.mdl, 28,  
+ 13, models/player/custom_player/legacy/ctm_st6_variantl.mdl, 28,  
+ 14, models/player/custom_player/legacy/ctm_swat_variante.mdl, 28,  
+ 15, models/player/custom_player/legacy/ctm_swat_variantf.mdl, 28,  
+ 16, models/player/custom_player/legacy/ctm_swat_variantg.mdl, 28,  
+ 17, models/player/custom_player/legacy/ctm_swat_varianth.mdl, 28,  
+ 18, models/player/custom_player/legacy/ctm_swat_varianti.mdl, 28,  
+ 19, models/player/custom_player/legacy/ctm_swat_variantj.mdl, 28,  
+ 20, models/player/custom_player/legacy/tm_balkan_variantk.mdl, 28,  
+ 21, models/player/custom_player/legacy/tm_professional_varf.mdl, 28,  
+ 22, models/player/custom_player/legacy/tm_professional_varg.mdl, 28,  
+ 23, models/player/custom_player/legacy/tm_professional_varh.mdl, 28,  
+ 24, models/player/custom_player/legacy/tm_professional_varj.mdl, 28,  
+ 25, models/player/custom_player/legacy/tm_professional_vari.mdl, 28,  
+ 26, models/player/custom_player/legacy/tm_professional_varf1.mdl, 28,  
+ 27, models/player/custom_player/legacy/tm_professional_varf2.mdl, 28,  
+ 28, models/player/custom_player/legacy/tm_professional_varf3.mdl, 28,  
+ 29, models/player/custom_player/legacy/tm_professional_varf4.mdl, 28,  
+ 30, models/player/custom_player/legacy/tm_leet_variantg.mdl, 28,  
+ 31, models/player/custom_player/legacy/tm_leet_varianth.mdl, 28,  
+CreateStringTable:userinfo:256:255:0:0:
+player info
+{
+ adding:true
+ xuid:0
+ name:GOTV
+ userID:2
+ guid:BOT
+ friendsID:0
+ friendsName:
+ fakeplayer:1
+ ishltv:1
+ filesDownloaded:0
+}
+begin_new_match
+{
+}
+UpdateStringTable:3(soundprecache):7:
+ 2665, +player\vo\professional\radiobotcheer11.wav, 0, (null) 
+ 2666, +player\vo\psas\radio.locknload07.wav, 0, (null) 
+ 2667, player\vo\balkan\radio_locknload01.wav, 0, (null) 
+ 2668, +player\vo\professional\rt_smoke01.wav, 0, (null) 
+ 2669, +player\vo\professional\rt_flashbang03.wav, 0, (null) 
+ 2670, +player\vo\professional\radiobotplanting06.wav, 0, (null) 
+ 2671, +player\vo\psas\onarollbrag10.wav, 0, (null) 
+UpdateStringTable:5(instancebaseline):10:
+ 38, 34, 1203, ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿùÿ­
+€ 
+ 39, 228, 151, ¿ùÿÿÿÿÿþ« € 
+ 40, 71, 0, (null) 
+ 41, 258, 0, (null) 
+ 42, 156, 0, (null) 
+ 43, 77, 0, (null) 
+ 44, 157, 0, (null) 
+ 45, 9, 0, (null) 
+ 46, 129, 0, (null) 
+ 47, 96, 0, (null) 
+item_equip
+{
+ userid: broseppe (id:3)
+  position: 1376.000000, -16.000000, -167.968750
+  facing: pitch:2.691650, yaw:120.959473
+  team: T
+ item: knife 
+ defindex: 59 
+ canzoom: 0 
+ hassilencer: 0 
+ issilenced: 0 
+ hastracers: 0 
+ weptype: 0 
+ ispainted: 0 
+}

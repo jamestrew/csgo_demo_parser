@@ -1,0 +1,31 @@
+[
+    {
+        "player_info": {
+            "filesDownloaded": "0",
+            "friendsName": " ",
+            "fakeplayer": "1",
+            "adding": "true",
+            "name": "GOTV",
+            "xuid": "0",
+            "friendsID": "0",
+            "userID": "2",
+            "guid": "BOT",
+            "ishltv": "1"
+        }
+    },
+    { "begin_new_match": { "begin_new_match": "begin_new_match" } },
+    {
+        "item_equip": {
+            "issilenced": "0 ",
+            "defindex": "59 ",
+            "weptype": "0 ",
+            "hastracers": "0 ",
+            "item": "knife ",
+            "canzoom": "0 ",
+            "team": "T",
+            "hassilencer": "0 ",
+            "userid": "broseppe (id:3)",
+            "ispainted": "0 "
+        }
+    }
+]

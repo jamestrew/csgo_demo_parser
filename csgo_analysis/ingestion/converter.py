@@ -39,6 +39,9 @@ class JsonConverter:
     JUNK_R = r'}\n'
 
     ANNOUNCEMENTS = r'[a-z_]+\n{\n}\n'
+    NEW_GAME_P = r'(begin_new_match) ?\n{ ?\n} ?'
+    # NEW_GAME_R = r'"(begin_new_match)",'
+    NEW_GAME_R = r'\1\n{\n \1: \1\n}'
 
     NULL_P = r':  '
     NULL_R = r': "None"'
@@ -77,6 +80,7 @@ class JsonConverter:
         txt = txt.replace(first_table[0], '')
 
         txt = re.sub(cls.JUNK_P, cls.JUNK_R, txt)
+        txt = re.sub(cls.NEW_GAME_P, cls.NEW_GAME_R, txt)
         txt = re.sub(cls.ANNOUNCEMENTS, cls.BLANK, txt)
         txt = re.sub(cls.DETAILS_KEY_P, cls.BLANK, txt)
         txt = re.sub(cls.TEAM_KEY_P, cls.TEAM_KEY_R, txt)
@@ -96,6 +100,7 @@ class JsonConverter:
         txt = re.sub(cls.TRAIL_COMMA_P2, cls.TRAIL_COMMA_R2, txt)
         txt = f'[{txt.strip()[:-1]}]'  # convert to array
 
+        print(txt)
         data = json.loads(txt)
 
         if save:
