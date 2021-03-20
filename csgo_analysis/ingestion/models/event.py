@@ -216,7 +216,10 @@ class ItemEquip(Event):
         }
 
     def build_event(self, game_id, event_data, event_number, round_count):
-        if event_data[self._TEAM_L_ID.ref] is None:
+        try:
+            if event_data[self._TEAM_L_ID.ref] is None:
+                return False
+        except KeyError:
             return False
         return super().build_event(game_id, event_data, event_number, round_count)
 
