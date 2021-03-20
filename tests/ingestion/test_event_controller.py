@@ -56,7 +56,7 @@ def test_event_class_calling(build_patch):
     ec = EventsController(1, data, [1, 2, 3])
     ec.ingest_prep()
 
-    build_patch.assert_called_once_with(1, event_data, 1, 0)
+    build_patch.assert_called_once_with(1, event_data, 2, 1)
 
 
 def test_event_clean_data(events, events_clean):
@@ -73,7 +73,7 @@ def test_overkill_damage_correction(build_event_patch, hurt, hurt_clean):
     ec.ingest_prep()
 
     args = [
-        call(1, data['player_hurt'], i + 1, 0) for i, data in enumerate(hurt_clean)
+        call(1, data['player_hurt'], i + 2, 1) for i, data in enumerate(hurt_clean)
     ]
     build_event_patch.call_count == 11
     build_event_patch.assert_has_calls(args)

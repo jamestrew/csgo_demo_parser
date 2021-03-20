@@ -100,13 +100,6 @@
         }
     },
     {
-        "round_start": {
-            "fraglimit": "0 ",
-            "objective": "BOMB TARGET ",
-            "timelimit": "999 "
-        }
-    },
-    {
         "round_end": {
             "nomusic": "0 ",
             "player_count": "10 ",
@@ -114,6 +107,13 @@
             "legacy": "0 ",
             "message": "#SFUI_Notice_Terrorists_Win ",
             "winner": "2 "
+        }
+    },
+    {
+        "round_start": {
+            "fraglimit": "0 ",
+            "objective": "BOMB TARGET ",
+            "timelimit": "999 "
         }
     }
 ]

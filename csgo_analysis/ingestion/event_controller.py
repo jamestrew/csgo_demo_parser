@@ -49,8 +49,6 @@ class EventsController:
         self.player_health = {player: 100 for player in player_list}
 
     def ingest_prep(self):
-        round_cnt = 0
-        event_cnt = 0
         match_begin = False
         for event in self.data:
             event_name = list(event.keys())[0]
@@ -58,19 +56,22 @@ class EventsController:
 
             if event_name == EventTypes.BEGIN_NEW_MATCH:
                 match_begin = True
+                round_cnt = 1
+                event_cnt = 1
+                self._round_start.build_event(
+                    self.game_id,
+                    {RoundStart._TIMELIMIT.ref: 115},
+                    event_cnt,
+                    round_cnt
+                )
 
-            if not match_begin:
-                continue
-
-            if event_name not in EventTypes.ALL_EVENTS:
+            if not match_begin or event_name not in EventTypes.ALL_EVENTS:
                 continue
 
             if 'userid' in event_data.keys() and event_data['userid'] is None:
                 continue
             if event_name in EventTypes.ALL_EVENTS:
                 event_cnt += 1
-            if event_name == EventTypes.ROUND_START:
-                round_cnt += 1
 
             data = event[event_name]
             event_class = getattr(self, '_' + event_name)
@@ -90,6 +91,9 @@ class EventsController:
 
             if data:
                 self.clean_data.append({event_class._TABLE_NAME: data})
+
+            if event_name == EventTypes.ROUND_END:
+                round_cnt += 1
 
     def ingest_data(self):
         for event in self._events:

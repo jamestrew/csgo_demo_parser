@@ -85,6 +85,7 @@ class EventTypes:
         'flashbang_detonate',
         'hegrenade_detonate',
         'hltv_chase',
+        'hltv_fixed',
         'hltv_message',
         'hltv_status',
         'inferno_expire',

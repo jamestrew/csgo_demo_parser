@@ -105,7 +105,7 @@ class Parser:
 
     def load_all_data(self):
         ''' Convert demo data into json and ingest into DB'''
-        self.data = JsonConverter.convert(self.data_txt, self.output_path)
+        self.data = JsonConverter.convert(self.data_txt, self.output_path, True)
         del self.data_txt
         player = Player(self.game_id, self.data)
         self.data = player.create_players()
