@@ -22,6 +22,8 @@ class EventTypes:
 
     PLAYER_CLEANUP = [PLAYER_INFO, PLAYER_SPAWN]
 
+    BEGIN_NEW_MATCH = 'begin_new_match'
+
     PLAYER_EVENTS = [
         PLAYER_DEATH,
         PLAYER_BLIND,
