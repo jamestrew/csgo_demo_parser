@@ -18,7 +18,7 @@ class JsonConverter:
     TEAM_KEY_P = r' ( team: .+\n)'
     TEAM_KEY_R = r'\1'
 
-    INNER_VAL_P = r': ?([#\-0-9a-zA-Z\. _\(\):]+)'
+    INNER_VAL_P = r': ?(.+)'
     INNER_VAL_R = r': "\1", '
 
     END_BRACKET_P = r'}'

@@ -92,7 +92,7 @@ class Parser:
         print(sp_output.returncode)
 
         print('Demoinfogo Complete')
-        with open(self.output_path, encoding='ascii', errors='ignore') as data_file:
+        with open(self.output_path, encoding='ascii', errors='replace') as data_file:
             self.data_txt = data_file.read()
         self.load_game_data()
 
@@ -117,3 +117,5 @@ class Parser:
         events_con = EventsController(self.game_id, self.data, player.player_list)
         events_con.ingest_prep()
         events_con.ingest_data()
+        print('Data ingestion complete')
+
