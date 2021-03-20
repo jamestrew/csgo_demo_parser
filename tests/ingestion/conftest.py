@@ -114,3 +114,19 @@ def hurt_clean(fixture_path):
     with open(path) as jf:
         data = json.load(jf)
     return data
+
+
+@pytest.fixture
+def data_txt_begin(fixture_path):
+    path = os.path.join(fixture_path, 'data_txt_begin.txt')
+    with open(path, encoding='ascii', errors='ignore') as txt:
+        data = txt.read()
+    return data
+
+
+@pytest.fixture
+def data_json_begin(fixture_path):
+    path = os.path.join(fixture_path, 'data_json_begin.json')
+    with open(path) as jf:
+        data = json.load(jf)
+    return data
