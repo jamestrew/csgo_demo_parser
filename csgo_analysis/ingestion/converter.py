@@ -40,7 +40,6 @@ class JsonConverter:
 
     ANNOUNCEMENTS = r'[a-z_]+\n{\n}\n'
     NEW_GAME_P = r'(begin_new_match) ?\n{ ?\n} ?'
-    # NEW_GAME_R = r'"(begin_new_match)",'
     NEW_GAME_R = r'\1\n{\n \1: \1\n}'
 
     NULL_P = r':  '
@@ -100,7 +99,6 @@ class JsonConverter:
         txt = re.sub(cls.TRAIL_COMMA_P2, cls.TRAIL_COMMA_R2, txt)
         txt = f'[{txt.strip()[:-1]}]'  # convert to array
 
-        print(txt)
         data = json.loads(txt)
 
         if save:
