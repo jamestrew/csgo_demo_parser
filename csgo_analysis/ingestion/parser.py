@@ -87,9 +87,7 @@ class Parser:
         self.dem_file = os.path.join('data', self.dem_file)
         self.output_path = self.dem_file.replace('.dem', '.txt')
         cmd = f'demoinfogo {self.dem_file} > {self.output_path} {self.min_flags}'
-        print(exe_path)
-        sp_output = subprocess.run(cmd.split(), cwd=exe_path, shell=True)
-        print(sp_output.returncode)
+        subprocess.run(cmd.split(), cwd=exe_path, shell=True)
 
         print('Demoinfogo Complete')
         with open(self.output_path, encoding='ascii', errors='replace') as data_file:
@@ -118,4 +116,3 @@ class Parser:
         events_con.ingest_prep()
         events_con.ingest_data()
         print('Data ingestion complete')
-
