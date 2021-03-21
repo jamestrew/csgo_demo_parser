@@ -1,0 +1,32 @@
+[
+    {
+        "player_info": {
+            "guid": "BOT",
+            "xuid": "0",
+            "userID": "17",
+            "ishltv": "0",
+            "filesDownloaded": "0",
+            "friendsID": "4",
+            "updating": "true",
+            "friendsName": " ",
+            "name": "Harvey",
+            "fakeplayer": "1"
+        }
+    },
+    {
+        "weapon_fire": {
+            "weapon": "weapon_flashbang ",
+            "team": "T",
+            "silenced": "0 ",
+            "userid": "Maku18 (id:6)"
+        }
+    },
+    {
+        "weapon_fire": {
+            "weapon": "weapon_flashbang ",
+            "team": "T",
+            "silenced": "0 ",
+            "userid": "Maku18 (id:6)"
+        }
+    }
+]

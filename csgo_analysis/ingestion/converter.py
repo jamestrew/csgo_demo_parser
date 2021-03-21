@@ -32,6 +32,8 @@ class JsonConverter:
     TRAIL_COMMA_P2 = r'", {"'
     TRAIL_COMMA_R2 = r'"}}, {"'
 
+    EMPTY_LINE_P = r'\n\n'
+    EMPTY_LINE_R = r'\n'
     NEW_LINE_P = r'\n'
     BLANK = r''
 
@@ -78,6 +80,7 @@ class JsonConverter:
         first_table = re.match(cls.FIRST_TABLE_P, txt, flags)
         txt = txt.replace(first_table[0], '')
 
+        txt = re.sub(cls.EMPTY_LINE_P, cls.EMPTY_LINE_R, txt)
         txt = re.sub(cls.JUNK_P, cls.JUNK_R, txt)
         txt = re.sub(cls.NEW_GAME_P, cls.NEW_GAME_R, txt)
         txt = re.sub(cls.ANNOUNCEMENTS, cls.BLANK, txt)
@@ -99,6 +102,8 @@ class JsonConverter:
         txt = re.sub(cls.TRAIL_COMMA_P2, cls.TRAIL_COMMA_R2, txt)
         txt = f'[{txt.strip()[:-1]}]'  # convert to array
 
+        # with open('test.txt', 'w', encoding='utf8', errors='ignore') as f:
+        #     f.write(txt)
         data = json.loads(txt)
 
         if save:

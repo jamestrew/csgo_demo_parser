@@ -130,3 +130,19 @@ def data_json_begin(fixture_path):
     with open(path) as jf:
         data = json.load(jf)
     return data
+
+
+@pytest.fixture
+def unicode_txt(fixture_path):
+    path = os.path.join(fixture_path, 'unicode_blank_txt.txt')
+    with open(path, encoding='ascii', errors='ignore') as txt:
+        data = txt.read()
+    return data
+
+
+@pytest.fixture
+def unicode_json(fixture_path):
+    path = os.path.join(fixture_path, 'unicode_blank_json.json')
+    with open(path) as jf:
+        data = json.load(jf)
+    return data
