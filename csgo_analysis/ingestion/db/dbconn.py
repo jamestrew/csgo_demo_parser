@@ -12,6 +12,13 @@ class DBConn:
     _MANY = 'many'
     _RETURNING = 'returning'
 
+    SELECT = 'SELECT'
+    FROM = 'FROM'
+    WHERE = 'WHERE'
+    ORDER_BY = 'ORDER BY'
+    ASC = 'ASC'
+    DESC = 'DESC'
+
     timestamp_fmt = '%Y-%m-%d %H:%M:%S'
 
     def __init__(self):
@@ -58,6 +65,37 @@ class DBConn:
         self.execute(self.insert.__name__, kwargs)
         return self.return_id
 
+    def select(self, tablename, **kwargs):
+        """ Really basic select function for checking data """
+        table_str = f'FROM {tablename}'
+        if not kwargs:
+            select_str = f'select * {table_str}'
+            self.execute(self.select.__name__, {self._OPSTR: select_str})
+        else:
+            if kwargs.get(self.SELECT) is not None:
+                select = "SELECT "
+                select += ', '.join([field.col_name for field in kwargs[self.SELECT]])
+            else:
+                select = "SELECT *"
+            select_str = select + f'\n{table_str}'
+
+            if kwargs.get(self.WHERE) is not None:
+                col = list(kwargs[self.WHERE].keys())[0]
+                val = list(kwargs[self.WHERE].values())[0]
+                where_str = f"WHERE {col} = '{val}'"
+                select_str += f'\n{where_str}'
+
+            if kwargs.get(self.ORDER_BY) is not None:
+                order_items = kwargs[self.ORDER_BY].items()
+                ord_lst = [f'{col.col_name} {order}' for col, order in order_items]
+                ord_str = 'ORDER BY '
+                ord_str += ', '.join(ord_lst)
+                select_str += f'\n{ord_str}'
+
+            self.execute(self.select.__name__, {self._OPSTR: select_str})
+
+        return self.data
+
     def execute(self, func, kwargs):
         self.connect()
         func_call = getattr(DBConn, self.execute.__name__ + '_' + func)
@@ -82,4 +120,5 @@ class DBConn:
     def execute_select(self, kwargs):
         select_str = kwargs.get(self._OPSTR)
         self.cur.execute(select_str)
-        return self.cur.fetchall()
+        self.data = self.cur.fetchall()
+        self.close()

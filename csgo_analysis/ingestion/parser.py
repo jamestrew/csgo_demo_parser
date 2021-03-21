@@ -13,7 +13,7 @@ from csgo.client import CSGOClient
 from steam.client import SteamClient
 
 import definition
-from csgo_analysis.ingestion.models import Game, Player
+from csgo_analysis.ingestion.models import Game, Player, DBConn
 from csgo_analysis.ingestion.converter import JsonConverter
 from csgo_analysis.ingestion.item_controller import ItemController
 from csgo_analysis.ingestion.event_controller import EventsController
@@ -32,7 +32,11 @@ class Parser:
     def get_match_data(self, share_url):
         ''' Call Steam API to gather basic match info '''
         self.scode = share_url[-34:]
-        # ! TODO check scode isn't in game table
+
+        if self._code_exists():
+            print(f'{self.scode} already ingested')
+            return
+
         try:
             match_params = sharecode.decode(self.scode)
         except ValueError:
@@ -116,3 +120,10 @@ class Parser:
         events_con.ingest_prep()
         events_con.ingest_data()
         print('Data ingestion complete')
+        quit()
+
+    def _code_exists(self):
+        db = DBConn()
+        where = {Game._SHARE_CODE: self.scode}
+        data = db.select(Game._TABLE_NAME, WHERE=where)
+        return True if len(data) > 0 else False
