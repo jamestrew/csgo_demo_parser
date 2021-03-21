@@ -47,10 +47,21 @@ def test_db_insert(exe_patch, tablename, fields, statement, val, returning, many
 
 @patch.object(DBConn, 'execute_insert')
 @patch.object(DBConn, 'connect')
-def test_db_execute_calls(connect_patch, insert_patch):
+def test_db_execute_insert_calls(connect_patch, insert_patch):
     db = DBConn()
     func = 'insert'
     kwargs = 'foo'
     db.execute(func, kwargs)
     connect_patch.assert_called_once()
     insert_patch.assert_called_with(db, kwargs)
+
+
+@patch.object(DBConn, 'execute_select')
+@patch.object(DBConn, 'connect')
+def test_db_execute_select_calls(connect_patch, select_patch):
+    db = DBConn()
+    func = 'select'
+    kwargs = 'foo'
+    db.execute(func, kwargs)
+    connect_patch.assert_called_once()
+    select_patch.assert_called_with(db, kwargs)

@@ -78,3 +78,8 @@ class DBConn:
         self.return_id = self.cur.fetchone()[0] if returning else None
 
         self.close()
+
+    def execute_select(self, kwargs):
+        select_str = kwargs.get(self._OPSTR)
+        self.cur.execute(select_str)
+        return self.cur.fetchall()
