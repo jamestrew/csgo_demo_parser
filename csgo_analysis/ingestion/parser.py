@@ -1,10 +1,9 @@
 
 import bz2
-import logging
 import os
 import re
-import json
 import subprocess
+import time
 from urllib.parse import urlparse
 
 import requests
@@ -19,7 +18,7 @@ from csgo_analysis.ingestion.item_controller import ItemController
 from csgo_analysis.ingestion.event_controller import EventsController
 
 format = '[%(asctime)s] %(levelname)s %(name)s: %(message)s'
-logging.basicConfig(format=format, level=logging.DEBUG)
+# logging.basicConfig(format=format, level=logging.DEBUG)
 
 
 class Parser:
@@ -31,11 +30,14 @@ class Parser:
 
     def get_match_data(self, share_url):
         ''' Call Steam API to gather basic match info '''
+        self.client_complete = False
         self.scode = share_url[-34:]
 
         if self._code_exists():
             print(f'{self.scode} already ingested')
             return
+
+        print(f'Analyzing {self.scode}')
 
         try:
             match_params = sharecode.decode(self.scode)
@@ -55,12 +57,15 @@ class Parser:
             self.raw_match_data = str(cs.wait_event('full_match_info', 30))
             cs.exit()
             client.disconnect()
-            self.download_demo()
+            self.client_complete = True
 
         username = os.environ.get('RUKA_USER')
         password = os.environ.get('RUKA_PW')
         client.cli_login(username=username, password=password)
-        client.run_forever()
+
+        while not self.client_complete:
+            time.sleep(30)
+        self.download_demo()
 
     def download_demo(self):
         ''' Download demo file and extract'''
@@ -91,9 +96,9 @@ class Parser:
         self.dem_file = os.path.join('data', self.dem_file)
         self.output_path = self.dem_file.replace('.dem', '.txt')
         cmd = f'demoinfogo {self.dem_file} > {self.output_path} {self.min_flags}'
-        subprocess.run(cmd.split(), cwd=exe_path, shell=True)
-
-        print('Demoinfogo Complete')
+        print('Running demoinfogo....', end=' ')
+        subprocess.call(cmd.split(), cwd=exe_path, shell=True)
+        print('demoinfogo complete')
         with open(self.output_path, encoding='ascii', errors='replace') as data_file:
             self.data_txt = data_file.read()
         self.load_game_data()
@@ -114,16 +119,15 @@ class Parser:
         item_con = ItemController(self.data, player.player_list)
         self.data = item_con.sub_item_id()
         del item_con
-        with open('test.json', 'w') as jf:
-            json.dump(self.data, jf)
+        # with open('test.json', 'w') as jf:
+        #     json.dump(self.data, jf)
         events_con = EventsController(self.game_id, self.data, player.player_list)
         events_con.ingest_prep()
         events_con.ingest_data()
         print('Data ingestion complete')
-        quit()
 
     def _code_exists(self):
         db = DBConn()
         where = {Game._SHARE_CODE: self.scode}
         data = db.select(Game._TABLE_NAME, WHERE=where)
-        return True if len(data) > 0 else False
+        return len(data) > 0
