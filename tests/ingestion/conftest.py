@@ -146,3 +146,11 @@ def unicode_json(fixture_path):
     with open(path) as jf:
         data = json.load(jf)
     return data
+
+
+@pytest.fixture
+def colon_in_name_txt(fixture_path):
+    path = os.path.join(fixture_path, 'colon_in_name.txt')
+    with open(path, encoding='ascii', errors='ignore') as txt:
+        data = txt.read()
+    return data

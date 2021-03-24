@@ -78,7 +78,6 @@ def test_select_statement_create_basic(execute_patch):
     db = DBConn()
     output = db.select(tablename)
     execute_patch.called_once_with('select', kwargs)
-    assert output is True
 
 
 @patch.object(DBConn, 'execute')
@@ -97,4 +96,3 @@ def test_select_statement_complex(execute_patch):
     db = DBConn()
     output = db.select(tablename, **kwargs)
     execute_patch.called_once_with('select', {DBConn._OPSTR: select})
-    assert output is True

@@ -67,6 +67,7 @@ class DBConn:
 
     def select(self, tablename, **kwargs):
         """ Really basic select function for checking data """
+        self.data = None
         table_str = f'FROM {tablename}'
         if not kwargs:
             select_str = f'select * {table_str}'
