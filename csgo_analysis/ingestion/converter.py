@@ -92,8 +92,8 @@ class JsonConverter:
             txt = re.sub(pattern, cls.BLANK, txt)
 
         txt = re.sub(cls.TIGHT_NULL_P, cls.TIGHT_NULL_R, txt)
-        txt = re.sub(cls.INNER_KEY_P, cls.INNER_KEY_R, txt)
         txt = re.sub(cls.INNER_VAL_P, cls.INNER_VAL_R, txt)
+        txt = re.sub(cls.INNER_KEY_P, cls.INNER_KEY_R, txt)
         txt = re.sub(cls.END_BRACKET_P, cls.END_BRACKET_R, txt)
         txt = re.sub(cls.MAIN_KEY_P, cls.MAIN_KEY_R, txt)
         txt = re.sub(cls.MIDDLE_P, cls.MIDDLE_R, txt)
