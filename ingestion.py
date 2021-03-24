@@ -1,6 +1,97 @@
-from csgo_analysis.ingestion import parser
+from csgo_analysis.ingestion.parser import Parser
 
 
 if __name__ == '__main__':
-    parser = parser.Parser()
-    parser.get_match_data('steam://rungame/730/76561202255233023/+csgo_download_match%20CSGO-oxKvD-4u9Ln-S2rq3-xTTbE-fKV5F')
+
+    match_list = [
+        "CSGO-JRahC-PyMPF-B63zN-73yNk-WEDVF",
+        "CSGO-iaAmG-ss9Sy-YhzVi-N7kDv-bhUzE",
+        "CSGO-xqJ4D-ovomS-vG7M4-odwR9-6pe8E",
+        "CSGO-QH9Pj-XqptX-KGYD6-Opvd6-tzioE",
+        "CSGO-EEGTP-a3wCb-tDrLw-iPvXN-mnnYF",
+        "CSGO-CyfJr-EVDnF-aYm2M-FqkdY-FvxfF",
+        "CSGO-eHq3i-OM8t9-pRDkK-3XXm7-xU7CH",
+        "CSGO-jH2Yn-RAOqG-pnsAk-fZGrx-zMOcF",
+        "CSGO-V22Kx-ZTptt-YWxpK-NB3iC-od5yD",
+        "CSGO-7wjum-BRKO2-JNjT2-FV565-tzioE",
+        "CSGO-tGwSF-rbuAZ-ez6Cy-xFDaa-RkuzF",
+        "CSGO-5VxkM-ymjQR-7RDfp-3PKGF-zT2JE",
+        "CSGO-opiP6-bBXFK-wdjCs-tThwd-FPGCF",
+        "CSGO-9Aszc-2Nmap-WVPCm-icjvJ-zwJoD",
+        "CSGO-f8uRQ-TPWdU-CQYai-9iOLF-UxqFF",
+        "CSGO-uyuKK-fJETS-fBn5c-EdxJy-UqDZG",
+        "CSGO-dFtdt-KYpr9-MWGoS-tfswF-NcHLH",
+        "CSGO-KyKFv-Bwtri-kWakd-VPCFH-UxqFF",
+        "CSGO-5cbd7-TYdVL-Qjxnp-NPwQ5-CebRF",
+        "CSGO-MYDV3-EuvPy-WYROh-EVWLP-xbjsF",
+        "CSGO-WHujK-oFZSm-azzvG-Sac3A-uT2JE",
+        "CSGO-xYfW4-8jTFK-Ow2mC-asnOP-GHcVG",
+        "CSGO-rNx7O-cVWHt-e3Xk4-PHXGz-bBnUE",
+        "CSGO-AKJmY-ZSqAq-Rwi7P-jndVb-4YKsE",
+        "CSGO-xQKYC-4Nbc4-h43V2-Jc66v-EWtrD",
+        "CSGO-JSw4G-UDkwq-iyams-jRyYU-x62NF",
+        "CSGO-fSwRX-YWBa7-VZsCo-WCyVL-zwJoD",
+        "CSGO-OO9fH-zSWT2-qU4EX-RFtEd-FPGCF",
+        "CSGO-6FwGw-ApG5i-BOhA7-8x76L-5RfCG",
+        "CSGO-utXbN-bsFH3-PJeJm-AwHhM-5RfCG",
+        "CSGO-28wjV-PmB2f-sHu8V-rxqwe-84fGH",
+        "CSGO-bis7E-CfCiS-aec59-GxVMP-ZR9jE",
+        "CSGO-X4sqZ-vfnyQ-T85w2-KUFGQ-S7YpG",
+        "CSGO-6xFHL-eOSqQ-XaSm3-SwDit-n2ohH",
+        "CSGO-cWrjw-vnQj7-3aU2c-FNLjM-5RfCG",
+        "CSGO-Zkf8q-Dsjmp-a3B2m-x5y3a-jPocG",
+        "CSGO-4K7Pv-faDSO-KAvZL-qzb6R-MHcVG",
+        "CSGO-BvUS7-4GVoh-QbqQw-JhvWp-3De4D",
+        "CSGO-ts8K4-7DUWN-ZdOUQ-6FSNp-WhUzE",
+        "CSGO-Mqpzy-5p74P-PKG3J-Oxfhs-3fwXD",
+        "CSGO-DO5e9-nJrzj-Z7Qeu-y4zPj-c49oF",
+        "CSGO-ZAuO5-Sbnj4-P7zQp-Ti8jQ-mG64E",
+        "CSGO-8YZ3q-waiUU-ANKHu-aatzs-uMOcF",
+        "CSGO-zOBmr-pASPc-O2iyx-a6F6O-GHcVG",
+        "CSGO-iQd8o-kErjL-nbrjE-9myRJ-fnnYF",
+        "CSGO-BXj3d-V2r85-ekHjq-sLxZp-PNv5G",
+        "CSGO-HhXtF-fqRTG-OABeK-aUMGc-cZrKG",
+        "CSGO-yzUax-MHnWi-3qnPS-ZEXvA-UUYkF",
+        "CSGO-JVHtP-9td9h-5rqzK-po9YR-MHcVG",
+        "CSGO-c45yP-GWyz4-BrWUh-FTQVO-GHcVG",
+        "CSGO-fDeWm-bDzkF-ffyxu-TKyKF-NcHLH",
+        "CSGO-tvTic-DR2ii-kPYiA-DFKCu-uMOcF",
+        "CSGO-fDeWm-bDzkF-ffyxu-TKyKF-NcHLH",
+        "CSGO-tvTic-DR2ii-kPYiA-DFKCu-uMOcF",
+        "CSGO-Puyan-v68Wf-sb9si-o5oy7-GAzpH",
+        "CSGO-Rie8L-uFdew-ELHsA-3tbsD-Yyv9H",
+        "CSGO-vozjj-DY9Qz-L6whw-jKFu5-dLaxJ",
+        "CSGO-t7Fjn-fd2aR-LrNCf-ZhLJf-pPocG",
+        "CSGO-4pZ6n-oMjpN-zfoxU-fYpC9-AL4VH",
+        "CSGO-nSTME-Wy5pj-S9KPD-DZPoH-GoL2G",
+        "CSGO-WMKK5-BbVMN-BK9dn-HYxcK-GoL2G",
+        "CSGO-fpVka-9PciD-2qmh4-YAq8L-mnnYF",
+        "CSGO-9D5Xn-PokwF-rN4Fi-29nDh-2EkwG",
+        "CSGO-7qOsp-9MBZP-BwLmE-vsZ7p-nXWDJ",
+        "CSGO-sUzyn-RbVKU-hEjFy-uruTk-HY5dK",
+        "CSGO-ZnqYp-XGyvc-TbZtd-Zjykf-YYmQD",
+        "CSGO-zWqWs-2oYbJ-42RXM-kwUAv-7BLwF",
+        "CSGO-JGrWH-AJUzH-KacBS-mqKMG-s9ROG",
+        "CSGO-JGrWH-AJUzH-KacBS-mqKMG-s9ROG",
+        "CSGO-xkQ8k-JLCyZ-u6ov2-eejGG-kosSJ",
+        "CSGO-K9Kuy-dfRUe-h9226-wrjW3-feAtG",
+        "CSGO-bpOEt-3aPUY-oWhNw-LXBnV-AvxfF",
+        "CSGO-zKX8m-N9K97-95Sne-QtASq-H3MAK",
+        "CSGO-Leykv-SwO5Z-kZ9xi-otdFq-PNv5G",
+        "CSGO-ffAMS-tnV8f-Cx3xP-Kwyo9-hd5yD",
+        "CSGO-Y9r3O-Mpa3F-SAtyb-myjDW-HGXbD",
+        "CSGO-9rORn-sAGnS-h8jjC-icfWL-CnF8D",
+        "CSGO-cOs8J-9rdnm-yrJDy-5CWdh-YYmQD",
+        "CSGO-vf9h5-x2fsc-i8dVJ-AQjAn-qOijD",
+        "CSGO-vRrNw-ocDSP-7vsar-nBfLM-mnnYF",
+        "CSGO-feud5-nzHkM-TmxKa-FYDGG-s9ROG"
+    ]
+    prefix = 'steam://rungame/730/76561202255233023/+csgo_download_match%20'
+    for match in match_list:
+        parser = Parser()
+        match_url = prefix + match
+        try:
+            parser.get_match_data(match_url)
+        except Exception as err:
+            print(f'Failed to ingestion {match}')
+            print(err)
