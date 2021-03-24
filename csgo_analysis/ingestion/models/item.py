@@ -26,6 +26,7 @@ class Item:
     P250 = ItemLookup(7, 'weapon_p250', 'p250')
     REVOLVER = ItemLookup(8, 'weapon_revolver', 'deagle')
     TEC9 = ItemLookup(9, 'weapon_tec9', 'tec9')
+    USP_SILENCER_OFF = ItemLookup(72, 'weapon_usp_silencer_off', 'hkp2000')
     USP_SILENCER = ItemLookup(10, 'weapon_usp_silencer', 'hkp2000')
     MAG7 = ItemLookup(11, 'weapon_mag7', 'mag7')
     NOVA = ItemLookup(12, 'weapon_nova', 'nova')
@@ -44,6 +45,7 @@ class Item:
     AUG = ItemLookup(25, 'weapon_aug', 'aug')
     FAMAS = ItemLookup(26, 'weapon_famas', 'famas')
     GALILAR = ItemLookup(27, 'weapon_galilar', 'galilar')
+    M4A1_SILENCER_OFF = ItemLookup(71, 'weapon_m4a1_silencer_off', 'm4a1')
     M4A1_SILENCER = ItemLookup(28, 'weapon_m4a1_silencer', 'm4a1')
     M4A1 = ItemLookup(29, 'weapon_m4a1', 'm4a1')
     SG556 = ItemLookup(30, 'weapon_sg556', 'sg556')
@@ -99,6 +101,7 @@ class Item:
         P250.name: P250,
         REVOLVER.name: REVOLVER,
         TEC9.name: TEC9,
+        USP_SILENCER_OFF.name: USP_SILENCER_OFF,
         USP_SILENCER.name: USP_SILENCER,
         MAG7.name: MAG7,
         NOVA.name: NOVA,
@@ -117,6 +120,7 @@ class Item:
         AUG.name: AUG,
         FAMAS.name: FAMAS,
         GALILAR.name: GALILAR,
+        M4A1_SILENCER_OFF.name: M4A1_SILENCER_OFF,
         M4A1_SILENCER.name: M4A1_SILENCER,
         M4A1.name: M4A1,
         SG556.name: SG556,
@@ -242,6 +246,7 @@ class Item:
         P250.short_wep: P250,
         REVOLVER.short_wep: REVOLVER,
         TEC9.short_wep: TEC9,
+        USP_SILENCER_OFF.short_wep: USP_SILENCER_OFF,
         USP_SILENCER.short_wep: USP_SILENCER,
         MAG7.short_wep: MAG7,
         NOVA.short_wep: NOVA,
@@ -260,6 +265,7 @@ class Item:
         AUG.short_wep: AUG,
         FAMAS.short_wep: FAMAS,
         GALILAR.short_wep: GALILAR,
+        M4A1_SILENCER_OFF.short_wep: M4A1_SILENCER_OFF,
         M4A1_SILENCER.short_wep: M4A1_SILENCER,
         M4A1.short_wep: M4A1,
         SG556.short_wep: SG556,
